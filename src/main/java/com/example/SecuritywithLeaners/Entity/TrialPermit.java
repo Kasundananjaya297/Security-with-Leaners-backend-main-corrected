@@ -18,12 +18,6 @@ public class TrialPermit {
     private String serialNo;
     private LocalDate examDate;
     private LocalDate expDate;
-    private boolean b1M;
-    private boolean bM;
-    private boolean bA;
-    private boolean a1M;
-    private boolean a1A;
-    private boolean aM;
     @ManyToOne
     @JoinColumn(name = "stdID_fk")
     private Student stdID;

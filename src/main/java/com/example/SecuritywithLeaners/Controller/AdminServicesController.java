@@ -6,8 +6,10 @@ import com.example.SecuritywithLeaners.DTO.StudentDTO;
 import com.example.SecuritywithLeaners.DTO.TrailPermitDTO;
 import com.example.SecuritywithLeaners.Entity.Student;
 import com.example.SecuritywithLeaners.Entity.TrialPermit;
+import com.example.SecuritywithLeaners.Entity.VehicleType;
 import com.example.SecuritywithLeaners.Service.AdminService;
 import com.example.SecuritywithLeaners.Service.TrialPermitService;
+import com.example.SecuritywithLeaners.Service.VehicleTypeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,8 @@ public class AdminServicesController {
     private AdminService adminService;
     @Autowired
     private TrialPermitService trialPermitService;
+    @Autowired
+    private VehicleTypeService vehicleType;
 
     @PostMapping("/registerStudent")
     public ResponseEntity registerStudent(@RequestBody Student studentDTO){
@@ -69,6 +73,18 @@ public class AdminServicesController {
     @GetMapping("/getTrialPermit/{stdID}")
     public ResponseEntity getTrialPermit(@PathVariable String stdID){
         ResponseDTO responseDTO = trialPermitService.getTrialPermit(stdID);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @PostMapping("/saveVehicleType")
+    public ResponseEntity saveVehicleType(@RequestBody VehicleType vehicleType){
+        System.out.print(vehicleType);
+        ResponseDTO responseDTO = this.vehicleType.saveVehicleType(vehicleType);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @GetMapping("/getVehicleType")
+    public ResponseEntity getVehicleAllType(){
+        System.out.println("getVehicleType");
+        ResponseDTO responseDTO = vehicleType.getVehicleType();
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
 }
