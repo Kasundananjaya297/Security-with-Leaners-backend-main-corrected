@@ -34,10 +34,8 @@ public class AdminService {
     StudentRepo studentRepo;
     @Autowired
     private ModelMapper modelMapper;
-
     @Autowired
     private CalculateAge calculateAge;
-
 
     private StudentDTO studentDTO;
     public ResponseDTO saveStudent(Student studentDTO) {
@@ -93,7 +91,7 @@ public class AdminService {
             responseDTO.setContent(studentList);
         } catch (Exception e) {
             responseDTO.setCode(varList.RSP_ERROR);
-            responseDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            responseDTO.setStatus(HttpStatus.BAD_REQUEST);
             responseDTO.setMessage("An error occurred: " + e.getMessage());
             responseDTO.setContent(null);
         }

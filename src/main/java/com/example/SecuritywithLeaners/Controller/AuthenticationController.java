@@ -24,7 +24,7 @@ public class AuthenticationController {
     }
     @PostMapping("/ValidateUser")
     public ResponseEntity validateUser(@RequestBody UsersDTO usersDTO){
-        System.out.println("validateUser");
+        System.out.println("validateUser+++++");
         ResponseDTO responseDTO = authenticationService.validUser(usersDTO);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }

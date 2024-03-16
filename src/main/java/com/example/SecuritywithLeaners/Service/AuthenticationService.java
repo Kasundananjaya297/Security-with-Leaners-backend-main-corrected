@@ -62,13 +62,11 @@ public class AuthenticationService  {
         ResponseDTO responseDTO = new ResponseDTO();
         try {
             // Fetch the user by username
-            Optional<Users> userOptional = usersRepo.findById(usersDTO.getUsername());
-
-            if (userOptional.isPresent()) {
+            if(usersRepo.existsById(usersDTO.getUsername())){
+                Optional<Users> userOptional = usersRepo.findById(usersDTO.getUsername());
                 Users user = userOptional.get();
                 String storedPassword = user.getPassword();
-
-                if (passwordEncoder.matches(usersDTO.getPassword(), storedPassword)) {
+                if ((usersRepo.existsById(usersDTO.getUsername()))&&(passwordEncoder.matches(usersDTO.getPassword(), storedPassword))) {
                     var jwt = jwtUtils.generateToken(user);
                     // Valid user
                     responseDTO.setToken(jwt);
@@ -84,18 +82,19 @@ public class AuthenticationService  {
                     responseDTO.setContent(false);
                     responseDTO.setStatus(HttpStatus.ACCEPTED);
                 }
-            } else {
+            }else{
                 responseDTO.setCode(varList.RSP_FAIL);
                 responseDTO.setMessage("Invalid User");
                 responseDTO.setContent(false);
-                responseDTO.setStatus(HttpStatus.BAD_REQUEST);
+                responseDTO.setStatus(HttpStatus.ACCEPTED);
             }
+
         } catch (Exception e) {
             // Handle exceptions
             responseDTO.setCode(varList.RSP_ERROR);
             responseDTO.setMessage(e.getMessage());
             responseDTO.setContent(null);
-            responseDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            responseDTO.setStatus(HttpStatus.BAD_REQUEST);
         }
         return responseDTO;
     }
