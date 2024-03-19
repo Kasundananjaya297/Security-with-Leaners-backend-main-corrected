@@ -1,13 +1,18 @@
 package com.example.SecuritywithLeaners.Service;
 
 import com.example.SecuritywithLeaners.DTO.ResponseDTO;
+import com.example.SecuritywithLeaners.DTO.VehicleTypeDTO;
 import com.example.SecuritywithLeaners.Entity.VehicleType;
 import com.example.SecuritywithLeaners.Repo.VehicleTypeRepo;
 import com.example.SecuritywithLeaners.Util.varList;
 import jakarta.transaction.Transactional;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -15,6 +20,8 @@ import org.springframework.stereotype.Service;
 public class VehicleTypeService {
     @Autowired
     VehicleTypeRepo vehicleTypeRepo;
+    @Autowired
+    ModelMapper modelMapper;
     public ResponseDTO saveVehicleType(VehicleType vehicleType){
         ResponseDTO responseDTO = new ResponseDTO();
         try{
@@ -45,7 +52,10 @@ public class VehicleTypeService {
         try{
             responseDTO.setCode(varList.RSP_SUCCES);
             responseDTO.setMessage("Success");
-            responseDTO.setContent(vehicleTypeRepo.findAll());
+            List<VehicleTypeDTO> vehicleTypes = vehicleTypeRepo.findAll().stream()
+                    .map(vehicleType -> modelMapper.map(vehicleType, VehicleTypeDTO.class))
+                    .collect(Collectors.toList());
+            responseDTO.setContent(vehicleTypes);
             responseDTO.setStatus(HttpStatus.ACCEPTED);
         }catch (Exception e){
             responseDTO.setCode(varList.RSP_FAIL);
