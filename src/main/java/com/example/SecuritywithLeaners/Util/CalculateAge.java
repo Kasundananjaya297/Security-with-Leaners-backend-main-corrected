@@ -19,8 +19,16 @@ public class CalculateAge {
         String [] date = DOB.split("-");
         int year = Integer.parseInt(date[0]);
         int month = Integer.parseInt(date[1]);
+        int day = Integer.parseInt(date[2]);
         int age = LocalDate.now().getYear() - year;
-        if(month > 6){age++;}
+        if((month == LocalDate.now().getMonthValue() && day<LocalDate.now().getDayOfMonth())||(month < LocalDate.now().getMonthValue()))
+        {
+            age--;
+            age++;
+        }
+        else{
+            age--;
+        }
         return age;
     }
 }
