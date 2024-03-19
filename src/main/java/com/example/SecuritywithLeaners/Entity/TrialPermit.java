@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -19,6 +20,9 @@ public class TrialPermit {
     private LocalDate examDate;
     private LocalDate expDate;
     @ManyToOne
-    @JoinColumn(name = "stdID_fk")
+    @JoinColumn(name = "stdID_fk", referencedColumnName = "stdID")
     private Student stdID;
+    private String downURL;
+    @OneToMany(mappedBy = "serialNo" , cascade = CascadeType.ALL)
+    private List<PermitAndVehicleType> permitAndVehicleType;
 }

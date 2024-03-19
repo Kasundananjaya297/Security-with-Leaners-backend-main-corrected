@@ -1,11 +1,11 @@
 package com.example.SecuritywithLeaners.Entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -20,6 +20,8 @@ public class VehicleType {
     private String engineCapacity;
     private Boolean typeAuto;
     private Boolean typeManual;
+    @OneToMany(mappedBy = "selectedType" , cascade = CascadeType.ALL)
+    private List<PermitAndVehicleType> permitAndVehicleType;
 }
 // "typeID": "B",
 //         "typeName": "Motor Tricycle",

@@ -1,9 +1,8 @@
 package com.example.SecuritywithLeaners.Controller;
 
 
-import com.example.SecuritywithLeaners.DTO.ResponseDTO;
-import com.example.SecuritywithLeaners.DTO.StudentDTO;
-import com.example.SecuritywithLeaners.DTO.TrailPermitDTO;
+import com.example.SecuritywithLeaners.DTO.*;
+import com.example.SecuritywithLeaners.Entity.PermitAndVehicleType;
 import com.example.SecuritywithLeaners.Entity.Student;
 import com.example.SecuritywithLeaners.Entity.TrialPermit;
 import com.example.SecuritywithLeaners.Entity.VehicleType;
@@ -14,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -68,7 +69,6 @@ public class AdminServicesController {
         System.out.println("Hi..................."+TrialPermitDTO);
         ResponseDTO responseDTO = trialPermitService.SaveTrailPermit(TrialPermitDTO);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
-
     }
     @GetMapping("/getTrialPermit/{stdID}")
     public ResponseEntity getTrialPermit(@PathVariable String stdID){
@@ -86,5 +86,17 @@ public class AdminServicesController {
         System.out.println("getVehicleType");
         ResponseDTO responseDTO = vehicleType.getVehicleType();
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @PostMapping("/saveTrailPermitVehicle")
+    public ResponseEntity savePermit(@RequestBody List<PermitAndVehicleTypeDTO> permitAndVehicleTypeDTO){
+        System.out.println("+++++++++++++");
+        ResponseDTO responseDTO = trialPermitService.saveTrailPermit(permitAndVehicleTypeDTO);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @PostMapping("/saveTrailPermitEfficient")
+    public ResponseEntity SaveTP(@RequestBody TrialPermit1DTO trialPermit1DTO){
+//        System.out.println(trialPermit1DTO);
+        ResponseDTO responseDTO= trialPermitService.saveTrailPermitEfficinetWay(trialPermit1DTO);
+        return new ResponseEntity(responseDTO ,responseDTO.getStatus());
     }
 }

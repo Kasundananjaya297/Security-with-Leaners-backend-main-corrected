@@ -11,13 +11,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class PermitAndVehicleType {
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "serialNo_fk")
+
+    @EmbeddedId
+    private PermitAndVehicleTypeId id;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @MapsId("serialNo")
     private TrialPermit serialNo;
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "typeID_fk")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @MapsId("selectedType")
     private VehicleType selectedType;
+
     private String autoOrManual;
 }
