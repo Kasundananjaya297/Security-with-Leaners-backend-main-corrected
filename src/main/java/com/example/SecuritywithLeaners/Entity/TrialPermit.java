@@ -1,9 +1,9 @@
 package com.example.SecuritywithLeaners.Entity;
 
+import com.example.SecuritywithLeaners.Entity.Views.View;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,7 +12,8 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 @Table(name = "trialPermit")
 public class TrialPermit {
     @Id

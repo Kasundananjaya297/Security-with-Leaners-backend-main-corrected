@@ -1,27 +1,24 @@
 package com.example.SecuritywithLeaners.Service;
 
-import com.example.SecuritywithLeaners.DTO.PermitAndVehicleTypeDTO;
-import com.example.SecuritywithLeaners.DTO.ResponseDTO;
-import com.example.SecuritywithLeaners.DTO.TrailPermitDTO;
-import com.example.SecuritywithLeaners.DTO.TrialPermit1DTO;
+import com.example.SecuritywithLeaners.DTO.*;
 import com.example.SecuritywithLeaners.Entity.*;
+import com.example.SecuritywithLeaners.Entity.Views.View;
 import com.example.SecuritywithLeaners.Repo.PermitAndVehicleTypeRepo;
 import com.example.SecuritywithLeaners.Repo.StudentRepo;
 import com.example.SecuritywithLeaners.Repo.TrialPermitRepo;
 import com.example.SecuritywithLeaners.Repo.VehicleTypeRepo;
 import com.example.SecuritywithLeaners.Util.varList;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.el.stream.Stream;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeMap;
-import org.springframework.aop.scope.ScopedProxyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -100,12 +97,32 @@ public class TrialPermitService {
     public ResponseDTO getTrialPermit(String stdID) {
         ResponseDTO responseDTO = new ResponseDTO();
         try {
-            if (studentRepo.existsById(stdID) && (trialPermitRepo.existsByStdID(stdID) > 0)) {
+            if (studentRepo.existsById(stdID) && trialPermitRepo.existsByStdID(stdID) > 0) {
                 System.out.println("Exists");
                 responseDTO.setMessage("Success");
-                List<TrialPermit> trialPermitLit = trialPermitRepo.findAllByStdID(stdID);
-                System.out.println(trialPermitLit);
-                List<TrailPermitDTO> trailPermitDTOList = trialPermitLit.stream().map(tp -> modelMapper.map(tp, TrailPermitDTO.class)).toList();
+                List<TrialPermit> trialPermitList = trialPermitRepo.findAllByStdID(stdID);
+                List<TrialPermit1DTO> trailPermitDTOList = new ArrayList<>();
+                for (TrialPermit tp : trialPermitList) {
+                    TrialPermit1DTO trialPermit1DTO = new TrialPermit1DTO();
+                    trialPermit1DTO.setSerialNo(tp.getSerialNo());
+                    trialPermit1DTO.setExamDate(tp.getExamDate());
+                    trialPermit1DTO.setExpDate(tp.getExpDate());
+                    trialPermit1DTO.setDownURL(tp.getDownURL());
+                    trialPermit1DTO.setStdID(tp.getStdID().getStdID());
+                    List<PermitAndVehicleTypeDTO> permitAndVehicleTypeDTOList = new ArrayList<>();
+                    for (PermitAndVehicleType permitAndVehicleType : tp.getPermitAndVehicleType()) {
+                        PermitAndVehicleTypeDTO permitAndVehicleTypeDTO = new PermitAndVehicleTypeDTO();
+                        permitAndVehicleTypeDTO.setSerialNo(permitAndVehicleType.getSerialNo().getSerialNo());
+                        permitAndVehicleTypeDTO.setSelectedType(permitAndVehicleType.getId().getSelectedType().getTypeID());
+                        permitAndVehicleTypeDTO.setDescription(permitAndVehicleType.getId().getSelectedType().getTypeName());
+                        permitAndVehicleTypeDTO.setEngineCapacity(permitAndVehicleType.getId().getSelectedType().getEngineCapacity());
+                        permitAndVehicleTypeDTO.setAutoOrManual(permitAndVehicleType.getAutoOrManual());
+                        permitAndVehicleTypeDTOList.add(permitAndVehicleTypeDTO);
+                    }
+                    trialPermit1DTO.setPermitAndVehicleType(permitAndVehicleTypeDTOList);
+
+                    trailPermitDTOList.add(trialPermit1DTO);
+                }
                 responseDTO.setContent(trailPermitDTOList);
                 responseDTO.setStatus(HttpStatus.ACCEPTED);
                 responseDTO.setCode(varList.RSP_SUCCES);
@@ -124,6 +141,8 @@ public class TrialPermitService {
         }
         return responseDTO;
     }
+
+
 
     public ResponseDTO saveTrailPermit(List<PermitAndVehicleTypeDTO> permitAndVehicleTypeDTOS) {//not a best practice but tried manual way future suggest to use JPA
         ResponseDTO responseDTO = new ResponseDTO();
@@ -193,7 +212,7 @@ public class TrialPermitService {
                     PermitAndVehicleType permitAndVehicleType = new PermitAndVehicleType();
                     PermitAndVehicleTypeId permitAndVehicleTypeId = new PermitAndVehicleTypeId();
                     LocalDate maxDate = trialPermitRepo.getMaximumExpDateByStdID(trialPermit1DTO.getStdID());
-                    if(maxDate != null && maxDate.isAfter(currentDate)){
+                    if (maxDate != null && maxDate.isAfter(currentDate)) {
                         responseDTO.setCode(varList.RSP_FAIL);
                         responseDTO.setMessage("Can't Enter Current Trial Permit Not expired");
                         responseDTO.setContent(null);
@@ -237,7 +256,34 @@ public class TrialPermitService {
         }
         return responseDTO;
     }
+
+//
+//    public ResponseDTO getTrialPermitByStdID(String stdID) {
+//        ResponseDTO responseDTO = new ResponseDTO();
+//        PermitAndVehicleTypeId permitAndVehicleTypeId = new PermitAndVehicleTypeId();
+//        try {
+//            if (trialPermitRepo.existsByStdID(stdID)>0) {
+//                List<TrialPermit> trialPermit = trialPermitRepo.findAllByStdID(stdID);
+//                responseDTO.setCode(varList.RSP_SUCCES);
+//                responseDTO.setMessage("Success");
+//                responseDTO.setContent(trialPermit);
+//                responseDTO.setStatus(HttpStatus.ACCEPTED);
+//            } else {
+//                responseDTO.setCode(varList.RSP_NO_DATA_FOUND);
+//                responseDTO.setMessage("No Trial Permit found for the given student ID");
+//                responseDTO.setContent(null);
+//                responseDTO.setStatus(HttpStatus.NO_CONTENT);
+//            }
+//        } catch (Exception e) {
+//            responseDTO.setCode(varList.RSP_FAIL);
+//            responseDTO.setMessage("Failed");
+//            responseDTO.setContent(null);
+//            responseDTO.setStatus(HttpStatus.BAD_REQUEST);
+//        }
+//        return responseDTO;
+//    }
 }
+
 
 
 

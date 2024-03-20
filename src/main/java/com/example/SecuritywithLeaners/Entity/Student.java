@@ -2,9 +2,7 @@ package com.example.SecuritywithLeaners.Entity;
 
 import com.fasterxml.jackson.databind.ser.std.StdKeySerializers;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -12,7 +10,8 @@ import java.util.Date;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 @Table(name = "StudentDetails")
 public class Student {
     @Id
@@ -48,6 +47,4 @@ public class Student {
     private String guardianName;
     @Column(name="guardianTelephone",length = 10,nullable = false)
     private int guardianTelephone;
-
-
 }

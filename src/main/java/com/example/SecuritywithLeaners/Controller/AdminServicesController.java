@@ -6,9 +6,11 @@ import com.example.SecuritywithLeaners.Entity.PermitAndVehicleType;
 import com.example.SecuritywithLeaners.Entity.Student;
 import com.example.SecuritywithLeaners.Entity.TrialPermit;
 import com.example.SecuritywithLeaners.Entity.VehicleType;
+import com.example.SecuritywithLeaners.Entity.Views.View;
 import com.example.SecuritywithLeaners.Service.AdminService;
 import com.example.SecuritywithLeaners.Service.TrialPermitService;
 import com.example.SecuritywithLeaners.Service.VehicleTypeService;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -99,4 +101,5 @@ public class AdminServicesController {
         ResponseDTO responseDTO= trialPermitService.saveTrailPermitEfficinetWay(trialPermit1DTO);
         return new ResponseEntity(responseDTO ,responseDTO.getStatus());
     }
+
 }

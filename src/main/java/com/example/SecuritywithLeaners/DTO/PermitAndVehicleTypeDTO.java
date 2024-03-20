@@ -14,4 +14,6 @@ public class PermitAndVehicleTypeDTO {
     private String serialNo;
     private String  selectedType;
     private String autoOrManual;
+    private String engineCapacity;
+    private String description;
 }
