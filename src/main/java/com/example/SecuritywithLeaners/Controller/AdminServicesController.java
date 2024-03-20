@@ -101,5 +101,11 @@ public class AdminServicesController {
         ResponseDTO responseDTO= trialPermitService.saveTrailPermitEfficinetWay(trialPermit1DTO);
         return new ResponseEntity(responseDTO ,responseDTO.getStatus());
     }
+    @PostMapping("/UpdateStudentData")
+    public ResponseEntity UpdateStudentData(@RequestBody Student student){
+        System.out.println(student);
+        ResponseDTO responseDTO = adminService.updateStudent(student);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
 
 }

@@ -199,6 +199,35 @@ public class AdminService {
         }
         return responseDTO;
     }
+    public ResponseDTO updateStudent(Student studentDTO) {
+        ResponseDTO responseDTO = new ResponseDTO();
+        try {
+            Student existingStudent = studentRepo.Available(studentDTO.getEmail(), studentDTO.getTelephone(), studentDTO.getNic());
+            if (existingStudent == null) {
+                responseDTO.setCode(varList.RSP_NO_DATA_FOUND);
+                responseDTO.setMessage("No data found");
+                responseDTO.setStatus(HttpStatus.ACCEPTED);
+                responseDTO.setContent(studentDTO);
+            } else if (existingStudent.getStdID().equals(studentDTO.getStdID()) ) {
+                studentRepo.saveAndFlush(modelMapper.map(studentDTO, Student.class));
+                responseDTO.setCode(varList.RSP_SUCCES);
+                responseDTO.setMessage("Updated");
+                responseDTO.setStatus(HttpStatus.ACCEPTED);
+                responseDTO.setContent(studentDTO);
+            } else {
+                responseDTO.setCode(varList.RSP_DUPLICATED);
+                responseDTO.setMessage("You can't update Another student data");
+                responseDTO.setStatus(HttpStatus.ACCEPTED);
+                responseDTO.setContent(null);
+            }
+        } catch (Exception e) {
+            responseDTO.setCode(varList.RSP_ERROR);
+            responseDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            responseDTO.setMessage("An error occurred: " + e.getMessage());
+            responseDTO.setContent(null);
+        }
+        return responseDTO;
+    }
 
 
 

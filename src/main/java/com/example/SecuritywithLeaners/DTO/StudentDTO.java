@@ -29,5 +29,6 @@ public class StudentDTO {
     private Double fullPayment;
     private Double balance;
     private String pack;
+    private LocalDate dateOfBirth;
 
 }
