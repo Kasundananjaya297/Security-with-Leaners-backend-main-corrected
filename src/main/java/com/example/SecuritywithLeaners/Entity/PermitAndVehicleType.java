@@ -13,10 +13,10 @@ public class PermitAndVehicleType {
 
     @EmbeddedId
     private PermitAndVehicleTypeId id;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @MapsId("serialNo")
     private TrialPermit serialNo;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @MapsId("selectedType")
     private VehicleType selectedType;
     private String autoOrManual;

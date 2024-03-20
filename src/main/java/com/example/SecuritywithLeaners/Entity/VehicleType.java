@@ -19,7 +19,7 @@ public class VehicleType {
     private String engineCapacity;
     private Boolean typeAuto;
     private Boolean typeManual;
-    @OneToMany(mappedBy = "selectedType" , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "selectedType")
     private List<PermitAndVehicleType> permitAndVehicleType;
 }
 // "typeID": "B",

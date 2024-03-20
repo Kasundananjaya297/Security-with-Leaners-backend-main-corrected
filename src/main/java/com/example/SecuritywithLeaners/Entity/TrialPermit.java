@@ -24,6 +24,6 @@ public class TrialPermit {
     @JoinColumn(name = "stdID_fk", referencedColumnName = "stdID")
     private Student stdID;
     private String downURL;
-    @OneToMany(mappedBy = "serialNo" , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "serialNo")
     private List<PermitAndVehicleType> permitAndVehicleType;
 }

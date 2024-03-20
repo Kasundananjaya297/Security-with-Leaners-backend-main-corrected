@@ -256,7 +256,47 @@ public class TrialPermitService {
         }
         return responseDTO;
     }
-
+    public ResponseDTO updateTrialPermit(TrialPermit1DTO trialPermitDTO) {
+        ResponseDTO responseDTO = new ResponseDTO();
+        try {
+            if (studentRepo.existsById(trialPermitDTO.getStdID())) {
+                if (trialPermitRepo.existsById(trialPermitDTO.getSerialNo())) {
+                    TrialPermit trialPermit = trialPermitRepo.findById(trialPermitDTO.getSerialNo()).get();
+                    trialPermit.setExamDate(trialPermitDTO.getExamDate());
+                    trialPermit.setExpDate(trialPermitDTO.getExpDate());
+                    trialPermit.setDownURL(trialPermitDTO.getDownURL());
+                    trialPermit.setStdID(studentRepo.findById(trialPermitDTO.getStdID()).get());
+                    permitAndVehicleTypeRepo.deleteAllBySerialNo(trialPermit.getSerialNo());
+                    for (PermitAndVehicleTypeDTO permitAndVehicleTypeDTO : trialPermitDTO.getPermitAndVehicleType()) {
+                        PermitAndVehicleTypeId permitAndVehicleTypeId = new PermitAndVehicleTypeId();
+                        permitAndVehicleTypeId.setSerialNo(trialPermit);
+                        permitAndVehicleTypeId.setSelectedType(vehicleTypeRepo.findById(permitAndVehicleTypeDTO.getSelectedType()).get());
+                        PermitAndVehicleType permitAndVehicleType = new PermitAndVehicleType();
+                        permitAndVehicleType.setId(permitAndVehicleTypeId);
+                        permitAndVehicleType.setAutoOrManual(permitAndVehicleTypeDTO.getAutoOrManual());
+                        permitAndVehicleTypeRepo.saveAndFlush(permitAndVehicleType);
+                    }
+                    //trialPermit.setPermitAndVehicleType(modelMapper.map(trialPermitDTO.getPermitAndVehicleType(), PermitAndVehicleType.class));
+                    trialPermitRepo.saveAndFlush(trialPermit);
+                    responseDTO.setCode(varList.RSP_SUCCES);
+                    responseDTO.setMessage("Success");
+                    responseDTO.setContent("Updated");
+                    responseDTO.setStatus(HttpStatus.ACCEPTED);
+                } else {
+                    responseDTO.setStatus(HttpStatus.ACCEPTED);
+                    responseDTO.setMessage("Trial Permit not Exists");
+                    responseDTO.setContent(null);
+                    responseDTO.setCode(varList.RSP_NO_DATA_FOUND);
+                }
+            }
+        }catch (Exception e){
+            responseDTO.setStatus(HttpStatus.BAD_REQUEST);
+            responseDTO.setMessage("Error");
+            responseDTO.setContent("Error");
+            responseDTO.setCode(varList.RSP_FAIL);
+        }
+        return responseDTO;
+    }
 //
 //    public ResponseDTO getTrialPermitByStdID(String stdID) {
 //        ResponseDTO responseDTO = new ResponseDTO();

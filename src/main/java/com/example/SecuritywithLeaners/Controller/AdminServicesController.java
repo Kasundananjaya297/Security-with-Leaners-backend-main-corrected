@@ -107,5 +107,10 @@ public class AdminServicesController {
         ResponseDTO responseDTO = adminService.updateStudent(student);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
+    @PostMapping("/UpdateTrialPermit")
+    public ResponseEntity UpdateTrialPermit(@RequestBody TrialPermit1DTO trialPermitDTO){
+        ResponseDTO responseDTO = trialPermitService.updateTrialPermit(trialPermitDTO);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
 
 }
