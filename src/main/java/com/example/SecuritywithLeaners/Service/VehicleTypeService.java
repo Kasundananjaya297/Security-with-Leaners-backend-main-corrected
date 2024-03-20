@@ -65,4 +65,26 @@ public class VehicleTypeService {
         }
         return responseDTO;
     }
+    public ResponseDTO updateVehicleType(VehicleType vehicleType){
+        ResponseDTO responseDTO = new ResponseDTO();
+        try{
+            if(vehicleTypeRepo.existsById(vehicleType.getTypeID())){
+                vehicleTypeRepo.saveAndFlush(vehicleType);
+                responseDTO.setCode(varList.RSP_SUCCES);
+                responseDTO.setMessage("Success");
+                responseDTO.setStatus(HttpStatus.ACCEPTED);
+            }
+            else{
+                responseDTO.setCode(varList.RSP_NO_DATA_FOUND);
+                responseDTO.setMessage("Vehicle Type not found");
+                responseDTO.setStatus(HttpStatus.NOT_FOUND);
+            }
+        }catch (Exception e){
+            responseDTO.setCode(varList.RSP_FAIL);
+            responseDTO.setMessage("Failed");
+            responseDTO.setContent(null);
+            responseDTO.setStatus(HttpStatus.BAD_REQUEST);
+        }
+        return responseDTO;
+    }
 }
