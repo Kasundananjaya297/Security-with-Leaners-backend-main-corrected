@@ -17,6 +17,7 @@ import java.util.Set;
 @Table(name = "trialPermit")
 public class TrialPermit {
     @Id
+    @Column(length = 15)
     private String serialNo;
     private LocalDate examDate;
     private LocalDate expDate;

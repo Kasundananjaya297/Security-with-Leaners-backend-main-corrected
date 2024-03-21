@@ -1,8 +1,10 @@
 package com.example.SecuritywithLeaners.Service;
 
+import com.example.SecuritywithLeaners.DTO.MedicalDTO;
 import com.example.SecuritywithLeaners.DTO.ResponseDTO;
 import com.example.SecuritywithLeaners.DTO.StudentBasicDTO;
 import com.example.SecuritywithLeaners.DTO.StudentDTO;
+import com.example.SecuritywithLeaners.Entity.MedicalReport;
 import com.example.SecuritywithLeaners.Entity.Student;
 import com.example.SecuritywithLeaners.Repo.StudentRepo;
 import com.example.SecuritywithLeaners.Util.CalculateAge;
@@ -36,7 +38,6 @@ public class AdminService {
     private ModelMapper modelMapper;
     @Autowired
     private CalculateAge calculateAge;
-
     private StudentDTO studentDTO;
     public ResponseDTO saveStudent(Student studentDTO) {
         ResponseDTO responseDTO = new ResponseDTO();
@@ -228,6 +229,7 @@ public class AdminService {
         }
         return responseDTO;
     }
+
 
 
 

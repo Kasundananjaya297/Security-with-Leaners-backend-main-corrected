@@ -19,5 +19,6 @@ public class PermitAndVehicleType {
     @ManyToOne()
     @MapsId("selectedType")
     private VehicleType selectedType;
+    @Column(length = 10, nullable = false)
     private String autoOrManual;
 }

@@ -2,12 +2,10 @@ package com.example.SecuritywithLeaners.Controller;
 
 
 import com.example.SecuritywithLeaners.DTO.*;
-import com.example.SecuritywithLeaners.Entity.PermitAndVehicleType;
-import com.example.SecuritywithLeaners.Entity.Student;
-import com.example.SecuritywithLeaners.Entity.TrialPermit;
-import com.example.SecuritywithLeaners.Entity.VehicleType;
+import com.example.SecuritywithLeaners.Entity.*;
 import com.example.SecuritywithLeaners.Entity.Views.View;
 import com.example.SecuritywithLeaners.Service.AdminService;
+import com.example.SecuritywithLeaners.Service.MedicalReportService;
 import com.example.SecuritywithLeaners.Service.TrialPermitService;
 import com.example.SecuritywithLeaners.Service.VehicleTypeService;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -30,6 +28,8 @@ public class AdminServicesController {
     private TrialPermitService trialPermitService;
     @Autowired
     private VehicleTypeService vehicleType;
+    @Autowired
+    MedicalReportService medicalReportService;
 
     @PostMapping("/registerStudent")
     public ResponseEntity registerStudent(@RequestBody Student studentDTO){
@@ -115,6 +115,11 @@ public class AdminServicesController {
     @PostMapping("/UpdateVehicleType")
     public ResponseEntity UpdateVehicleType(@RequestBody VehicleType vehicleType){
         ResponseDTO responseDTO = this.vehicleType.updateVehicleType(vehicleType);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @PostMapping("/saveMedicalReport")
+    public ResponseEntity saveMedicalReport(@RequestBody MedicalDTO medicalReportDTO){
+        ResponseDTO responseDTO = medicalReportService.saveMedicalReport(medicalReportDTO);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
 

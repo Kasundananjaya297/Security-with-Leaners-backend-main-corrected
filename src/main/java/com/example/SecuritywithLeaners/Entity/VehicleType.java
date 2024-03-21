@@ -12,6 +12,7 @@ import java.util.List;
 @Setter
 public class VehicleType {
     @Id
+    @Column(length = 3)
     private String typeID;
     @Column(length = 100, nullable = false)
     private String typeName;
