@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Data
 public class MedicalDTO {
+    private String oldSerialNo;
     private String serialNo;
     private LocalDate examination;
     private String bloodType;
@@ -21,4 +22,5 @@ public class MedicalDTO {
     private Boolean isSquint;
     private String medicalURL;
     private String stdID;
+    private int validMonths;
 }

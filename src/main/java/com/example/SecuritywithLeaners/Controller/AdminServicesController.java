@@ -132,5 +132,15 @@ public class AdminServicesController {
         ResponseDTO responseDTO = trialPermitService.checkTrialPermitExpired(stdID);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
+    @GetMapping("/getMedicalReport/{stdID}")
+    public ResponseEntity getMedicalReport(@PathVariable String stdID){
+        ResponseDTO responseDTO = medicalReportService.getMedicalReport(stdID);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @PostMapping("/updateMedicalReport")
+    public ResponseEntity updateMedicalReport(@RequestBody MedicalDTO medicalReportDTO){
+        ResponseDTO responseDTO = medicalReportService.updateMedicalReport(medicalReportDTO);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
 
 }

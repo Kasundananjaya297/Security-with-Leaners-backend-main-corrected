@@ -14,6 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
 @Service
 @Transactional
 @Slf4j
@@ -86,6 +90,75 @@ public class MedicalReportService {
                     responseDTO.setMessage("Current Medical Report is expired");
                     responseDTO.setStatus(HttpStatus.ACCEPTED);
                     responseDTO.setContent(null);
+                }
+            }  else {
+                responseDTO.setCode(varList.RSP_NO_DATA_FOUND);
+                responseDTO.setMessage("Student not found");
+                responseDTO.setContent(null);
+                responseDTO.setStatus(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            responseDTO.setCode(varList.RSP_ERROR);
+            responseDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            responseDTO.setMessage("An error occurred: " + e.getMessage());
+            responseDTO.setContent(null);
+        }
+        return responseDTO;
+    }
+    public ResponseDTO getMedicalReport(String stdID){
+        ResponseDTO responseDTO = new ResponseDTO();
+        try {
+            if(studentRepo.existsById(stdID)){
+                responseDTO.setCode(varList.RSP_SUCCES);
+                responseDTO.setMessage("Success");
+                responseDTO.setStatus(HttpStatus.ACCEPTED);
+                List<MedicalReport> medicalReport = medicalReportRepo.getMedicalReport(stdID);
+                List<MedicalDTO> medicalReportDTO = medicalReport.stream()
+                        .map(medicalReport1 -> {
+                            MedicalDTO medicalDTO = modelMapper.map(medicalReport1, MedicalDTO.class);
+                            int mcount = 24- cal.calcualteMonth(medicalReport1.getExamination().toString());
+                            medicalDTO.setValidMonths(mcount<0?0:mcount);
+                            return medicalDTO;
+                        })
+                        .toList();
+                responseDTO.setContent(medicalReportDTO);
+            }  else {
+                responseDTO.setCode(varList.RSP_NO_DATA_FOUND);
+                responseDTO.setMessage("Student not found");
+                responseDTO.setContent(null);
+                responseDTO.setStatus(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            responseDTO.setCode(varList.RSP_ERROR);
+            responseDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            responseDTO.setMessage("An error occurred: " + e.getMessage());
+            responseDTO.setContent(null);
+        }
+        return responseDTO;
+    }
+    public ResponseDTO updateMedicalReport(MedicalDTO medicalReportDTO){
+        ResponseDTO responseDTO = new ResponseDTO();
+        try {
+            if((studentRepo.existsById(medicalReportDTO.getStdID()))){
+                if(medicalReportRepo.existsById(medicalReportDTO.getOldSerialNo())){
+                    if(medicalReportRepo.checkSerialNoCount(medicalReportDTO.getSerialNo())<=1){
+                        MedicalReport medicalReport = modelMapper.map(medicalReportDTO, MedicalReport.class);
+                        medicalReportRepo.saveAndFlush(medicalReport);
+                        responseDTO.setCode(varList.RSP_SUCCES);
+                        responseDTO.setMessage("Success");
+                        responseDTO.setStatus(HttpStatus.ACCEPTED);
+                        responseDTO.setContent(medicalReportDTO);
+                    }else {
+                        responseDTO.setCode(varList.RSP_DUPLICATED);
+                        responseDTO.setMessage("Duplicated");
+                        responseDTO.setContent(null);
+                        responseDTO.setStatus(HttpStatus.ALREADY_REPORTED);
+                    }
+                } else {
+                    responseDTO.setCode(varList.RSP_NO_DATA_FOUND);
+                    responseDTO.setMessage("Medical Report not found");
+                    responseDTO.setContent(null);
+                    responseDTO.setStatus(HttpStatus.NOT_FOUND);
                 }
             }  else {
                 responseDTO.setCode(varList.RSP_NO_DATA_FOUND);
