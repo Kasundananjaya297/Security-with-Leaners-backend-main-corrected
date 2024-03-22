@@ -297,6 +297,36 @@ public class TrialPermitService {
         }
         return responseDTO;
     }
+    public ResponseDTO checkTrialPermitExpired(String stdID) {
+        ResponseDTO responseDTO = new ResponseDTO();
+        try {
+            if (studentRepo.existsById(stdID)) {
+                LocalDate maxDate = trialPermitRepo.getMaximumExpDateByStdID(stdID);
+                if (maxDate != null && maxDate.isAfter(LocalDate.now())) {// another way to check validity
+                    responseDTO.setCode(varList.RSP_FAIL);
+                    responseDTO.setMessage("Current Trial Permit is not expired");
+                    responseDTO.setStatus(HttpStatus.ACCEPTED);
+                    responseDTO.setContent(null);
+                } else {
+                    responseDTO.setCode(varList.RSP_SUCCES);
+                    responseDTO.setMessage("Current Trial Permit is expired or not found");
+                    responseDTO.setStatus(HttpStatus.ACCEPTED);
+                    responseDTO.setContent(null);
+                }
+            } else {
+                responseDTO.setCode(varList.RSP_NO_DATA_FOUND);
+                responseDTO.setMessage("Student not found");
+                responseDTO.setContent(null);
+                responseDTO.setStatus(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            responseDTO.setCode(varList.RSP_ERROR);
+            responseDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            responseDTO.setMessage("An error occurred: " + e.getMessage());
+            responseDTO.setContent(null);
+        }
+        return responseDTO;
+    }
 //
 //    public ResponseDTO getTrialPermitByStdID(String stdID) {
 //        ResponseDTO responseDTO = new ResponseDTO();

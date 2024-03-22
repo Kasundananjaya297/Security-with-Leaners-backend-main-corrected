@@ -122,5 +122,15 @@ public class AdminServicesController {
         ResponseDTO responseDTO = medicalReportService.saveMedicalReport(medicalReportDTO);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
+    @GetMapping("/checkMedicalExpired/{stdID}")
+    public ResponseEntity checkMedicalExpired(@PathVariable String stdID){
+        ResponseDTO responseDTO = medicalReportService.checkReportExpiration(stdID);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @GetMapping("/checkTrialPermitExpired/{stdID}")
+    public ResponseEntity checkTrialPermitExpired(@PathVariable String stdID){
+        ResponseDTO responseDTO = trialPermitService.checkTrialPermitExpired(stdID);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
 
 }
