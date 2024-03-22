@@ -109,24 +109,34 @@ public class MedicalReportService {
         ResponseDTO responseDTO = new ResponseDTO();
         try {
             if(studentRepo.existsById(stdID)){
-                responseDTO.setCode(varList.RSP_SUCCES);
-                responseDTO.setMessage("Success");
-                responseDTO.setStatus(HttpStatus.ACCEPTED);
-                List<MedicalReport> medicalReport = medicalReportRepo.getMedicalReport(stdID);
-                List<MedicalDTO> medicalReportDTO = medicalReport.stream()
-                        .map(medicalReport1 -> {
-                            MedicalDTO medicalDTO = modelMapper.map(medicalReport1, MedicalDTO.class);
-                            int mcount = 24- cal.calcualteMonth(medicalReport1.getExamination().toString());
-                            medicalDTO.setValidMonths(mcount<0?0:mcount);
-                            return medicalDTO;
-                        })
-                        .toList();
-                responseDTO.setContent(medicalReportDTO);
+                if(medicalReportRepo.getMedicalReport(stdID).size()>0){
+                    responseDTO.setCode(varList.RSP_SUCCES);
+                    responseDTO.setMessage("Success");
+                    responseDTO.setStatus(HttpStatus.ACCEPTED);
+                    List<MedicalReport> medicalReport = medicalReportRepo.getMedicalReport(stdID);
+                    List<MedicalDTO> medicalReportDTO = medicalReport.stream()
+                            .map(medicalReport1 -> {
+                                MedicalDTO medicalDTO = modelMapper.map(medicalReport1, MedicalDTO.class);
+                                int mcount = 24- cal.calcualteMonth(medicalReport1.getExamination().toString());
+                                medicalDTO.setValidMonths(mcount<0?0:mcount);
+                                return medicalDTO;
+                            })
+                            .toList();
+                    responseDTO.setContent(medicalReportDTO);
+                }else{
+                    responseDTO.setCode(varList.RSP_NO_DATA_FOUND);
+                    responseDTO.setMessage("Medical Report not found");
+                    responseDTO.setContent(null);
+                    responseDTO.setStatus(HttpStatus.BAD_REQUEST);
+                    
+                }
+
+
             }  else {
                 responseDTO.setCode(varList.RSP_NO_DATA_FOUND);
                 responseDTO.setMessage("Student not found");
                 responseDTO.setContent(null);
-                responseDTO.setStatus(HttpStatus.NOT_FOUND);
+                responseDTO.setStatus(HttpStatus.BAD_REQUEST);
             }
         } catch (Exception e) {
             responseDTO.setCode(varList.RSP_ERROR);
