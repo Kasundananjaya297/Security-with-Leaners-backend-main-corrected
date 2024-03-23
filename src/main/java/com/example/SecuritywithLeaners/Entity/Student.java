@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ser.std.StdKeySerializers;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -47,4 +48,5 @@ public class Student {
     private String guardianName;
     @Column(name="guardianTelephone",length = 10,nullable = false)
     private int guardianTelephone;
+    private String profilePhotoURL;
 }

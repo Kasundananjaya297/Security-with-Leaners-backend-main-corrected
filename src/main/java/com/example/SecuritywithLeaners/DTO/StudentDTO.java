@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.net.URL;
 import java.time.LocalDate;
 
 @AllArgsConstructor
@@ -30,5 +31,6 @@ public class StudentDTO {
     private Double balance;
     private String pack;
     private LocalDate dateOfBirth;
+    private String profilePhotoURL;
 
 }

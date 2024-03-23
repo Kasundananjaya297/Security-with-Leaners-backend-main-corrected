@@ -128,7 +128,7 @@ public class MedicalReportService {
                     responseDTO.setMessage("Medical Report not found");
                     responseDTO.setContent(null);
                     responseDTO.setStatus(HttpStatus.BAD_REQUEST);
-                    
+
                 }
 
 
