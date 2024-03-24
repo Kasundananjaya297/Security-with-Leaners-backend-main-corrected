@@ -10,7 +10,6 @@ import lombok.*;
 @Getter
 @Setter
 public class PermitAndVehicleType {
-
     @EmbeddedId
     private PermitAndVehicleTypeId id;
     @ManyToOne()

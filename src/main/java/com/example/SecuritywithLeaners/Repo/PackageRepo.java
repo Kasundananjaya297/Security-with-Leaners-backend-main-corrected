@@ -1,0 +1,15 @@
+package com.example.SecuritywithLeaners.Repo;
+
+
+
+import com.example.SecuritywithLeaners.Entity.Package;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+public interface PackageRepo extends JpaRepository<Package,String> {
+    @Query(value = "SELECT MAX(packageID) FROM package", nativeQuery = true)
+    String maxPackageID();
+    @Query(value = "SELECT COUNT(package_name) FROM package WHERE package_name = :packageName", nativeQuery = true)
+    int ExistBypackageName(@Param("packageName") String packageName);
+}

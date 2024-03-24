@@ -1,5 +1,6 @@
 package com.example.SecuritywithLeaners.Util;
 
+import com.example.SecuritywithLeaners.Repo.PackageRepo;
 import com.example.SecuritywithLeaners.Repo.StudentRepo;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -17,9 +18,11 @@ import static java.lang.Integer.parseInt;
 @Service
 public class IDgenerator {
     private String DefaultID = "CN-5000";
+    private String DefaultPackageID = "P-100";
     @Autowired
     private StudentRepo studentRepo;
-
+    @Autowired
+    private PackageRepo packageRepo;
 
 
 private String getSeparateStringPart(String ID){
@@ -42,6 +45,16 @@ public String getMaxStudentID() {
         }
         else{
             return NextUserID(DefaultID);
+        }
+    }
+
+    public String generatePackageID(){
+        String maxPackageID = packageRepo.maxPackageID();
+        if(!(maxPackageID == null)){
+            return NextUserID(maxPackageID);
+        }
+        else{
+            return NextUserID(DefaultPackageID);
         }
     }
 }

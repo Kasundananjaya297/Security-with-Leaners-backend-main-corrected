@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -22,6 +23,7 @@ public class VehicleType {
     private Boolean typeManual;
     @OneToMany(mappedBy = "selectedType")
     private List<PermitAndVehicleType> permitAndVehicleType;
+
 }
 // "typeID": "B",
 //         "typeName": "Motor Tricycle",

@@ -3,11 +3,9 @@ package com.example.SecuritywithLeaners.Controller;
 
 import com.example.SecuritywithLeaners.DTO.*;
 import com.example.SecuritywithLeaners.Entity.*;
+import com.example.SecuritywithLeaners.Entity.Package;
 import com.example.SecuritywithLeaners.Entity.Views.View;
-import com.example.SecuritywithLeaners.Service.AdminService;
-import com.example.SecuritywithLeaners.Service.MedicalReportService;
-import com.example.SecuritywithLeaners.Service.TrialPermitService;
-import com.example.SecuritywithLeaners.Service.VehicleTypeService;
+import com.example.SecuritywithLeaners.Service.*;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +28,8 @@ public class AdminServicesController {
     private VehicleTypeService vehicleType;
     @Autowired
     MedicalReportService medicalReportService;
+    @Autowired
+    PackageService packageService;
 
     @PostMapping("/registerStudent")
     public ResponseEntity registerStudent(@RequestBody Student studentDTO){
@@ -140,6 +140,12 @@ public class AdminServicesController {
     @PostMapping("/updateMedicalReport")
     public ResponseEntity updateMedicalReport(@RequestBody MedicalDTO medicalReportDTO){
         ResponseDTO responseDTO = medicalReportService.updateMedicalReport(medicalReportDTO);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @PostMapping("/AddPackage")
+    public ResponseEntity AddPackage(@RequestBody PackageDTO packageDTO){
+        System.out.println("response received");
+        ResponseDTO responseDTO = packageService.savePackage(packageDTO);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
 
