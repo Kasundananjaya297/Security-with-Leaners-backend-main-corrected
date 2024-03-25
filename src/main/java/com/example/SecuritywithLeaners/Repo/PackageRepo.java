@@ -7,9 +7,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+import java.util.Optional;
+
 public interface PackageRepo extends JpaRepository<Package,String> {
     @Query(value = "SELECT MAX(packageID) FROM package", nativeQuery = true)
     String maxPackageID();
     @Query(value = "SELECT COUNT(package_name) FROM package WHERE package_name = :packageName", nativeQuery = true)
     int ExistBypackageName(@Param("packageName") String packageName);
+    @Query(value = "SELECT * FROM package WHERE package_name LIKE %:packageName% OR description LIKE %:packageName%", nativeQuery = true)
+    List<Package> findByPackageName(@Param("packageName") String packageName);
 }

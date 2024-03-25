@@ -153,5 +153,22 @@ public class AdminServicesController {
         ResponseDTO responseDTO = packageService.getAllPackage();
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
+    @PostMapping("/updatePackage")
+    public ResponseEntity updatePackage(@RequestBody PackageDTO packageDTO){
+        System.out.println(packageDTO);
+        ResponseDTO responseDTO = packageService.updatePackage(packageDTO);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @GetMapping("/getPackage/{letter}")
+    public ResponseEntity getPackageByLetter(@PathVariable String letter){
+        System.out.println(letter);
+        ResponseDTO responseDTO = packageService.getPackageByLetter(letter);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @GetMapping("/getPackageByID/{packageID}")
+    public ResponseEntity getPackageByID(@PathVariable String packageID){
+        ResponseDTO responseDTO = packageService.getPackageByID(packageID);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
 
 }

@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -22,5 +23,5 @@ public class Package {
     private String description;
     private Double packagePrice;
     @OneToMany(mappedBy = "packageID")
-    private Set<PackageAndVehicleType> packageAndVehicleType;
+    private List<PackageAndVehicleType> packageAndVehicleType;
 }
