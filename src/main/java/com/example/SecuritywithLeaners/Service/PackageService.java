@@ -17,9 +17,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Slf4j
@@ -65,6 +68,7 @@ private PackageAndVehicleTypeRepo packageAndVehicleTypeRepo;
                     packageAndVehicleTypeID.setTypeID(vehicleTypeRepo.findById(packageAndVehicleTypeDTO.getTypeID()).get());
                     packageAndVehicleType.setPackageAndVehicleTypeID(packageAndVehicleTypeID);
                     packageAndVehicleType.setLessons(packageAndVehicleTypeDTO.getLessons());
+                    packageAndVehicleType.setAutoOrManual(packageAndVehicleTypeDTO.getAutoOrManual());
                     packageAndVehicleTypeRepo.save(packageAndVehicleType);
                 }
                 responseDTO.setCode(varList.RSP_SUCCES);
@@ -82,6 +86,44 @@ private PackageAndVehicleTypeRepo packageAndVehicleTypeRepo;
             responseDTO.setStatus(HttpStatus.BAD_REQUEST);
             responseDTO.setCode(varList.RSP_FAIL);
             responseDTO.setMessage("Failed to save package");
+            responseDTO.setContent(null);
+        }
+        return responseDTO;
+    }
+    public ResponseDTO getAllPackage(){
+        ResponseDTO responseDTO = new ResponseDTO();
+        PackageDTO packageDTO = new PackageDTO();
+        try{
+            List<Package> packages = packageRepo.findAll();
+            List<PackageDTO> packageDTOList = new ArrayList<>();
+            for(Package packData : packages){
+                PackageDTO packageData = new PackageDTO();
+                packageData.setPackageID(packData.getPackageID());
+                packageData.setPackageName(packData.getPackageName());
+                packageData.setDescription(packData.getDescription());
+                packageData.setPackagePrice(packData.getPackagePrice());
+                List<PackageAndVehicleTypeDTO> packageAndVehicleTypeDTOList =  new ArrayList<>();
+                for(PackageAndVehicleType packageAndVehicleType : packData.getPackageAndVehicleType()){
+                    PackageAndVehicleTypeDTO packageAndVehicleTypeDTO = new PackageAndVehicleTypeDTO();
+                    packageAndVehicleTypeDTO.setPackageID(packageAndVehicleType.getPackageAndVehicleTypeID().getPackageID().getPackageID());
+                    packageAndVehicleTypeDTO.setTypeID(packageAndVehicleType.getPackageAndVehicleTypeID().getTypeID().getTypeID());
+                    packageAndVehicleTypeDTO.setLessons(packageAndVehicleType.getLessons());
+                    packageAndVehicleTypeDTO.setAutoOrManual(packageAndVehicleType.getAutoOrManual());
+                    packageAndVehicleTypeDTO.setEngineCapacity(packageAndVehicleType.getPackageAndVehicleTypeID().getTypeID().getEngineCapacity());
+                    packageAndVehicleTypeDTO.setTypeName(packageAndVehicleType.getPackageAndVehicleTypeID().getTypeID().getTypeName());
+                    packageAndVehicleTypeDTOList.add(packageAndVehicleTypeDTO);
+                }
+                packageData.setPackageAndVehicleType(packageAndVehicleTypeDTOList);
+                packageDTOList.add(packageData);
+            }
+            responseDTO.setCode(varList.RSP_SUCCES);
+            responseDTO.setStatus(HttpStatus.ACCEPTED);
+            responseDTO.setMessage("Success");
+            responseDTO.setContent(packageDTOList);
+        }catch (Exception e){
+            responseDTO.setCode(varList.RSP_FAIL);
+            responseDTO.setStatus(HttpStatus.BAD_REQUEST);
+            responseDTO.setMessage("Failed to get all packages");
             responseDTO.setContent(null);
         }
         return responseDTO;

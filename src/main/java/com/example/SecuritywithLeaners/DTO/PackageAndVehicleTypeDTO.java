@@ -11,5 +11,8 @@ import org.springframework.stereotype.Component;
 public class PackageAndVehicleTypeDTO {
     private String packageID;
     private String typeID;
+    private String typeName;
+    private String engineCapacity;
     private int lessons;
+    private String autoOrManual;
 }

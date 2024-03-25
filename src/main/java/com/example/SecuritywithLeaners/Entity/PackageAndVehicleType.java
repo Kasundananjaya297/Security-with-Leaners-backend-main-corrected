@@ -24,5 +24,6 @@ public class PackageAndVehicleType {
     @ManyToOne
     @MapsId("typeID")
     private VehicleType typeID;
+    private String autoOrManual;
     private int lessons;
 }

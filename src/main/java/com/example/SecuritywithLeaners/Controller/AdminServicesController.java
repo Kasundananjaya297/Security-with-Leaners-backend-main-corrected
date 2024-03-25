@@ -144,8 +144,13 @@ public class AdminServicesController {
     }
     @PostMapping("/AddPackage")
     public ResponseEntity AddPackage(@RequestBody PackageDTO packageDTO){
-        System.out.println("response received");
+        System.out.println(packageDTO);
         ResponseDTO responseDTO = packageService.savePackage(packageDTO);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @GetMapping("/getAllPackage")
+    public ResponseEntity getAllPackage(){
+        ResponseDTO responseDTO = packageService.getAllPackage();
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
 
