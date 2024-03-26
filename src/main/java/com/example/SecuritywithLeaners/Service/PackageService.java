@@ -17,6 +17,8 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.oauth2.resourceserver.OpaqueTokenDsl;
 import org.springframework.security.core.parameters.P;
@@ -92,11 +94,11 @@ private PackageAndVehicleTypeRepo packageAndVehicleTypeRepo;
         }
         return responseDTO;
     }
-    public ResponseDTO getAllPackage(){
+    public ResponseDTO getAllPackage(String field,String order,int pageSize,int offset){
         ResponseDTO responseDTO = new ResponseDTO();
         PackageDTO packageDTO = new PackageDTO();
         try{
-            List<Package> packages = packageRepo.findAll();
+            List<Package> packages = packageRepo.findAll(PageRequest.of(offset, pageSize, Sort.by(Sort.Direction.valueOf(order), field))).toList();
             List<PackageDTO> packageDTOList = new ArrayList<>();
             for(Package packData : packages){
                 PackageDTO packageData = new PackageDTO();
@@ -142,22 +144,10 @@ private PackageAndVehicleTypeRepo packageAndVehicleTypeRepo;
                     return responseDTO;
                 }
                 Package packageData = new Package();
-                PackageAndVehicleTypeID packageAndVehicleTypeID = new PackageAndVehicleTypeID();
-                PackageAndVehicleType packageAndVehicleType = new PackageAndVehicleType();
                 packageData.setPackageName(packageDTO.getPackageName());
                 packageData.setPackagePrice(packageDTO.getPackagePrice());
                 packageData.setDescription(packageDTO.getDescription());
                 packageData.setPackageID(packageDTO.getPackageID());
-                packageRepo.save(packageData);
-                packageAndVehicleTypeRepo.deleteAllByPackageID(packageDTO.getPackageID());
-                for(PackageAndVehicleTypeDTO packageAndVehicleTypeDTO : packageDTO.getPackageAndVehicleType()){
-                    packageAndVehicleTypeID.setPackageID(packageRepo.findById(packageDTO.getPackageID()).get());
-                    packageAndVehicleTypeID.setTypeID(vehicleTypeRepo.findById(packageAndVehicleTypeDTO.getTypeID()).get());
-                    packageAndVehicleType.setPackageAndVehicleTypeID(packageAndVehicleTypeID);
-                    packageAndVehicleType.setLessons(packageAndVehicleTypeDTO.getLessons());
-                    packageAndVehicleType.setAutoOrManual(packageAndVehicleTypeDTO.getAutoOrManual());
-                    packageAndVehicleTypeRepo.saveAndFlush(packageAndVehicleType);
-                }
                 packageRepo.saveAndFlush(packageData);
                 responseDTO.setCode(varList.RSP_SUCCES);
                 responseDTO.setStatus(HttpStatus.ACCEPTED);

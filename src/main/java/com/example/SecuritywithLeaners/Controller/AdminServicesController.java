@@ -29,6 +29,8 @@ public class AdminServicesController {
     @Autowired
     MedicalReportService medicalReportService;
     @Autowired
+    AgreementService agreementService;
+    @Autowired
     PackageService packageService;
 
     @PostMapping("/registerStudent")
@@ -148,9 +150,9 @@ public class AdminServicesController {
         ResponseDTO responseDTO = packageService.savePackage(packageDTO);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
-    @GetMapping("/getAllPackage")
-    public ResponseEntity getAllPackage(){
-        ResponseDTO responseDTO = packageService.getAllPackage();
+    @GetMapping("/getAllPackage/{field}/{order}/{pageSize}/{offset}")
+    public ResponseEntity getAllPackage(@PathVariable String field,@PathVariable String order,@PathVariable int pageSize,@PathVariable int offset){
+        ResponseDTO responseDTO = packageService.getAllPackage(field,order,pageSize,offset);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
     @PostMapping("/updatePackage")
@@ -168,6 +170,11 @@ public class AdminServicesController {
     @GetMapping("/getPackageByID/{packageID}")
     public ResponseEntity getPackageByID(@PathVariable String packageID){
         ResponseDTO responseDTO = packageService.getPackageByID(packageID);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @PostMapping("/saveAgreement")
+    public ResponseEntity saveAgreement(@RequestBody AgreementDTO agreementDTO){
+        ResponseDTO responseDTO = agreementService.saveAgreement(agreementDTO);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
 
