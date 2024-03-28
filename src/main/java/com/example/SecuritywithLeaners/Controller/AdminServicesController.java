@@ -9,6 +9,7 @@ import com.example.SecuritywithLeaners.Service.*;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -175,6 +176,16 @@ public class AdminServicesController {
     @PostMapping("/saveAgreement")
     public ResponseEntity saveAgreement(@RequestBody AgreementDTO agreementDTO){
         ResponseDTO responseDTO = agreementService.saveAgreement(agreementDTO);
+        return new ResponseEntity(responseDTO, HttpStatus.ACCEPTED);
+    }
+    @GetMapping("/checkCurrentAgreement/{stdID}")
+    public ResponseEntity checkCurrentAgreement(@PathVariable String stdID){
+        ResponseDTO responseDTO = agreementService.checkCurrentAgreement(stdID);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @GetMapping("/getAgreement/{stdID}")
+    public ResponseEntity getAgreement(@PathVariable String stdID){
+        ResponseDTO responseDTO = agreementService.getAgreement(stdID);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
 

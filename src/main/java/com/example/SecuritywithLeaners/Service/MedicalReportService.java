@@ -128,10 +128,7 @@ public class MedicalReportService {
                     responseDTO.setMessage("Medical Report not found");
                     responseDTO.setContent(null);
                     responseDTO.setStatus(HttpStatus.BAD_REQUEST);
-
                 }
-
-
             }  else {
                 responseDTO.setCode(varList.RSP_NO_DATA_FOUND);
                 responseDTO.setMessage("Student not found");
