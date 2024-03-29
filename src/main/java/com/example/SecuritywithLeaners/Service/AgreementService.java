@@ -135,4 +135,10 @@ public class AgreementService {
         }
         return responseDTO;
     }
+    public ResponseDTO getAgreementsForStudent(String stdID){
+        ResponseDTO responseDTO = new ResponseDTO();
+
+
+        return responseDTO;
+    }
 }

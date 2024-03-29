@@ -100,7 +100,7 @@ public class AdminServicesController {
     }
     @PostMapping("/saveTrailPermitEfficient")
     public ResponseEntity SaveTP(@RequestBody TrialPermit1DTO trialPermit1DTO){
-//        System.out.println(trialPermit1DTO);
+        System.out.println(trialPermit1DTO);
         ResponseDTO responseDTO= trialPermitService.saveTrailPermitEfficinetWay(trialPermit1DTO);
         return new ResponseEntity(responseDTO ,responseDTO.getStatus());
     }
@@ -186,6 +186,11 @@ public class AdminServicesController {
     @GetMapping("/getAgreement/{stdID}")
     public ResponseEntity getAgreement(@PathVariable String stdID){
         ResponseDTO responseDTO = agreementService.getAgreement(stdID);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @GetMapping("/getAgreementsForStudent/{stdID}")
+    public ResponseEntity getAgreementsForStudent(@PathVariable String stdID){
+        ResponseDTO responseDTO = agreementService.getAgreementsForStudent(stdID);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
 

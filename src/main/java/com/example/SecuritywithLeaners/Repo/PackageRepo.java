@@ -17,4 +17,7 @@ public interface PackageRepo extends JpaRepository<Package,String> {
     int ExistBypackageName(@Param("packageName") String packageName);
     @Query(value = "SELECT * FROM package WHERE package_name LIKE %:packageName% OR description LIKE %:packageName%", nativeQuery = true)
     List<Package> findByPackageName(@Param("packageName") String packageName);
+
+    @Query(value = "SELECT * FROM package WHERE package P, ", nativeQuery = true)
+    List<Package> getPackagesForStudent(@Param("stdID") String stdID);
 }

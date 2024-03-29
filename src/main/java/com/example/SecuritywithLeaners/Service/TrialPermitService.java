@@ -116,7 +116,7 @@ public class TrialPermitService {
                         permitAndVehicleTypeDTO.setSelectedType(permitAndVehicleType.getId().getSelectedType().getTypeID());
                         permitAndVehicleTypeDTO.setDescription(permitAndVehicleType.getId().getSelectedType().getTypeName());
                         permitAndVehicleTypeDTO.setEngineCapacity(permitAndVehicleType.getId().getSelectedType().getEngineCapacity());
-                        permitAndVehicleTypeDTO.setAutoOrManual(permitAndVehicleType.getAutoOrManual());
+                        //permitAndVehicleTypeDTO.setAutoOrManual(permitAndVehicleType.getAutoOrManual());
                         permitAndVehicleTypeDTOList.add(permitAndVehicleTypeDTO);
                     }
                     trialPermit1DTO.setPermitAndVehicleType(permitAndVehicleTypeDTOList);
@@ -163,7 +163,7 @@ public class TrialPermitService {
                         //permitAndVehicleType.setId(permitAndVehicleTypeId);
                         permitAndVehicleType.setSelectedType(vehicleType);
                         permitAndVehicleType.setSerialNo(trialPermit);
-                        permitAndVehicleType.setAutoOrManual(permitDTO.getAutoOrManual());
+                        //permitAndVehicleType.setAutoOrManual(permitDTO.getAutoOrManual());
                         //System.out.println(permitAndVehicleType);
                         permitAndVehicleTypeRepo.save(permitAndVehicleType);
                         responseDTO.setStatus(HttpStatus.ACCEPTED);
@@ -229,7 +229,7 @@ public class TrialPermitService {
                         permitAndVehicleTypeId.setSerialNo(trialPermit);
                         permitAndVehicleTypeId.setSelectedType(vehicleTypeRepo.findById(permitAndVehicleTypeDTO.getSelectedType()).get());
                         permitAndVehicleType.setId(permitAndVehicleTypeId);
-                        permitAndVehicleType.setAutoOrManual(permitAndVehicleTypeDTO.getAutoOrManual());
+                       // permitAndVehicleType.setAutoOrManual(permitAndVehicleTypeDTO.getAutoOrManual());
                         permitAndVehicleTypeRepo.save(permitAndVehicleType);
                     }
                     responseDTO.setCode(varList.RSP_SUCCES);
@@ -273,7 +273,7 @@ public class TrialPermitService {
                         permitAndVehicleTypeId.setSelectedType(vehicleTypeRepo.findById(permitAndVehicleTypeDTO.getSelectedType()).get());
                         PermitAndVehicleType permitAndVehicleType = new PermitAndVehicleType();
                         permitAndVehicleType.setId(permitAndVehicleTypeId);
-                        permitAndVehicleType.setAutoOrManual(permitAndVehicleTypeDTO.getAutoOrManual());
+                       //permitAndVehicleType.setAutoOrManual(permitAndVehicleTypeDTO.getAutoOrManual());
                         permitAndVehicleTypeRepo.saveAndFlush(permitAndVehicleType);
                     }
                     //trialPermit.setPermitAndVehicleType(modelMapper.map(trialPermitDTO.getPermitAndVehicleType(), PermitAndVehicleType.class));

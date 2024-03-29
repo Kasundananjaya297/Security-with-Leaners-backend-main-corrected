@@ -4,8 +4,10 @@ import com.example.SecuritywithLeaners.DTO.MedicalDTO;
 import com.example.SecuritywithLeaners.DTO.ResponseDTO;
 import com.example.SecuritywithLeaners.DTO.StudentBasicDTO;
 import com.example.SecuritywithLeaners.DTO.StudentDTO;
+import com.example.SecuritywithLeaners.Entity.Agreement;
 import com.example.SecuritywithLeaners.Entity.MedicalReport;
 import com.example.SecuritywithLeaners.Entity.Student;
+import com.example.SecuritywithLeaners.Repo.AgreementRepo;
 import com.example.SecuritywithLeaners.Repo.StudentRepo;
 import com.example.SecuritywithLeaners.Util.CalculateAge;
 import com.example.SecuritywithLeaners.Util.IDgenerator;
@@ -22,6 +24,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.awt.print.Pageable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,6 +41,8 @@ public class AdminService {
     private ModelMapper modelMapper;
     @Autowired
     private CalculateAge calculateAge;
+    @Autowired
+    private AgreementRepo agreementRepo;
     private StudentDTO studentDTO;
     public ResponseDTO saveStudent(Student studentDTO) {
         ResponseDTO responseDTO = new ResponseDTO();
@@ -102,10 +107,16 @@ public class AdminService {
         ResponseDTO responseDTO = new ResponseDTO();
 
         try {
-
             log.info("Start getStudentBySorting method");
             List<Student> studentList = studentRepo.findAll(Sort.by(Sort.Direction.valueOf(order), field));
-            List<StudentDTO> studentDTOList = studentList.stream().map(student -> modelMapper.map(student, StudentDTO.class)).toList();
+            List<StudentDTO> studentDTOList = new ArrayList<>();
+            for (Student student : studentList) {
+                StudentDTO studentDTO = modelMapper.map(student, StudentDTO.class);
+                studentDTO.setFullPayment(agreementRepo.getAgreementsByStdID(student.getStdID()).get(0).getPackagePrice());
+                int age = calculateAge.CalculateAgeINT(student.getDateOfBirth().toString());
+                studentDTO.setAge(age);
+                studentDTOList.add(studentDTO);
+            }
             //log.info("Student list: {}", studentDTOList);
             responseDTO.setRecordCount(studentList.size());
             responseDTO.setCode(varList.RSP_SUCCES);
@@ -130,14 +141,17 @@ public class AdminService {
 
         try {
             Page<Student> studentDataPage = studentRepo.findAll(PageRequest.of(offset, pageSize, Sort.by(Sort.Direction.valueOf(order), field)));
-            List<StudentDTO> studentDTOList = studentDataPage.stream().map(student -> {//use Stream to convert the list of student to list of studentDTO
+            List<StudentDTO> studentDTOS = new ArrayList<>();
+            for(Student student:studentDataPage){
                 StudentDTO studentDTO = modelMapper.map(student, StudentDTO.class);
+                studentDTO.setFullPayment(agreementRepo.getPackagePrice(student.getStdID()));
                 int age = calculateAge.CalculateAgeINT(student.getDateOfBirth().toString());
                 studentDTO.setAge(age);
-                return studentDTO;
-            }).toList();
+                studentDTOS.add(studentDTO);
+            }
+
             log.info("Student data page: {}", studentDataPage);
-            responseDTO.setContent(studentDTOList);
+            responseDTO.setContent(studentDTOS);
             responseDTO.setRecordCount(studentDataPage.getSize());
             responseDTO.setCode(varList.RSP_SUCCES);
             responseDTO.setMessage("Success");
