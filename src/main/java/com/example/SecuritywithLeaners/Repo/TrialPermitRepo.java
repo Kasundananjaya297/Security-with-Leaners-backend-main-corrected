@@ -20,8 +20,8 @@ public interface TrialPermitRepo extends JpaRepository<TrialPermit,String>{
     int existsByStdID(String stdID);
     @Query(value = "SELECT MAX(exp_date) FROM trial_permit WHERE stdID_fk = :stdID", nativeQuery = true)
     LocalDate getMaximumExpDateByStdID(String stdID);
-
-
+    @Query(value = "SELECT serial_no FROM trial_permit WHERE stdID_fk = (:stdID) AND exp_date = (SELECT MAX(exp_date) FROM trial_permit WHERE stdID_fk = (:stdID))  ", nativeQuery = true)
+    String findByStdID(String stdID);
 
 
 

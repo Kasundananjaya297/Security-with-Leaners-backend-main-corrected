@@ -32,4 +32,5 @@ public class StudentDTO {
     private String pack;
     private LocalDate dateOfBirth;
     private String profilePhotoURL;
+    private double packagePrice;
 }

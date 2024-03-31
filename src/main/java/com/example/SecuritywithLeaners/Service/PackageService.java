@@ -1,16 +1,9 @@
 package com.example.SecuritywithLeaners.Service;
 
-import com.example.SecuritywithLeaners.DTO.PackageAndVehicleTypeDTO;
-import com.example.SecuritywithLeaners.DTO.PackageDTO;
-import com.example.SecuritywithLeaners.DTO.PackageDetailsDTO;
-import com.example.SecuritywithLeaners.DTO.ResponseDTO;
+import com.example.SecuritywithLeaners.DTO.*;
+import com.example.SecuritywithLeaners.Entity.*;
 import com.example.SecuritywithLeaners.Entity.Package;
-import com.example.SecuritywithLeaners.Entity.PackageAndVehicleType;
-import com.example.SecuritywithLeaners.Entity.PackageAndVehicleTypeID;
-import com.example.SecuritywithLeaners.Entity.VehicleType;
-import com.example.SecuritywithLeaners.Repo.PackageAndVehicleTypeRepo;
-import com.example.SecuritywithLeaners.Repo.PackageRepo;
-import com.example.SecuritywithLeaners.Repo.VehicleTypeRepo;
+import com.example.SecuritywithLeaners.Repo.*;
 import com.example.SecuritywithLeaners.Util.IDgenerator;
 import com.example.SecuritywithLeaners.Util.varList;
 import jakarta.transaction.Transactional;
@@ -25,6 +18,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,6 +35,10 @@ private IDgenerator idGenerator;
 private ModelMapper modelMapper;
 @Autowired
 private VehicleTypeRepo vehicleTypeRepo;
+@Autowired
+private TrialPermitRepo trialPermitRepo;
+@Autowired
+private PermitAndVehicleTypeRepo permitAndVehicleTypeRepo;
 @Autowired
 private PackageAndVehicleTypeRepo packageAndVehicleTypeRepo;
 
@@ -209,6 +207,47 @@ private PackageAndVehicleTypeRepo packageAndVehicleTypeRepo;
             responseDTO.setCode(varList.RSP_FAIL);
             responseDTO.setStatus(HttpStatus.BAD_REQUEST);
             responseDTO.setMessage("Failed to get package");
+            responseDTO.setContent(null);
+        }
+        return responseDTO;
+    }
+    public ResponseDTO getPackagesForStudent(String stdID,String order,int pageSize,int offset){
+        ResponseDTO responseDTO = new ResponseDTO();
+        try {
+            String trialPermitID = trialPermitRepo.findByStdID(stdID);
+            List<String> selectedTypes =permitAndVehicleTypeRepo.findSelectedTypeBySerialNo(trialPermitID);
+            List<String> packIDs = packageRepo.findPackageByFilter(selectedTypes,pageSize,offset);
+            System.out.println(order);
+            List<Package> packages = packageRepo.findAllByIdSorted(packIDs,order);
+            List<PackageDTO> packageDTOList = new ArrayList<>();
+            for(Package packData : packages){
+                PackageDTO packageData = new PackageDTO();
+                packageData.setPackageID(packData.getPackageID());
+                packageData.setPackageName(packData.getPackageName());
+                packageData.setDescription(packData.getDescription());
+                packageData.setPackagePrice(packData.getPackagePrice());
+                List<PackageAndVehicleTypeDTO> packageAndVehicleTypeDTOList =  new ArrayList<>();
+                for(PackageAndVehicleType packageAndVehicleType : packData.getPackageAndVehicleType()){
+                    PackageAndVehicleTypeDTO packageAndVehicleTypeDTO = new PackageAndVehicleTypeDTO();
+                    packageAndVehicleTypeDTO.setPackageID(packageAndVehicleType.getPackageAndVehicleTypeID().getPackageID().getPackageID());
+                    packageAndVehicleTypeDTO.setTypeID(packageAndVehicleType.getPackageAndVehicleTypeID().getTypeID().getTypeID());
+                    packageAndVehicleTypeDTO.setLessons(packageAndVehicleType.getLessons());
+                    packageAndVehicleTypeDTO.setAutoOrManual(packageAndVehicleType.getAutoOrManual());
+                    packageAndVehicleTypeDTO.setEngineCapacity(packageAndVehicleType.getPackageAndVehicleTypeID().getTypeID().getEngineCapacity());
+                    packageAndVehicleTypeDTO.setTypeName(packageAndVehicleType.getPackageAndVehicleTypeID().getTypeID().getTypeName());
+                    packageAndVehicleTypeDTOList.add(packageAndVehicleTypeDTO);
+                }
+                packageData.setPackageAndVehicleType(packageAndVehicleTypeDTOList);
+                packageDTOList.add(packageData);
+            }
+            responseDTO.setContent(packageDTOList);
+            responseDTO.setCode(varList.RSP_SUCCES);
+            responseDTO.setStatus(HttpStatus.ACCEPTED);
+            responseDTO.setMessage("Success");
+        }catch (Exception e){
+            responseDTO.setCode(varList.RSP_FAIL);
+            responseDTO.setStatus(HttpStatus.BAD_REQUEST);
+            responseDTO.setMessage("Failed to get packages");
             responseDTO.setContent(null);
         }
         return responseDTO;

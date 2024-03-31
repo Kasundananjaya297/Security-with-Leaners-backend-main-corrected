@@ -9,6 +9,7 @@ import com.example.SecuritywithLeaners.Repo.AgreementRepo;
 import com.example.SecuritywithLeaners.Repo.PackageRepo;
 import com.example.SecuritywithLeaners.Repo.StudentRepo;
 import com.example.SecuritywithLeaners.Util.varList;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class AgreementService {
     @Autowired
     ModelMapper modelMapper;
@@ -46,6 +48,7 @@ public class AgreementService {
                     agreement.setPackagePrice(agreementDTO.getPackagePrice());
                     agreement.setAgreementDate(agreementDTO.getAgreementDate());
                     agreement.setIsFinished(agreementDTO.getIsFinished());
+                    agreement.setTotalAmount(agreementDTO.getPackagePrice());
                     agreementRepo.save(agreement);
                     responseDTO.setContent(agreement);
                     responseDTO.setCode(varList.RSP_SUCCES);
@@ -109,6 +112,7 @@ public class AgreementService {
                 agreementDTO.setIsFinished(a.getIsFinished());
                 agreementDTO.setPackageName(a.getAgreementID().getPackageID().getPackageName());
                 agreementDTO.setDescription(a.getAgreementID().getPackageID().getDescription());
+                agreementDTO.setDiscount(a.getDiscount());
                 List<PackageAndVehicleTypeDTO> packageAndVehicleTypeDTOS = new ArrayList<>();
                 for(PackageAndVehicleType p : a.getPackageID().getPackageAndVehicleType()){
                     PackageAndVehicleTypeDTO packageAndVehicleTypeDTO = new PackageAndVehicleTypeDTO();
@@ -135,10 +139,36 @@ public class AgreementService {
         }
         return responseDTO;
     }
-    public ResponseDTO getAgreementsForStudent(String stdID){
+    public ResponseDTO updateAgreementDiscount(AgreementDTO agreementDTO) {
         ResponseDTO responseDTO = new ResponseDTO();
-
-
+        try {
+            AgreementID agreementID = new AgreementID();
+            Student student = new Student();
+            Package apackage = new Package();
+            student.setStdID(agreementDTO.getStdID());
+            apackage.setPackageID(agreementDTO.getPackageID());
+            agreementID.setStdID(student);
+            agreementID.setPackageID(apackage);
+            System.out.println(agreementID);
+            if(agreementRepo.existsById(agreementID)){
+                agreementRepo.updateDiscount(agreementDTO.getStdID(),agreementDTO.getDiscount(),agreementDTO.getPackagePrice()-agreementDTO.getDiscount(),agreementDTO.getPackageID());
+                responseDTO.setCode(varList.RSP_SUCCES);
+                responseDTO.setStatus(HttpStatus.ACCEPTED);
+                responseDTO.setMessage("Discount updated successfully");
+                responseDTO.setContent(null);
+            }else{
+                responseDTO.setCode(varList.RSP_NO_DATA_FOUND);
+                responseDTO.setStatus(HttpStatus.NOT_FOUND);
+                responseDTO.setMessage("Agreement not found");
+                responseDTO.setContent(null);
+            }
+        }catch (Exception e){
+            responseDTO.setCode("01");
+            responseDTO.setContent(null);
+            responseDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            responseDTO.setMessage("An error occurred: " + e.getMessage());
+        }
+        responseDTO.setStatus(HttpStatus.ACCEPTED);
         return responseDTO;
     }
 }

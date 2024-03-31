@@ -107,7 +107,7 @@ public class AdminService {
         ResponseDTO responseDTO = new ResponseDTO();
 
         try {
-            log.info("Start getStudentBySorting method");
+            //log.info("Start getStudentBySorting method");
             List<Student> studentList = studentRepo.findAll(Sort.by(Sort.Direction.valueOf(order), field));
             List<StudentDTO> studentDTOList = new ArrayList<>();
             for (Student student : studentList) {
@@ -144,7 +144,9 @@ public class AdminService {
             List<StudentDTO> studentDTOS = new ArrayList<>();
             for(Student student:studentDataPage){
                 StudentDTO studentDTO = modelMapper.map(student, StudentDTO.class);
-                studentDTO.setFullPayment(agreementRepo.getPackagePrice(student.getStdID()));
+
+                studentDTO.setPackagePrice((agreementRepo.getPackagePrice(student.getStdID())!=null?agreementRepo.getPackagePrice(student.getStdID()):0.0));
+                studentDTO.setFullPayment((agreementRepo.getPackagePrice(student.getStdID())!=null?agreementRepo.getTotalAmount(student.getStdID()):0.0));
                 int age = calculateAge.CalculateAgeINT(student.getDateOfBirth().toString());
                 studentDTO.setAge(age);
                 studentDTOS.add(studentDTO);
@@ -195,6 +197,9 @@ public class AdminService {
                 StudentDTO studentDTO = modelMapper.map(student.get(), StudentDTO.class);
                 int age = calculateAge.CalculateAgeINT(student.get().getDateOfBirth().toString());
                 studentDTO.setAge(age);
+//                System.out.println(agreementRepo.getPackagePrice(stdID));
+//                studentDTO.setPackagePrice(100.00);
+//                studentDTO.setFullPayment(agreementRepo.getTotalAmount(stdID).get());
                 System.out.println(age);
                 responseDTO.setCode(varList.RSP_SUCCES);
                 responseDTO.setMessage("Success");

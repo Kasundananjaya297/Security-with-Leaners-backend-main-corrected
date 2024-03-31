@@ -18,6 +18,18 @@ public interface PackageRepo extends JpaRepository<Package,String> {
     @Query(value = "SELECT * FROM package WHERE package_name LIKE %:packageName% OR description LIKE %:packageName%", nativeQuery = true)
     List<Package> findByPackageName(@Param("packageName") String packageName);
 
-    @Query(value = "SELECT * FROM package WHERE package P, ", nativeQuery = true)
-    List<Package> getPackagesForStudent(@Param("stdID") String stdID);
+    @Query(value = "SELECT DISTINCT packageid_packageid FROM package_and_vehicle_type WHERE typeid_typeid IN (:types) AND packageid_packageid NOT IN (SELECT packageid_packageid FROM package_and_vehicle_type WHERE typeid_typeid NOT IN (:types)) LIMIT :pageSize OFFSET :offset", nativeQuery = true)
+    List<String> findPackageByFilter(@Param("types") List<String> types, @Param("pageSize") int pageSize, @Param("offset") int offset);
+
+    @Query(value = "SELECT * FROM package WHERE packageid IN (:packageIDs) " +
+            "ORDER BY CASE WHEN :order = 'ASC' THEN package_price END ASC, " +
+            "CASE WHEN :order = 'DESC' THEN package_price END DESC",
+            nativeQuery = true)
+    List<Package> findAllByIdSorted(@Param("packageIDs") List<String> packageIDs, @Param("order") String order);
+
+
+
+
+
+
 }

@@ -188,9 +188,15 @@ public class AdminServicesController {
         ResponseDTO responseDTO = agreementService.getAgreement(stdID);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
-    @GetMapping("/getAgreementsForStudent/{stdID}")
-    public ResponseEntity getAgreementsForStudent(@PathVariable String stdID){
-        ResponseDTO responseDTO = agreementService.getAgreementsForStudent(stdID);
+    @GetMapping("/getPackagesForStudent/{stdID}/{order}/{pageSize}/{offset}")
+    public ResponseEntity getAgreementsForStudent(@PathVariable String stdID,@PathVariable String order,@PathVariable int pageSize,@PathVariable int offset){
+        ResponseDTO responseDTO = packageService.getPackagesForStudent(stdID,order,pageSize,offset);
+        return new ResponseEntity(responseDTO,HttpStatus.ACCEPTED);
+    }
+    @PutMapping("/updateAgreementDiscount")
+    public ResponseEntity updateAgreementDiscount(@RequestBody AgreementDTO agreementDTO){
+        System.out.println(agreementDTO);
+        ResponseDTO responseDTO = agreementService.updateAgreementDiscount(agreementDTO);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
 

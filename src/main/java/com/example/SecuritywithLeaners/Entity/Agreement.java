@@ -25,5 +25,7 @@ public class Agreement {
     private double packagePrice;
     private LocalDate agreementDate;
     private Boolean isFinished;
+    private double discount;
+    private double totalAmount;
 
 }
