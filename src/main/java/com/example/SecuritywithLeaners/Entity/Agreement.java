@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @Entity
 @NoArgsConstructor
@@ -27,5 +29,7 @@ public class Agreement {
     private Boolean isFinished;
     private double discount;
     private double totalAmount;
+    @OneToMany(mappedBy = "agreement", cascade = CascadeType.ALL)
+    private List<ExtraSession> extraSessions;
 
 }

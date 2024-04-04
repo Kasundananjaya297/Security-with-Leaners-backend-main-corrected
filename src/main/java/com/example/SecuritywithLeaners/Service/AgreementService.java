@@ -2,12 +2,11 @@ package com.example.SecuritywithLeaners.Service;
 
 import com.example.SecuritywithLeaners.DTO.AgreementDTO;
 import com.example.SecuritywithLeaners.DTO.PackageAndVehicleTypeDTO;
+import com.example.SecuritywithLeaners.DTO.PermitAndVehicleTypeDTO;
 import com.example.SecuritywithLeaners.DTO.ResponseDTO;
 import com.example.SecuritywithLeaners.Entity.*;
 import com.example.SecuritywithLeaners.Entity.Package;
-import com.example.SecuritywithLeaners.Repo.AgreementRepo;
-import com.example.SecuritywithLeaners.Repo.PackageRepo;
-import com.example.SecuritywithLeaners.Repo.StudentRepo;
+import com.example.SecuritywithLeaners.Repo.*;
 import com.example.SecuritywithLeaners.Util.varList;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -29,6 +29,10 @@ public class AgreementService {
     PackageRepo packageRepo;
     @Autowired
     StudentRepo studentRepo;
+
+    @Autowired
+    PackageAndVehicleTypeRepo packageAndVehicleTypeRepo;
+
     public ResponseDTO saveAgreement(AgreementDTO agreementDTO) {
         ResponseDTO responseDTO = new ResponseDTO();
         try {
@@ -36,9 +40,10 @@ public class AgreementService {
             AgreementID agreementID = new AgreementID();
             Package apackage = new Package();
             Student student = new Student();
-
             apackage.setPackageID(agreementDTO.getPackageID());
             student.setStdID(agreementDTO.getStdID());
+            PackageAndVehicleTypeID packageAndVehicleTypeID = new PackageAndVehicleTypeID();
+            packageAndVehicleTypeID.setPackageID(apackage);
 
             agreementID.setStdID(student);
             agreementID.setPackageID(apackage);
@@ -49,8 +54,25 @@ public class AgreementService {
                     agreement.setAgreementDate(agreementDTO.getAgreementDate());
                     agreement.setIsFinished(agreementDTO.getIsFinished());
                     agreement.setTotalAmount(agreementDTO.getPackagePrice());
+
+                    List<ExtraSession> extraSessionArrayList = new ArrayList<>();
+                    List<PackageAndVehicleType> packageAndVehicleType = packageAndVehicleTypeRepo.findByPackageID(agreementDTO.getPackageID());
+
+            for(PackageAndVehicleType p : packageAndVehicleType.stream().toList()){
+                ExtraSession extraSession = new ExtraSession();
+                extraSession.setAgreement(agreement);
+                extraSession.setPackageAndVehicleType(p);
+                extraSession.setTotalLessons(p.getLessons());
+                System.out.println(p);
+                extraSessionArrayList.add(extraSession);
+            }
+                    agreement.setExtraSessions(extraSessionArrayList);
+
+
                     agreementRepo.save(agreement);
-                    responseDTO.setContent(agreement);
+                    //PackageAndVehicleType packageAndVehicleType = packageAndVehicleTypeRepo.findById(agreementDTO.getPackageID()).get();
+
+                    responseDTO.setContent("Agreement saved successfully");
                     responseDTO.setCode(varList.RSP_SUCCES);
                     responseDTO.setStatus(HttpStatus.ACCEPTED);
                     responseDTO.setMessage("Agreement saved successfully");
@@ -114,6 +136,7 @@ public class AgreementService {
                 agreementDTO.setDescription(a.getAgreementID().getPackageID().getDescription());
                 agreementDTO.setDiscount(a.getDiscount());
                 List<PackageAndVehicleTypeDTO> packageAndVehicleTypeDTOS = new ArrayList<>();
+                int i =0;
                 for(PackageAndVehicleType p : a.getPackageID().getPackageAndVehicleType()){
                     PackageAndVehicleTypeDTO packageAndVehicleTypeDTO = new PackageAndVehicleTypeDTO();
                     packageAndVehicleTypeDTO.setPackageID(p.getPackageID().getPackageID());
@@ -122,7 +145,11 @@ public class AgreementService {
                     packageAndVehicleTypeDTO.setEngineCapacity(p.getTypeID().getEngineCapacity());
                     packageAndVehicleTypeDTO.setLessons(p.getLessons());
                     packageAndVehicleTypeDTO.setAutoOrManual(p.getAutoOrManual());
+                    packageAndVehicleTypeDTO.setExtraLessons(agreement.get(0).getExtraSessions().stream().filter(e -> e.getPackageAndVehicleType().getPackageID().getPackageID().equals(p.getPackageID().getPackageID())).toList().get(i).getExtraLessons());
+                    packageAndVehicleTypeDTO.setPriceForExtraLesson(agreement.get(0).getExtraSessions().stream().filter(e -> e.getPackageAndVehicleType().getPackageID().getPackageID().equals(p.getPackageID().getPackageID())).toList().get(i).getPriceForExtraLesson());
+                    packageAndVehicleTypeDTO.setTotalLessons(agreement.get(0).getExtraSessions().stream().filter(e -> e.getPackageAndVehicleType().getPackageID().getPackageID().equals(p.getPackageID().getPackageID())).toList().get(i).getTotalLessons());
                     packageAndVehicleTypeDTOS.add(packageAndVehicleTypeDTO);
+                    i++;
                 }
                 agreementDTO.setPackageAndVehicleType(packageAndVehicleTypeDTOS);
                 agreementDTOS.add(agreementDTO);
@@ -169,6 +196,51 @@ public class AgreementService {
             responseDTO.setMessage("An error occurred: " + e.getMessage());
         }
         responseDTO.setStatus(HttpStatus.ACCEPTED);
+        return responseDTO;
+    }
+    public ResponseDTO updateAgreementAndVehicle(PermitAndVehicleTypeDTO permitAndVehicleTypeDTO){
+        ResponseDTO responseDTO = new ResponseDTO();
+        try {
+            responseDTO.setCode(varList.RSP_SUCCES);
+            responseDTO.setStatus(HttpStatus.ACCEPTED);
+            responseDTO.setMessage("Agreement and Vehicle updated successfully");
+            responseDTO.setContent(null);
+        }catch (Exception e){
+            responseDTO.setCode("01");
+            responseDTO.setContent(null);
+            responseDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            responseDTO.setMessage("An error occurred: " + e.getMessage());
+        }
+        return responseDTO;
+    }
+    public ResponseDTO deleteAgreement(String stdID,String packageID){
+        ResponseDTO responseDTO = new ResponseDTO();
+        try{
+            AgreementID agreementID = new AgreementID();
+            Student student = new Student();
+            Package apackage = new Package();
+            student.setStdID(stdID);
+            apackage.setPackageID(packageID);
+            agreementID.setStdID(student);
+            agreementID.setPackageID(apackage);
+            if(agreementRepo.existsById(agreementID)){
+                agreementRepo.deleteById(agreementID);
+                responseDTO.setCode(varList.RSP_SUCCES);
+                responseDTO.setStatus(HttpStatus.ACCEPTED);
+                responseDTO.setMessage("Agreement deleted successfully");
+                responseDTO.setContent(null);
+            }else{
+                responseDTO.setCode(varList.RSP_NO_DATA_FOUND);
+                responseDTO.setStatus(HttpStatus.NOT_FOUND);
+                responseDTO.setMessage("Agreement not found");
+                responseDTO.setContent(null);
+            }
+        }catch (Exception e){
+            responseDTO.setCode("01");
+            responseDTO.setContent(null);
+            responseDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            responseDTO.setMessage("An error occurred: " + e.getMessage());
+        }
         return responseDTO;
     }
 }

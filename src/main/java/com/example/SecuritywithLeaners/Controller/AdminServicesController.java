@@ -33,6 +33,8 @@ public class AdminServicesController {
     AgreementService agreementService;
     @Autowired
     PackageService packageService;
+    @Autowired
+    ExtraSessionService extraSessionService;
 
     @PostMapping("/registerStudent")
     public ResponseEntity registerStudent(@RequestBody Student studentDTO){
@@ -199,5 +201,22 @@ public class AdminServicesController {
         ResponseDTO responseDTO = agreementService.updateAgreementDiscount(agreementDTO);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
+    @PutMapping("/updateAgreementAndVehicle")
+    public ResponseEntity updateAgreementAndVehicle(@RequestBody PermitAndVehicleTypeDTO permitAndVehicleTypeDTO){
+        ResponseDTO responseDTO = agreementService.updateAgreementAndVehicle(permitAndVehicleTypeDTO);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+
+    }
+    @DeleteMapping("/deleteAgreement/{stdID}/{packageID}")
+    public ResponseEntity deleteAgreement(@PathVariable String stdID,@PathVariable String packageID){
+        ResponseDTO responseDTO = agreementService.deleteAgreement(stdID,packageID);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @PutMapping("/UpdateExtraSession")
+    public ResponseEntity saveExtraSession(@RequestBody List<ExtraSessionDTO> extraSessionDTO){
+        ResponseDTO responseDTO = extraSessionService.UpdateExtraSession(extraSessionDTO);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+
 
 }

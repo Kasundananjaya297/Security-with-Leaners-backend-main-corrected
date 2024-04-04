@@ -22,4 +22,5 @@ public class AgreementDTO {
     private double discount;
     private double totalAmount;
     private List<PackageAndVehicleTypeDTO> packageAndVehicleType;
+    private List<ExtraSessionDTO> extraSession;
 }

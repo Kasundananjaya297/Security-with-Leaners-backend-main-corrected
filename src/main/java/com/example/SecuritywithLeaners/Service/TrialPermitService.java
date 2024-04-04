@@ -2,13 +2,11 @@ package com.example.SecuritywithLeaners.Service;
 
 import com.example.SecuritywithLeaners.DTO.*;
 import com.example.SecuritywithLeaners.Entity.*;
-import com.example.SecuritywithLeaners.Entity.Views.View;
 import com.example.SecuritywithLeaners.Repo.PermitAndVehicleTypeRepo;
 import com.example.SecuritywithLeaners.Repo.StudentRepo;
 import com.example.SecuritywithLeaners.Repo.TrialPermitRepo;
 import com.example.SecuritywithLeaners.Repo.VehicleTypeRepo;
 import com.example.SecuritywithLeaners.Util.varList;
-import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -18,10 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service

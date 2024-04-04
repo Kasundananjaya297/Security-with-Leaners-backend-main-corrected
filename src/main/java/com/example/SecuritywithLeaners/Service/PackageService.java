@@ -13,14 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.config.annotation.web.oauth2.resourceserver.OpaqueTokenDsl;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 
 @Slf4j
@@ -42,11 +38,9 @@ private PermitAndVehicleTypeRepo permitAndVehicleTypeRepo;
 @Autowired
 private PackageAndVehicleTypeRepo packageAndVehicleTypeRepo;
 
+
     public ResponseDTO savePackage(PackageDTO packageDTO){
         ResponseDTO responseDTO = new ResponseDTO();
-
-
-
         try {
             if(!packageRepo.existsById(packageDTO.getPackageID())){
                 if(packageRepo.ExistBypackageName(packageDTO.getPackageName())>0){
