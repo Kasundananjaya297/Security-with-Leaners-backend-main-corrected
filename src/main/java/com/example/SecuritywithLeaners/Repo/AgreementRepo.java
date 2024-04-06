@@ -27,5 +27,23 @@ public interface AgreementRepo extends JpaRepository<Agreement, AgreementID> {
     @Query(value = "SELECT total_amount FROM agreement WHERE stdid_stdid =:stdID AND agreement_date =(SELECT MAX(agreement_date) FROM agreement WHERE stdid_stdid=:stdID)", nativeQuery = true)
     Double getTotalAmount(@Param("stdID") String stdID);
 
+    @Modifying
+    @Query(value = "UPDATE agreement SET total_amount_to_pay=:totalAmountTopay WHERE stdid_stdid =:stdID AND packageid_packageid = :packageID" ,nativeQuery = true)
+    void updateTotalAmountToPay(@Param("stdID") String stdID,@Param("totalAmountTopay") double totalAmountTopay,@Param("packageID") String packageID);
+
+    @Query(value = "SELECT total_amount_to_pay FROM agreement WHERE stdid_stdid =:stdID AND agreement_date =(SELECT MAX(agreement_date) FROM agreement WHERE stdid_stdid=:stdID)", nativeQuery = true)
+    Double getTotalAmountToPay(@Param("stdID") String stdID);
+
+    @Query(value = "SELECT discount FROM agreement WHERE stdid_stdid =:stdID AND agreement_date =(SELECT MAX(agreement_date) FROM agreement WHERE stdid_stdid=:stdID)", nativeQuery = true)
+    Double getDiscount(@Param("stdID") String stdID);
+
+    @Query(value = "SELECT  total_amount_for_extra_sessions FROM agreement WHERE stdid_stdid =:stdID AND agreement_date =(SELECT MAX(agreement_date) FROM agreement WHERE stdid_stdid=:stdID)", nativeQuery = true)
+    Double getTotalAmountForExtraSessions(@Param("stdID") String stdID);
+
+    @Modifying
+    @Query(value = "UPDATE agreement SET total_amount_for_extra_sessions=:totalAmountForExtraSessions WHERE stdid_stdid =:stdID AND packageid_packageid = :packageID" ,nativeQuery = true)
+    void updateTotalAmountForExtraSessions(@Param("stdID") String stdID,@Param("totalAmountForExtraSessions") double totalAmountForExtraSessions,@Param("packageID") String packageID);
+
+
 }
 

@@ -214,9 +214,17 @@ public class AdminServicesController {
     }
     @PutMapping("/UpdateExtraSession")
     public ResponseEntity saveExtraSession(@RequestBody List<ExtraSessionDTO> extraSessionDTO){
+        System.out.println(extraSessionDTO);
         ResponseDTO responseDTO = extraSessionService.UpdateExtraSession(extraSessionDTO);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
+    @PutMapping("/UpdateTotalAmountToPay")
+    public ResponseEntity updateTotalAmountToPay(@RequestBody AgreementDTO agreementDTO){
+        System.out.println(agreementDTO.getTotalAmountToPay());
+        ResponseDTO responseDTO = agreementService.upDateTotalAmountToPay(agreementDTO);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+
 
 
 }

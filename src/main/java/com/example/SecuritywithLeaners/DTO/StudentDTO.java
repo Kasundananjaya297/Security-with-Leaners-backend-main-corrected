@@ -27,8 +27,8 @@ public class StudentDTO {
     private Boolean isMale;
     private String guardianName;
     private int guardianTelephone;
-    private Double fullPayment;
-    private Double balance;
+    private double fullPayment;
+    private double balance;
     private String pack;
     private LocalDate dateOfBirth;
     private String profilePhotoURL;

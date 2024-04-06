@@ -7,20 +7,17 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-public class ExtraSession {
+@NoArgsConstructor
+@AllArgsConstructor
+public class payments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int extraSessionID;
+    private Long paymentID;
+    private double amount;
+    private String paymentDate;
     @ManyToOne
     private Agreement agreement;
-    @ManyToOne
-    private PackageAndVehicleType packageAndVehicleType;
-    private int extraLessons;
-    private double price;
-    private double priceForExtraLesson;
-    private int totalLessons;
+
 }

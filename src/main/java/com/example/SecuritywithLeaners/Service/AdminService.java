@@ -146,7 +146,7 @@ public class AdminService {
                 StudentDTO studentDTO = modelMapper.map(student, StudentDTO.class);
 
                 studentDTO.setPackagePrice((agreementRepo.getPackagePrice(student.getStdID())!=null?agreementRepo.getPackagePrice(student.getStdID()):0.0));
-                studentDTO.setFullPayment((agreementRepo.getPackagePrice(student.getStdID())!=null?agreementRepo.getTotalAmount(student.getStdID()):0.0));
+                studentDTO.setFullPayment((agreementRepo.getTotalAmountToPay(student.getStdID())!=null?agreementRepo.getTotalAmountToPay(student.getStdID()):0.0));
                 int age = calculateAge.CalculateAgeINT(student.getDateOfBirth().toString());
                 studentDTO.setAge(age);
                 studentDTOS.add(studentDTO);

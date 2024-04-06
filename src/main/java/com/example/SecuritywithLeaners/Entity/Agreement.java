@@ -29,7 +29,11 @@ public class Agreement {
     private Boolean isFinished;
     private double discount;
     private double totalAmount;
+    private double totalAmountToPay;
+    private double totalAmountForExtraSessions;
     @OneToMany(mappedBy = "agreement", cascade = CascadeType.ALL)
     private List<ExtraSession> extraSessions;
+    @OneToMany(mappedBy = "agreement", cascade = CascadeType.ALL)
+    private List<payments> payments;
 
 }

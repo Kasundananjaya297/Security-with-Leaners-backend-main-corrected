@@ -44,7 +44,6 @@ public class AgreementService {
             student.setStdID(agreementDTO.getStdID());
             PackageAndVehicleTypeID packageAndVehicleTypeID = new PackageAndVehicleTypeID();
             packageAndVehicleTypeID.setPackageID(apackage);
-
             agreementID.setStdID(student);
             agreementID.setPackageID(apackage);
             if(!agreementRepo.existsById(agreementID)){
@@ -54,7 +53,7 @@ public class AgreementService {
                     agreement.setAgreementDate(agreementDTO.getAgreementDate());
                     agreement.setIsFinished(agreementDTO.getIsFinished());
                     agreement.setTotalAmount(agreementDTO.getPackagePrice());
-
+                    agreement.setTotalAmountToPay(agreementDTO.getPackagePrice());
                     List<ExtraSession> extraSessionArrayList = new ArrayList<>();
                     List<PackageAndVehicleType> packageAndVehicleType = packageAndVehicleTypeRepo.findByPackageID(agreementDTO.getPackageID());
 
@@ -148,6 +147,7 @@ public class AgreementService {
                     packageAndVehicleTypeDTO.setExtraLessons(agreement.get(0).getExtraSessions().stream().filter(e -> e.getPackageAndVehicleType().getPackageID().getPackageID().equals(p.getPackageID().getPackageID())).toList().get(i).getExtraLessons());
                     packageAndVehicleTypeDTO.setPriceForExtraLesson(agreement.get(0).getExtraSessions().stream().filter(e -> e.getPackageAndVehicleType().getPackageID().getPackageID().equals(p.getPackageID().getPackageID())).toList().get(i).getPriceForExtraLesson());
                     packageAndVehicleTypeDTO.setTotalLessons(agreement.get(0).getExtraSessions().stream().filter(e -> e.getPackageAndVehicleType().getPackageID().getPackageID().equals(p.getPackageID().getPackageID())).toList().get(i).getTotalLessons());
+                    packageAndVehicleTypeDTO.setPrice(agreement.get(0).getExtraSessions().stream().filter(e -> e.getPackageAndVehicleType().getPackageID().getPackageID().equals(p.getPackageID().getPackageID())).toList().get(i).getPrice());
                     packageAndVehicleTypeDTOS.add(packageAndVehicleTypeDTO);
                     i++;
                 }
@@ -178,7 +178,10 @@ public class AgreementService {
             agreementID.setPackageID(apackage);
             System.out.println(agreementID);
             if(agreementRepo.existsById(agreementID)){
-                agreementRepo.updateDiscount(agreementDTO.getStdID(),agreementDTO.getDiscount(),agreementDTO.getPackagePrice()-agreementDTO.getDiscount(),agreementDTO.getPackageID());
+                agreementRepo.updateDiscount(agreementDTO.getStdID(),agreementDTO.getDiscount(),(agreementDTO.getPackagePrice()-agreementDTO.getDiscount()),agreementDTO.getPackageID());
+                double totalAmount = agreementRepo.getTotalAmount(agreementDTO.getStdID());
+                double totalForExtraLession = agreementRepo.getTotalAmountForExtraSessions(agreementDTO.getStdID());
+                agreementRepo.updateTotalAmountToPay(agreementDTO.getStdID(),(totalAmount+totalForExtraLession),agreementDTO.getPackageID());//check
                 responseDTO.setCode(varList.RSP_SUCCES);
                 responseDTO.setStatus(HttpStatus.ACCEPTED);
                 responseDTO.setMessage("Discount updated successfully");
@@ -228,6 +231,38 @@ public class AgreementService {
                 responseDTO.setCode(varList.RSP_SUCCES);
                 responseDTO.setStatus(HttpStatus.ACCEPTED);
                 responseDTO.setMessage("Agreement deleted successfully");
+                responseDTO.setContent(null);
+            }else{
+                responseDTO.setCode(varList.RSP_NO_DATA_FOUND);
+                responseDTO.setStatus(HttpStatus.NOT_FOUND);
+                responseDTO.setMessage("Agreement not found");
+                responseDTO.setContent(null);
+            }
+        }catch (Exception e){
+            responseDTO.setCode("01");
+            responseDTO.setContent(null);
+            responseDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            responseDTO.setMessage("An error occurred: " + e.getMessage());
+        }
+        return responseDTO;
+    }
+    public ResponseDTO upDateTotalAmountToPay(AgreementDTO agreementDTO){
+        ResponseDTO responseDTO = new ResponseDTO();
+        try {
+            AgreementID agreementID = new AgreementID();
+            Student student = new Student();
+            Package apackage = new Package();
+            student.setStdID(agreementDTO.getStdID());
+            apackage.setPackageID(agreementDTO.getPackageID());
+            agreementID.setStdID(student);
+            agreementID.setPackageID(apackage);
+            if(agreementRepo.existsById(agreementID)){
+                double totalAmount = agreementRepo.getTotalAmount(agreementDTO.getStdID());
+                agreementRepo.updateTotalAmountForExtraSessions(agreementDTO.getStdID(),agreementDTO.getTotalAmountToPay(),agreementDTO.getPackageID());
+                agreementRepo.updateTotalAmountToPay(agreementDTO.getStdID(),(totalAmount+agreementDTO.getTotalAmountToPay()),agreementDTO.getPackageID());
+                responseDTO.setCode(varList.RSP_SUCCES);
+                responseDTO.setStatus(HttpStatus.ACCEPTED);
+                responseDTO.setMessage("Total Amount to pay updated successfully");
                 responseDTO.setContent(null);
             }else{
                 responseDTO.setCode(varList.RSP_NO_DATA_FOUND);

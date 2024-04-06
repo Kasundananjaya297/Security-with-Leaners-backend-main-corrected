@@ -4,6 +4,7 @@ import com.example.SecuritywithLeaners.Entity.PackageAndVehicleType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Component
 public class AgreementDTO {
     private String stdID;
     private String packageID;
@@ -21,6 +23,8 @@ public class AgreementDTO {
     private Boolean isFinished;
     private double discount;
     private double totalAmount;
+    private double totalAmountToPay;
+    private double totalAmountForExtraSessions;
     private List<PackageAndVehicleTypeDTO> packageAndVehicleType;
     private List<ExtraSessionDTO> extraSession;
 }

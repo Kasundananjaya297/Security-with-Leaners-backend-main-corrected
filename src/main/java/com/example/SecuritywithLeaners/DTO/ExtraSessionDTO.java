@@ -21,4 +21,5 @@ public class ExtraSessionDTO {
     private int extraLessons;
     private double priceForExtraLesson;
     private int totalLessons;
+    private double price;
 }
