@@ -134,6 +134,10 @@ public class AgreementService {
                 agreementDTO.setPackageName(a.getAgreementID().getPackageID().getPackageName());
                 agreementDTO.setDescription(a.getAgreementID().getPackageID().getDescription());
                 agreementDTO.setDiscount(a.getDiscount());
+                agreementDTO.setTotalAmount(a.getTotalAmount());
+                agreementDTO.setTotalAmountToPay(a.getTotalAmountToPay());
+                agreementDTO.setTotalAmountForExtraSessions(a.getTotalAmountForExtraSessions());
+                agreementDTO.setTotalAmountPaid(a.getTotalAmountPaid());
                 List<PackageAndVehicleTypeDTO> packageAndVehicleTypeDTOS = new ArrayList<>();
                 int i =0;
                 for(PackageAndVehicleType p : a.getPackageID().getPackageAndVehicleType()){

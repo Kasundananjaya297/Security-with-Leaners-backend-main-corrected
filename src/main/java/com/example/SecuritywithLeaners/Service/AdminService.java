@@ -8,6 +8,7 @@ import com.example.SecuritywithLeaners.Entity.Agreement;
 import com.example.SecuritywithLeaners.Entity.MedicalReport;
 import com.example.SecuritywithLeaners.Entity.Student;
 import com.example.SecuritywithLeaners.Repo.AgreementRepo;
+import com.example.SecuritywithLeaners.Repo.PaymentsRepo;
 import com.example.SecuritywithLeaners.Repo.StudentRepo;
 import com.example.SecuritywithLeaners.Util.CalculateAge;
 import com.example.SecuritywithLeaners.Util.IDgenerator;
@@ -43,6 +44,8 @@ public class AdminService {
     private CalculateAge calculateAge;
     @Autowired
     private AgreementRepo agreementRepo;
+    @Autowired
+    private PaymentsRepo paymentsRepo;
     private StudentDTO studentDTO;
     public ResponseDTO saveStudent(Student studentDTO) {
         ResponseDTO responseDTO = new ResponseDTO();
@@ -144,14 +147,13 @@ public class AdminService {
             List<StudentDTO> studentDTOS = new ArrayList<>();
             for(Student student:studentDataPage){
                 StudentDTO studentDTO = modelMapper.map(student, StudentDTO.class);
-
                 studentDTO.setPackagePrice((agreementRepo.getPackagePrice(student.getStdID())!=null?agreementRepo.getPackagePrice(student.getStdID()):0.0));
                 studentDTO.setFullPayment((agreementRepo.getTotalAmountToPay(student.getStdID())!=null?agreementRepo.getTotalAmountToPay(student.getStdID()):0.0));
+                studentDTO.setBalance((agreementRepo.getTotalAmountToPay(student.getStdID())!=null?agreementRepo.getTotalAmountToPay(student.getStdID()):0.0) - (agreementRepo.getTotalAmountToPaid(student.getStdID())!=null?agreementRepo.getTotalAmountToPaid(student.getStdID()):0.0));
                 int age = calculateAge.CalculateAgeINT(student.getDateOfBirth().toString());
                 studentDTO.setAge(age);
                 studentDTOS.add(studentDTO);
             }
-
             log.info("Student data page: {}", studentDataPage);
             responseDTO.setContent(studentDTOS);
             responseDTO.setRecordCount(studentDataPage.getSize());

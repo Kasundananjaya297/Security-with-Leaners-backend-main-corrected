@@ -35,6 +35,8 @@ public class AdminServicesController {
     PackageService packageService;
     @Autowired
     ExtraSessionService extraSessionService;
+    @Autowired
+    PaymentService paymentService;
 
     @PostMapping("/registerStudent")
     public ResponseEntity registerStudent(@RequestBody Student studentDTO){
@@ -222,6 +224,18 @@ public class AdminServicesController {
     public ResponseEntity updateTotalAmountToPay(@RequestBody AgreementDTO agreementDTO){
         System.out.println(agreementDTO.getTotalAmountToPay());
         ResponseDTO responseDTO = agreementService.upDateTotalAmountToPay(agreementDTO);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @PostMapping("/savePayment")
+    public ResponseEntity savePayment(@RequestBody PaymentsDTO paymentsDTO){
+        System.out.println(paymentsDTO);
+        ResponseDTO responseDTO = paymentService.savePayments(paymentsDTO);
+        return new ResponseEntity(responseDTO,HttpStatus.ACCEPTED);
+
+    }
+    @GetMapping("/getPayments/{stdID}/{packageID}")
+    public ResponseEntity getPayments(@PathVariable String stdID,@PathVariable String packageID){
+        ResponseDTO responseDTO = paymentService.getPayments(stdID,packageID);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
 
