@@ -22,4 +22,6 @@ public class ExtraSessionDTO {
     private double priceForExtraLesson;
     private int totalLessons;
     private double price;
+    private String extraLessonVehicleType;
+    private String typeName;
 }

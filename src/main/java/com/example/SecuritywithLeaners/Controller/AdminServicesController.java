@@ -37,6 +37,10 @@ public class AdminServicesController {
     ExtraSessionService extraSessionService;
     @Autowired
     PaymentService paymentService;
+    @Autowired
+    private VehicleTypeService vehicleTypeService;
+    @Autowired
+    private ExtraSessionNotInAgreementService extraSessionNotInAgreementService;
 
     @PostMapping("/registerStudent")
     public ResponseEntity registerStudent(@RequestBody Student studentDTO){
@@ -238,6 +242,28 @@ public class AdminServicesController {
         ResponseDTO responseDTO = paymentService.getPayments(stdID,packageID);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
+    @GetMapping("/getVehicleTypesForExtras/{stdID}")
+    public ResponseEntity getExtraSession(@PathVariable String stdID){
+        ResponseDTO responseDTO = extraSessionService.getVehicleTypesForExtraSession(stdID);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @PostMapping("/saveExtraSession")
+    public ResponseEntity addExtraSessions(@RequestBody List<ExtraSessionDTO> extraSessionDTO){
+        System.out.println(extraSessionDTO);
+        ResponseDTO responseDTO = extraSessionNotInAgreementService.saveExtraSession(extraSessionDTO);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @PutMapping("/updateExtraSessionNotInAgreement")
+    public ResponseEntity updateExtraSessionNotInAgreement(@RequestBody List<ExtraSessionDTO> extraSessionDTO){
+        ResponseDTO responseDTO = extraSessionNotInAgreementService.updateExtraSession(extraSessionDTO);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @GetMapping("/getExtraSessionNotINAgreement/{stdID}/{packageID}")
+    public ResponseEntity getExtraSessionNotInAgreement(@PathVariable String stdID,@PathVariable String packageID){
+        ResponseDTO responseDTO = extraSessionNotInAgreementService.getExtraSessionNotInAgreement(stdID,packageID);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+
 
 
 

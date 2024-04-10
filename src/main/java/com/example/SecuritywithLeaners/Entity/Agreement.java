@@ -31,9 +31,12 @@ public class Agreement {
     private double totalAmountToPay;
     private double totalAmountForExtraSessions;
     private  double totalAmountPaid;
+    private double totalAmountForExtrasNotInAgreement;
     @OneToMany(mappedBy = "agreement", cascade = CascadeType.ALL)
     private List<ExtraSession> extraSessions;
     @OneToMany(mappedBy = "agreement", cascade = CascadeType.ALL)
     private List<Payments> payments;
+    @OneToMany(mappedBy = "agreement",cascade = CascadeType.ALL)
+    private List<ExtrasNotINAgreement> extrasNotINAgreement;
 
 }

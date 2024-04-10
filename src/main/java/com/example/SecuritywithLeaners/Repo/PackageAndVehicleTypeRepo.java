@@ -18,6 +18,8 @@ public interface PackageAndVehicleTypeRepo extends JpaRepository<PackageAndVehic
 
     @Query(value = "SELECT * FROM package_and_vehicle_type WHERE packageID_packageID = :packageID", nativeQuery = true)
     List<PackageAndVehicleType> findByPackageID(String packageID);
+    @Query(value = "SELECT typeid_typeid FROM package_and_vehicle_type WHERE packageID_packageID = :packageID", nativeQuery = true)
+    List<String> findTypeByPackageID(String packageID);
 
 
 

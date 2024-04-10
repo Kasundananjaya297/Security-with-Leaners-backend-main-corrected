@@ -11,17 +11,15 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ExtraSession {
+public class ExtrasNotINAgreement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int extraSessionID;
     @ManyToOne
     private Agreement agreement;
-    @ManyToOne
-    private PackageAndVehicleType packageAndVehicleType;
     private int extraLessons;
     private double price;
     private double priceForExtraLesson;
-    private int totalLessons;
-
+    private String extraLessonVehicleType;
+    private String typeID;
 }

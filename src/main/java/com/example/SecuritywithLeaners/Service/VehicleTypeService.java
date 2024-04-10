@@ -2,6 +2,7 @@ package com.example.SecuritywithLeaners.Service;
 
 import com.example.SecuritywithLeaners.DTO.ResponseDTO;
 import com.example.SecuritywithLeaners.DTO.VehicleTypeDTO;
+import com.example.SecuritywithLeaners.Entity.ExtraSession;
 import com.example.SecuritywithLeaners.Entity.VehicleType;
 import com.example.SecuritywithLeaners.Repo.VehicleTypeRepo;
 import com.example.SecuritywithLeaners.Util.varList;
@@ -87,4 +88,5 @@ public class VehicleTypeService {
         }
         return responseDTO;
     }
+
 }

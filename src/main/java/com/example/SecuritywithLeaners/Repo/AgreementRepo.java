@@ -53,5 +53,15 @@ public interface AgreementRepo extends JpaRepository<Agreement, AgreementID> {
     @Query(value = "UPDATE agreement SET total_amount_paid = :totalAmountPaid WHERE stdid_stdid =:stdID AND packageid_packageid = :packageID",nativeQuery = true)
     void updateTotalAmountPaid(@Param("stdID") String stdID,@Param("totalAmountPaid") double totalAmountPaid,@Param("packageID") String packageID);
 
+    @Query(value = "SELECT packageid_packageid FROM agreement WHERE stdid_stdid = :stdID AND agreement_date =(SELECT MAX(agreement_date) FROM agreement WHERE stdid_stdid=:stdID)",nativeQuery = true)
+    String PackageID(@Param("stdID") String stdID);
+
+    @Modifying
+    @Query(value = "UPDATE agreement SET total_amount_for_extras_not_in_agreement = :totalAmountForExtrasNotInAgreement WHERE stdid_stdid =:stdID AND packageid_packageid = :packageID",nativeQuery = true)
+    void updateTotalAmountForExtrasNotInAgreement(@Param("stdID") String stdID,@Param("totalAmountForExtrasNotInAgreement") double totalAmountForExtrasNotInAgreement,@Param("packageID") String packageID);
+
+    @Query(value = "SELECT total_amount_for_extras_not_in_agreement FROM agreement WHERE stdid_stdid =:stdID AND agreement_date =(SELECT MAX(agreement_date) FROM agreement WHERE stdid_stdid=:stdID)", nativeQuery = true)
+    Double getTotalAmountForExtrasNotInAgreement(@Param("stdID") String stdID);
+
 }
 

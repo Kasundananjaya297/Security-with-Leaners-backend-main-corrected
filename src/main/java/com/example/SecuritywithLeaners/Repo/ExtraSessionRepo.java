@@ -7,6 +7,7 @@ import com.example.SecuritywithLeaners.Entity.ExtraSessionID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -22,5 +23,4 @@ public interface ExtraSessionRepo extends JpaRepository<ExtraSession,Integer> {
 
     @Query(value = "SELECT count(*) FROM extra_session e WHERE e.agreement_stdid_stdid = :stdID AND e.agreement_packageid_packageid = :packageID AND package_and_vehicle_type_typeid_typeid =:typeID", nativeQuery = true)
     int checkExtraSession(@PathVariable("stdID") String stdID, @PathVariable("packageID") String packageID, @PathVariable("typeID") String typeID);
-
 }

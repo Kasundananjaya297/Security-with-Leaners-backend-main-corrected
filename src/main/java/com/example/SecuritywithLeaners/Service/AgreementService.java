@@ -30,6 +30,7 @@ public class AgreementService {
     @Autowired
     StudentRepo studentRepo;
 
+
     @Autowired
     PackageAndVehicleTypeRepo packageAndVehicleTypeRepo;
 
@@ -138,6 +139,7 @@ public class AgreementService {
                 agreementDTO.setTotalAmountToPay(a.getTotalAmountToPay());
                 agreementDTO.setTotalAmountForExtraSessions(a.getTotalAmountForExtraSessions());
                 agreementDTO.setTotalAmountPaid(a.getTotalAmountPaid());
+                agreementDTO.setTotalAmountForExtrasNotInAgreement(a.getTotalAmountForExtrasNotInAgreement());
                 List<PackageAndVehicleTypeDTO> packageAndVehicleTypeDTOS = new ArrayList<>();
                 int i =0;
                 for(PackageAndVehicleType p : a.getPackageID().getPackageAndVehicleType()){
@@ -185,7 +187,8 @@ public class AgreementService {
                 agreementRepo.updateDiscount(agreementDTO.getStdID(),agreementDTO.getDiscount(),(agreementDTO.getPackagePrice()-agreementDTO.getDiscount()),agreementDTO.getPackageID());
                 double totalAmount = agreementRepo.getTotalAmount(agreementDTO.getStdID());
                 double totalForExtraLession = agreementRepo.getTotalAmountForExtraSessions(agreementDTO.getStdID());
-                agreementRepo.updateTotalAmountToPay(agreementDTO.getStdID(),(totalAmount+totalForExtraLession),agreementDTO.getPackageID());//check
+                double totalAmountForExtrasNotINAgreement = agreementRepo.getTotalAmountForExtrasNotInAgreement(agreementDTO.getStdID());
+                agreementRepo.updateTotalAmountToPay(agreementDTO.getStdID(),(totalAmount+totalForExtraLession+totalAmountForExtrasNotINAgreement),agreementDTO.getPackageID());//check
                 responseDTO.setCode(varList.RSP_SUCCES);
                 responseDTO.setStatus(HttpStatus.ACCEPTED);
                 responseDTO.setMessage("Discount updated successfully");
@@ -232,6 +235,7 @@ public class AgreementService {
             agreementID.setPackageID(apackage);
             if(agreementRepo.existsById(agreementID)){
                 agreementRepo.deleteById(agreementID);
+                studentRepo.updateRegistrationStatus(false,stdID);
                 responseDTO.setCode(varList.RSP_SUCCES);
                 responseDTO.setStatus(HttpStatus.ACCEPTED);
                 responseDTO.setMessage("Agreement deleted successfully");
@@ -262,8 +266,9 @@ public class AgreementService {
             agreementID.setPackageID(apackage);
             if(agreementRepo.existsById(agreementID)){
                 double totalAmount = agreementRepo.getTotalAmount(agreementDTO.getStdID());
+                double totalAmountForExtrasNotINAgreement = agreementRepo.getTotalAmountForExtrasNotInAgreement(agreementDTO.getStdID());
                 agreementRepo.updateTotalAmountForExtraSessions(agreementDTO.getStdID(),agreementDTO.getTotalAmountToPay(),agreementDTO.getPackageID());
-                agreementRepo.updateTotalAmountToPay(agreementDTO.getStdID(),(totalAmount+agreementDTO.getTotalAmountToPay()),agreementDTO.getPackageID());
+                agreementRepo.updateTotalAmountToPay(agreementDTO.getStdID(),(totalAmount+agreementDTO.getTotalAmountToPay()+totalAmountForExtrasNotINAgreement),agreementDTO.getPackageID());
                 responseDTO.setCode(varList.RSP_SUCCES);
                 responseDTO.setStatus(HttpStatus.ACCEPTED);
                 responseDTO.setMessage("Total Amount to pay updated successfully");
