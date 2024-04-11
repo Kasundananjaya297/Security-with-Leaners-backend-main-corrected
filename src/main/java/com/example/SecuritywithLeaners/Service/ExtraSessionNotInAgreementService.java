@@ -89,6 +89,35 @@ public class ExtraSessionNotInAgreementService {
     }
     public ResponseDTO updateExtraSession(List<ExtraSessionDTO> extraSessionDTOS){
         ResponseDTO responseDTO = new ResponseDTO();
+        try{
+            for (ExtraSessionDTO e : extraSessionDTOS) {
+                if(extraSessionNotInAgreementRepo.countExtraSession(e.getStdID(),e.getPackageID(),e.getTypeID())>0){
+                    extraSessionNotInAgreementRepo.updateExtraSession(e.getStdID(),e.getPackageID(),e.getTypeID(),e.getExtraLessons(),e.getPrice(),e.getPriceForExtraLesson());
+                    responseDTO.setStatus(HttpStatus.ACCEPTED);
+                    responseDTO.setMessage("Success");
+                    responseDTO.setContent(null);
+                    responseDTO.setCode(varList.RSP_SUCCES);
+                }else{
+                    responseDTO.setStatus(HttpStatus.NOT_FOUND);
+                    responseDTO.setMessage("No Data Found");
+                    responseDTO.setContent(null);
+                    responseDTO.setCode(varList.RSP_NO_DATA_FOUND);
+                    break;
+                }
+            }
+            double totalPriceForExtrasNotINAgeement = extraSessionNotInAgreementRepo.getTotalPrice(extraSessionDTOS.get(0).getStdID(),extraSessionDTOS.get(0).getPackageID());
+            agreementRepo.updateTotalAmountForExtrasNotInAgreement(extraSessionDTOS.get(0).getStdID(),totalPriceForExtrasNotINAgeement,extraSessionDTOS.get(0).getPackageID());
+            double totalAmountForExtraSesssion = agreementRepo.getTotalAmountForExtraSessions(extraSessionDTOS.get(0).getStdID());
+            double totalAmount = agreementRepo.getTotalAmount(extraSessionDTOS.get(0).getStdID());
+            agreementRepo.updateTotalAmountToPay(extraSessionDTOS.get(0).getStdID(),totalPriceForExtrasNotINAgeement+totalAmountForExtraSesssion+totalAmount,extraSessionDTOS.get(0).getPackageID());
+                }
+        catch (Exception e){
+            log.error(e.getMessage());
+            responseDTO.setCode(varList.RSP_FAIL);
+            responseDTO.setMessage("Failed");
+            responseDTO.setContent(null);
+            responseDTO.setStatus(HttpStatus.BAD_REQUEST);
+        }
 
 
 

@@ -255,6 +255,7 @@ public class AdminServicesController {
     }
     @PutMapping("/updateExtraSessionNotInAgreement")
     public ResponseEntity updateExtraSessionNotInAgreement(@RequestBody List<ExtraSessionDTO> extraSessionDTO){
+        System.out.println(extraSessionDTO);
         ResponseDTO responseDTO = extraSessionNotInAgreementService.updateExtraSession(extraSessionDTO);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
@@ -263,6 +264,7 @@ public class AdminServicesController {
         ResponseDTO responseDTO = extraSessionNotInAgreementService.getExtraSessionNotInAgreement(stdID,packageID);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
+
 
 
 

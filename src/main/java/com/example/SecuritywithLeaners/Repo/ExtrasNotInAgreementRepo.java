@@ -2,6 +2,7 @@ package com.example.SecuritywithLeaners.Repo;
 
 import com.example.SecuritywithLeaners.Entity.ExtrasNotINAgreement;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -19,4 +20,8 @@ public interface ExtrasNotInAgreementRepo extends JpaRepository<ExtrasNotINAgree
 
     @Query(value = "SELECT typeid FROM extras_notinagreement WHERE agreement_packageid_packageid =:packageID AND agreement_stdid_stdid =:stdID",nativeQuery = true)
     List<String> getTypeID(@Param("stdID") String stdID,@Param("packageID") String packageID);
+
+    @Modifying
+    @Query(value = "UPDATE extras_notinagreement SET extra_lessons = :extraLessons , price = :price , price_for_extra_lesson = :priceForExtraLesson  WHERE agreement_packageid_packageid =:packageID AND agreement_stdid_stdid =:stdID AND typeid =:typeID",nativeQuery = true)
+    void updateExtraSession(@Param("stdID") String stdID,@Param("packageID") String packageID,@Param("typeID") String typeID,@Param("extraLessons") int extraLessons,@Param("price") double price,@Param("priceForExtraLesson") double priceForExtraLesson);
 }
