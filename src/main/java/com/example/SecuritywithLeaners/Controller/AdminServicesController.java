@@ -41,6 +41,10 @@ public class AdminServicesController {
     private VehicleTypeService vehicleTypeService;
     @Autowired
     private ExtraSessionNotInAgreementService extraSessionNotInAgreementService;
+    @Autowired
+    private VehicleService vechicleService;
+    @Autowired
+    private FuelTypeService fuelTypeService;
 
     @PostMapping("/registerStudent")
     public ResponseEntity registerStudent(@RequestBody Student studentDTO){
@@ -262,6 +266,22 @@ public class AdminServicesController {
     @GetMapping("/getExtraSessionNotINAgreement/{stdID}/{packageID}")
     public ResponseEntity getExtraSessionNotInAgreement(@PathVariable String stdID,@PathVariable String packageID){
         ResponseDTO responseDTO = extraSessionNotInAgreementService.getExtraSessionNotInAgreement(stdID,packageID);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @PostMapping("/saveVehicle")
+    public ResponseEntity saveVehicle(@RequestBody VehicleDTO vehicleDTO){
+        System.out.println(vehicleDTO);
+        ResponseDTO responseDTO = vechicleService.saveVehicle(vehicleDTO);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @PostMapping("/saveFuelType")
+    public ResponseEntity saveFuelType(@RequestBody FuelTypeDTO fuelTypeDTO){
+        ResponseDTO responseDTO = fuelTypeService.saveFuelType(fuelTypeDTO);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @GetMapping("/getFuelTypes")
+    public ResponseEntity getFuelTypes(){
+        ResponseDTO responseDTO = fuelTypeService.getFuelTypes();
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
 

@@ -234,12 +234,18 @@ public class AgreementService {
             agreementID.setStdID(student);
             agreementID.setPackageID(apackage);
             if(agreementRepo.existsById(agreementID)){
-                agreementRepo.deleteById(agreementID);
-                studentRepo.updateRegistrationStatus(false,stdID);
-                responseDTO.setCode(varList.RSP_SUCCES);
-                responseDTO.setStatus(HttpStatus.ACCEPTED);
-                responseDTO.setMessage("Agreement deleted successfully");
-                responseDTO.setContent(null);
+                if(agreementRepo.getTotalAmountToPaid(stdID)>0){
+                    responseDTO.setCode(varList.RSP_FAIL);
+                    responseDTO.setStatus(HttpStatus.ALREADY_REPORTED);
+                    responseDTO.setMessage("Can't Delete");
+                }else {
+                    agreementRepo.deleteById(agreementID);
+                    studentRepo.updateRegistrationStatus(false,stdID);
+                    responseDTO.setCode(varList.RSP_SUCCES);
+                    responseDTO.setStatus(HttpStatus.ACCEPTED);
+                    responseDTO.setMessage("Agreement deleted successfully");
+                    responseDTO.setContent(null);
+                }
             }else{
                 responseDTO.setCode(varList.RSP_NO_DATA_FOUND);
                 responseDTO.setStatus(HttpStatus.NOT_FOUND);

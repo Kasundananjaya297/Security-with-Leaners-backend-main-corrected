@@ -23,7 +23,8 @@ public class VehicleType {
     private Boolean typeManual;
     @OneToMany(mappedBy = "selectedType")
     private List<PermitAndVehicleType> permitAndVehicleType;
-
+    @OneToMany(mappedBy = "registrationNo")
+    private List<Vehicle> vehicles;
 }
 // "typeID": "B",
 //         "typeName": "Motor Tricycle",
