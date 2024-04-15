@@ -21,6 +21,7 @@ public class InsuranceService {
         ResponseDTO responseDTO = new ResponseDTO();
         try {
             if(!insuranceRepo.existsById(insuranceDTO.getCertificateNo())){
+
                 Insurance insurance = new Insurance();
                 System.out.println(insurance);
                 Vehicle vehicle = new Vehicle();
@@ -37,6 +38,8 @@ public class InsuranceService {
                 insurance.setInsuranceCompany(insuranceDTO.getInsuranceCompany());
                 insurance.setVehicle(vehicle);
                 insurance.setInsuranceType(insuranceTypes);
+                insurance.setAnnualFee(insuranceDTO.getAnnualFee());
+
 
                 insuranceRepo.save(insurance);
                 responseDTO.setCode(varList.RSP_SUCCES);

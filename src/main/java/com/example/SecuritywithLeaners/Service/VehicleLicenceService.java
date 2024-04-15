@@ -32,6 +32,7 @@ public class VehicleLicenceService {
                vehicleLicense.setExpiryDate(vehicleLicenceDTO.getExpiryDate());
                vehicleLicense.setLicenseLink(vehicleLicenceDTO.getLicenseLink());
                vehicle.setRegistrationNo(vehicleLicenceDTO.getRegistrationNo());
+               vehicleLicense.setStartDate(vehicleLicenceDTO.getStartDate());
                vehicleLicense.setVehicle(vehicle);
                 vehicleLicenceRepo.save(vehicleLicense);
                 responseDTO.setStatus(HttpStatus.ACCEPTED);

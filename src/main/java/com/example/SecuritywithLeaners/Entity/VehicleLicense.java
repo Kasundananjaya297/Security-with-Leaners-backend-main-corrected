@@ -21,6 +21,7 @@ public class VehicleLicense {
     private double finesPaid;
     private LocalDate issuedDate;
     private LocalDate expiryDate;
+    private LocalDate startDate;
     private String licenseLink;
     @ManyToOne
     @JoinColumn(name = "registrationNoFk", referencedColumnName = "registrationNo")

@@ -14,10 +14,12 @@ public class VehicleLicenceDTO {
     private double annualFee;
     private double arrearsFee;
     private double finesPaid;
+    private LocalDate startDate;
     private LocalDate issuedDate;
     private LocalDate expiryDate;
     private String licenseLink;
     private String registrationNo;
     private int validMonths;
     private int validDays;
+
 }

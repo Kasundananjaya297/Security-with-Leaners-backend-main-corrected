@@ -20,7 +20,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -76,13 +78,14 @@ public class VehicleService {
                 vehicleDTO.setVehiclePhoto(vehicle.getVehiclePhoto());
                 vehicleDTOS.add(vehicleDTO);
                 List<VehicleLicenceDTO> vehicleLicenceDTOS = new ArrayList<>();
-                for(VehicleLicense vehicleLicense:vehicle.getVehicleLicenses()){
+                for(VehicleLicense vehicleLicense:vehicle.getVehicleLicenses().stream().sorted(Comparator.comparing(VehicleLicense::getExpiryDate).reversed()).collect(Collectors.toList())){
                     VehicleLicenceDTO vehicleLicenceDTO = new VehicleLicenceDTO();
                     vehicleLicenceDTO.setLicenseNo(vehicleLicense.getLicenseNo());
                     vehicleLicenceDTO.setAnnualFee(vehicleLicense.getAnnualFee());
                     vehicleLicenceDTO.setArrearsFee(vehicleLicense.getArrearsFee());
                     vehicleLicenceDTO.setFinesPaid(vehicleLicense.getFinesPaid());
                     vehicleLicenceDTO.setIssuedDate(vehicleLicense.getIssuedDate());
+                    vehicleLicenceDTO.setStartDate(vehicleLicense.getStartDate());
                     vehicleLicenceDTO.setExpiryDate(vehicleLicense.getExpiryDate());
                     vehicleLicenceDTO.setLicenseLink(vehicleLicense.getLicenseLink());
                     vehicleLicenceDTO.setRegistrationNo(vehicleLicense.getVehicle().getRegistrationNo());
@@ -94,7 +97,7 @@ public class VehicleService {
                 }
                 vehicleDTO.setLicenses(vehicleLicenceDTOS);
                 List<InsuranceDTO> insuranceDTOS = new ArrayList<>();
-                for(Insurance insurance:vehicle.getInsurances()){
+                for(Insurance insurance:vehicle.getInsurances().stream().sorted(Comparator.comparing(Insurance::getEndDate).reversed()).collect(Collectors.toList())){
                     InsuranceDTO insuranceDTO = new InsuranceDTO();
                     insuranceDTO.setCertificateNo(insurance.getCertificateNo());
                     insuranceDTO.setStartDate(insurance.getStartDate());
