@@ -3,10 +3,7 @@ package com.example.SecuritywithLeaners.Controller;
 
 import com.example.SecuritywithLeaners.DTO.*;
 import com.example.SecuritywithLeaners.Entity.*;
-import com.example.SecuritywithLeaners.Entity.Package;
-import com.example.SecuritywithLeaners.Entity.Views.View;
 import com.example.SecuritywithLeaners.Service.*;
-import com.fasterxml.jackson.annotation.JsonView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,6 +42,12 @@ public class AdminServicesController {
     private VehicleService vechicleService;
     @Autowired
     private FuelTypeService fuelTypeService;
+    @Autowired
+    private VehicleLicenceService vehicleLicenceService;
+    @Autowired
+    private InsuranceTypeService insuranceTypeService;
+    @Autowired
+    private InsuranceService insuranceService;
 
     @PostMapping("/registerStudent")
     public ResponseEntity registerStudent(@RequestBody Student studentDTO){
@@ -282,6 +285,37 @@ public class AdminServicesController {
     @GetMapping("/getFuelTypes")
     public ResponseEntity getFuelTypes(){
         ResponseDTO responseDTO = fuelTypeService.getFuelTypes();
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @GetMapping("/getVehicles/{field}/{order}/{pageSize}/{offset}")
+    public ResponseEntity getVehicles(@PathVariable String field,@PathVariable String order,@PathVariable int pageSize,@PathVariable int offset){
+        ResponseDTO responseDTO = vechicleService.getVehicles(field,order,pageSize,offset);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @PutMapping("/updateVehicleBook")
+    public ResponseEntity updateVehicle(@RequestBody VehicleDTO vehicleDTO){
+        ResponseDTO responseDTO = vechicleService.updateUrl(vehicleDTO);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @PostMapping("/saveVehicleLicense")
+    public ResponseEntity saveVehicleLicense(@RequestBody VehicleLicenceDTO vehicleLicenseDTO){
+        ResponseDTO responseDTO = vehicleLicenceService.saveVehicleLicense(vehicleLicenseDTO);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @PostMapping("/saveNewVehicleInsuranceType")
+    public ResponseEntity saveNewVehicleInsuranceType(@RequestBody InsuranceTypeDTO insuranceTypeDTO){
+        ResponseDTO responseDTO = insuranceTypeService.saveInsuranceType(insuranceTypeDTO);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @GetMapping("/getInsuranceTypes")
+    public ResponseEntity getInsuranceTypes(){
+        ResponseDTO responseDTO = insuranceTypeService.getInsuranceTypes();
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @PostMapping("/saveInsurance")
+    public ResponseEntity saveInsurance(@RequestBody InsuranceDTO insuranceDTO){
+        System.out.println(insuranceDTO);
+        ResponseDTO responseDTO = insuranceService.saveInsurance(insuranceDTO);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
 

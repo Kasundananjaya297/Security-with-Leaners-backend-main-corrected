@@ -1,12 +1,15 @@
 package com.example.SecuritywithLeaners.DTO;
 
 import com.example.SecuritywithLeaners.Entity.FuelType;
+import com.example.SecuritywithLeaners.Entity.VehicleLicense;
 import com.example.SecuritywithLeaners.Entity.VehicleType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,10 +19,14 @@ public class VehicleDTO {
     private String make;
     private String color;
     private int passengerCapacity;
-    @OneToOne
     private String fuelType;
     private int cylinderCapacity;
     private String urlOfBook;
-    private String vehicleTypes;
+    private String typeID;
+    private boolean status;
     private String autoOrManual;
+    private String vehicleClass;
+    private String vehiclePhoto;
+    private List<VehicleLicenceDTO> licenses;
+    private List<InsuranceDTO> insurances;
 }

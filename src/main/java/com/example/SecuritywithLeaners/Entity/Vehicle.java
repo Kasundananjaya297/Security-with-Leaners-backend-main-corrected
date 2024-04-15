@@ -1,22 +1,15 @@
 package com.example.SecuritywithLeaners.Entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 public class Vehicle {
     @Id
     private String registrationNo;
@@ -28,7 +21,13 @@ public class Vehicle {
     private int cylinderCapacity;
     private String urlOfBook;
     private String autoOrManual;
-    @ManyToOne
-    private VehicleType vehicleTypes;
+    private String vehiclePhoto;
+    private boolean status;
+    @ManyToOne()
+    private VehicleType typeID;
+    @OneToMany(mappedBy = "vehicle" ,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Insurance> insurances;
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<VehicleLicense> vehicleLicenses;
 
 }

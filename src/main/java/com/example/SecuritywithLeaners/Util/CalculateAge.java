@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 @Transactional
@@ -50,4 +51,19 @@ public class CalculateAge {
         }
         return monthCount;
     }
+    public int calculateDays(String d){
+        long daysBetween = ChronoUnit.DAYS.between(LocalDate.now(),LocalDate.parse(d));
+        int months= CalculateMonths(d);
+        return Math.toIntExact(daysBetween);
+    }
+    public int CalculateMonths(String d){
+        long monthsBetween = ChronoUnit.MONTHS.between(LocalDate.now(),LocalDate.parse(d));
+        LocalDate nextMonthStartDate = LocalDate.now().plusMonths(monthsBetween);
+        if (nextMonthStartDate.isAfter(LocalDate.parse(d))) {
+            return Math.toIntExact(monthsBetween - 1); // Subtract 1 if the next month's start date is after the end date
+        } else {
+            return Math.toIntExact(monthsBetween);
+        }
+    }
+
 }
