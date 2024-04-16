@@ -1,9 +1,7 @@
 package com.example.SecuritywithLeaners.Service;
 
-import com.example.SecuritywithLeaners.DTO.InsuranceDTO;
-import com.example.SecuritywithLeaners.DTO.ResponseDTO;
-import com.example.SecuritywithLeaners.DTO.VehicleDTO;
-import com.example.SecuritywithLeaners.DTO.VehicleLicenceDTO;
+import com.example.SecuritywithLeaners.DTO.*;
+import com.example.SecuritywithLeaners.Entity.EmissionTest;
 import com.example.SecuritywithLeaners.Entity.Insurance;
 import com.example.SecuritywithLeaners.Entity.Vehicle;
 import com.example.SecuritywithLeaners.Entity.VehicleLicense;
@@ -76,6 +74,8 @@ public class VehicleService {
                 vehicleDTO.setAutoOrManual(vehicle.getAutoOrManual());
                 vehicleDTO.setVehicleClass(vehicle.getTypeID().getTypeName());
                 vehicleDTO.setVehiclePhoto(vehicle.getVehiclePhoto());
+                vehicleDTO.setModal(vehicle.getModal());
+                vehicleDTO.setDateOfRegistration(vehicle.getDateOfRegistration());
                 vehicleDTOS.add(vehicleDTO);
                 List<VehicleLicenceDTO> vehicleLicenceDTOS = new ArrayList<>();
                 for(VehicleLicense vehicleLicense:vehicle.getVehicleLicenses().stream().sorted(Comparator.comparing(VehicleLicense::getExpiryDate).reversed()).collect(Collectors.toList())){
@@ -115,6 +115,22 @@ public class VehicleService {
                     insuranceDTOS.add(insuranceDTO);
                 }
                 vehicleDTO.setInsurances(insuranceDTOS);
+                List<EmissionTestDTO>  emissionTestDTOS = new ArrayList<>();
+                for(EmissionTest emissionTest : vehicle.getEmissionTests().stream().sorted(Comparator.comparing(EmissionTest::getExpiryDate).reversed()).collect(Collectors.toList())){
+                    EmissionTestDTO emissionTestDTO = new EmissionTestDTO();
+                    emissionTestDTO.setSerialNo(emissionTest.getSerialNo());
+                    emissionTestDTO.setRegistrationNo(emissionTest.getVehicle().getRegistrationNo());
+                    emissionTestDTO.setIssuedDate(emissionTest.getIssuedDate());
+                    emissionTestDTO.setExpiryDate(emissionTest.getExpiryDate());
+                    emissionTestDTO.setUrlOfDocument(emissionTest.getUrlOfDocument());
+                    emissionTestDTO.setEmissionTestFee(emissionTest.getEmissionTestFee());
+                    int months = calculateAge.CalculateMonths(emissionTest.getExpiryDate().toString());
+                    int days = (calculateAge.calculateDays(emissionTest.getExpiryDate().toString()));
+                    emissionTestDTO.setValidDays(Math.max(days,0));
+                    emissionTestDTO.setValidMonths(Math.max(months,0));
+                    emissionTestDTOS.add(emissionTestDTO);
+                }
+                vehicleDTO.setEmissionTests(emissionTestDTOS);
             }
             responseDTO.setMessage("Vehicles Fetched Successfully");
             responseDTO.setCode(varList.RSP_SUCCES);

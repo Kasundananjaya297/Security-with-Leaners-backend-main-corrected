@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @AllArgsConstructor
@@ -27,6 +28,9 @@ public class VehicleDTO {
     private String autoOrManual;
     private String vehicleClass;
     private String vehiclePhoto;
+    private String modal;
+    private LocalDate dateOfRegistration;
     private List<VehicleLicenceDTO> licenses;
     private List<InsuranceDTO> insurances;
+    private List<EmissionTestDTO> emissionTests;
 }

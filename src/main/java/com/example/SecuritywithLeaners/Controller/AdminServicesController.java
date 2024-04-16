@@ -48,6 +48,8 @@ public class AdminServicesController {
     private InsuranceTypeService insuranceTypeService;
     @Autowired
     private InsuranceService insuranceService;
+    @Autowired
+    private EmissionTestSevice emissionTestSevice;
 
     @PostMapping("/registerStudent")
     public ResponseEntity registerStudent(@RequestBody Student studentDTO){
@@ -318,9 +320,10 @@ public class AdminServicesController {
         ResponseDTO responseDTO = insuranceService.saveInsurance(insuranceDTO);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
-
-
-
-
+    @PostMapping("/saveEmissionTest")
+    public ResponseEntity saveEmissionTest(@RequestBody EmissionTestDTO emissionTestDTO){
+        ResponseDTO responseDTO = emissionTestSevice.saveEmissionTest(emissionTestDTO);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
 
 }

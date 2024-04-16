@@ -4,6 +4,7 @@ package com.example.SecuritywithLeaners.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -23,11 +24,15 @@ public class Vehicle {
     private String autoOrManual;
     private String vehiclePhoto;
     private boolean status;
+    private String modal;
+    private LocalDate dateOfRegistration;
     @ManyToOne()
     private VehicleType typeID;
     @OneToMany(mappedBy = "vehicle" ,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Insurance> insurances;
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<VehicleLicense> vehicleLicenses;
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<EmissionTest> emissionTests;
 
 }
