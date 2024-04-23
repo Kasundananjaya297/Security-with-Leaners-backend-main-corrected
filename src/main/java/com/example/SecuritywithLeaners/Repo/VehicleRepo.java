@@ -11,5 +11,12 @@ public interface VehicleRepo extends JpaRepository<Vehicle, String> {
     @Query(value = "update vehicle set url_of_book =:url where registration_no =:regNo", nativeQuery = true)
     void updateUrl(@Param("regNo") String regNo,@Param("url") String url);
 
+    @Modifying
+    @Query(value = "UPDATE vehicle SET vehicle_status =:status where registration_no =:regNo", nativeQuery = true)
+    void updateStatus(@Param("regNo") String regNo,@Param("status") String status);
+
+    @Query(value = "SELECT vehicle_status FROM vehicle where registration_no =:regNo",nativeQuery = true )
+    String getStatus(@Param("regNo") String regNo);
+
 
 }

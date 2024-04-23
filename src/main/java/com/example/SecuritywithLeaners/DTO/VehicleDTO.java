@@ -30,7 +30,11 @@ public class VehicleDTO {
     private String vehiclePhoto;
     private String modal;
     private LocalDate dateOfRegistration;
+    private int meterReading;
+    private String invoiceUrl;
+    private String vehicleStatus;
     private List<VehicleLicenceDTO> licenses;
     private List<InsuranceDTO> insurances;
     private List<EmissionTestDTO> emissionTests;
+    private List<VehicleServiceORRepairDTO> vehicleServiceORRepairs;
 }

@@ -4,10 +4,12 @@ package com.example.SecuritywithLeaners.Controller;
 import com.example.SecuritywithLeaners.DTO.*;
 import com.example.SecuritywithLeaners.Entity.*;
 import com.example.SecuritywithLeaners.Service.*;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,6 +52,10 @@ public class AdminServicesController {
     private InsuranceService insuranceService;
     @Autowired
     private EmissionTestSevice emissionTestSevice;
+    @Autowired
+    private VehicleServiceOrRepairService vehicleServiceOrRepair;
+    @Autowired
+    private CommonItemsOrServiesOfferedByServiceService commonItemsOrServiesOfferedByService;
 
     @PostMapping("/registerStudent")
     public ResponseEntity registerStudent(@RequestBody Student studentDTO){
@@ -325,5 +331,26 @@ public class AdminServicesController {
         ResponseDTO responseDTO = emissionTestSevice.saveEmissionTest(emissionTestDTO);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
+    @PostMapping("/saveVehicleServiceOrRepair")
+    public ResponseEntity saveVehicleServiceOrRepair(@RequestBody VehicleServiceORRepairDTO vehicleServiceORRepairDTO){
+        ResponseDTO responseDTO = vehicleServiceOrRepair.saveVehicleServiceOrRepair(vehicleServiceORRepairDTO);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @PostMapping("/commonItemsOrServiceOfferdByService")
+    public ResponseEntity saveCommonItemsOfferedByService(@RequestBody CommonItemsOrServiesOfferedByServiceDTO commonItemsOrServiesOfferedByServiceDTO){
+        ResponseDTO responseDTO = commonItemsOrServiesOfferedByService.saveCommonItemsOrServiesOfferedByService(commonItemsOrServiesOfferedByServiceDTO);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @GetMapping("/getCommonItemsOrServiceOfferdByService")
+    public ResponseEntity getCommonItemsOfferedByService(){
+        ResponseDTO responseDTO = commonItemsOrServiesOfferedByService.getCommonItemsOrServiesOfferedByService();
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @PutMapping("/updateCommonItemsOrServiceOfferdByServiceEnd")
+    public ResponseEntity updateCommonItemsOrServiceOfferdByServiceEnd(@RequestBody VehicleServiceORRepairDTO vehicleServiceORRepairDTO){
+        ResponseDTO responseDTO = vehicleServiceOrRepair.updateVehicleServiceOrRepairEnd(vehicleServiceORRepairDTO);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+
 
 }

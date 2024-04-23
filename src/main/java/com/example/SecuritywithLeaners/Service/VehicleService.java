@@ -1,10 +1,7 @@
 package com.example.SecuritywithLeaners.Service;
 
 import com.example.SecuritywithLeaners.DTO.*;
-import com.example.SecuritywithLeaners.Entity.EmissionTest;
-import com.example.SecuritywithLeaners.Entity.Insurance;
-import com.example.SecuritywithLeaners.Entity.Vehicle;
-import com.example.SecuritywithLeaners.Entity.VehicleLicense;
+import com.example.SecuritywithLeaners.Entity.*;
 import com.example.SecuritywithLeaners.Repo.VehicleRepo;
 import com.example.SecuritywithLeaners.Util.CalculateAge;
 import com.example.SecuritywithLeaners.Util.varList;
@@ -75,6 +72,7 @@ public class VehicleService {
                 vehicleDTO.setVehicleClass(vehicle.getTypeID().getTypeName());
                 vehicleDTO.setVehiclePhoto(vehicle.getVehiclePhoto());
                 vehicleDTO.setModal(vehicle.getModal());
+                vehicleDTO.setVehicleStatus(vehicle.getVehicleStatus());
                 vehicleDTO.setDateOfRegistration(vehicle.getDateOfRegistration());
                 vehicleDTOS.add(vehicleDTO);
                 List<VehicleLicenceDTO> vehicleLicenceDTOS = new ArrayList<>();
@@ -131,6 +129,49 @@ public class VehicleService {
                     emissionTestDTOS.add(emissionTestDTO);
                 }
                 vehicleDTO.setEmissionTests(emissionTestDTOS);
+                List<VehicleServiceORRepairDTO> vehicleServiceORRepairDTOS = new ArrayList<>();
+                for(VehicleServicesAndRepair vehicleServicesAndRepair:vehicle.getVehicleServicesAndRepairs().stream().sorted(Comparator.comparing(VehicleServicesAndRepair::getServicedDate).reversed()).collect(Collectors.toList())){
+                    VehicleServiceORRepairDTO vehicleServiceORRepairDTO = new VehicleServiceORRepairDTO();
+                    vehicleServiceORRepairDTO.setId(vehicleServicesAndRepair.getId());
+                    vehicleServiceORRepairDTO.setInvoiceNo(vehicleServicesAndRepair.getInvoiceNo());
+                    vehicleServiceORRepairDTO.setMilage(vehicleServicesAndRepair.getMilage());
+                    vehicleServiceORRepairDTO.setContactNumber(vehicleServicesAndRepair.getContactNumber());
+                    vehicleServiceORRepairDTO.setRepairCenter(vehicleServicesAndRepair.getRepairCenter());
+                    vehicleServiceORRepairDTO.setServicedDate(vehicleServicesAndRepair.getServicedDate());
+                    vehicleServiceORRepairDTO.setServicedTime(vehicleServicesAndRepair.getServicedTime());
+                    vehicleServiceORRepairDTO.setReturnDate(vehicleServicesAndRepair.getReturnDate());
+                    vehicleServiceORRepairDTO.setReturnTime(vehicleServicesAndRepair.getReturnTime());
+                    vehicleServiceORRepairDTO.setInvoiceUrl(vehicleServicesAndRepair.getInvoiceUrl());
+                    vehicleServiceORRepairDTOS.add(vehicleServiceORRepairDTO);
+                }
+                vehicleDTO.setVehicleServiceORRepairs(vehicleServiceORRepairDTOS);
+                List<VehicleServiceORRepairDTO> vehicleServiceORRepairDTOSList = new ArrayList<>();
+                for(VehicleServicesAndRepair vehicleServicesAndRepair:vehicle.getVehicleServicesAndRepairs().stream().sorted(Comparator.comparing(VehicleServicesAndRepair::getId).reversed()).collect(Collectors.toList())){
+                    VehicleServiceORRepairDTO vehicleServiceORRepairDTO = new VehicleServiceORRepairDTO();
+                    vehicleServiceORRepairDTO.setId(vehicleServicesAndRepair.getId());
+                    vehicleServiceORRepairDTO.setInvoiceNo(vehicleServicesAndRepair.getInvoiceNo());
+                    vehicleServiceORRepairDTO.setMilage(vehicleServicesAndRepair.getMilage());
+                    vehicleServiceORRepairDTO.setContactNumber(vehicleServicesAndRepair.getContactNumber());
+                    vehicleServiceORRepairDTO.setRepairCenter(vehicleServicesAndRepair.getRepairCenter());
+                    vehicleServiceORRepairDTO.setServicedDate(vehicleServicesAndRepair.getServicedDate());
+                    vehicleServiceORRepairDTO.setServicedTime(vehicleServicesAndRepair.getServicedTime());
+                    vehicleServiceORRepairDTO.setReturnDate(vehicleServicesAndRepair.getReturnDate());
+                    vehicleServiceORRepairDTO.setReturnTime(vehicleServicesAndRepair.getReturnTime());
+                    vehicleServiceORRepairDTO.setInvoiceUrl(vehicleServicesAndRepair.getInvoiceUrl());
+                    vehicleServiceORRepairDTO.setTotalAmountForService(vehicleServicesAndRepair.getTotalAmountForService());
+                    vehicleServiceORRepairDTOSList.add(vehicleServiceORRepairDTO);
+                    List<ItemORDoneDTO> itemORDoneDTOS = new ArrayList<>();
+                    for(ItemsORDone itemsORDone:vehicleServicesAndRepair.getItemsORDones()){
+                        ItemORDoneDTO itemORDoneDTO = new ItemORDoneDTO();
+                        itemORDoneDTO.setItemID(itemsORDone.getItemID().getItemID());
+                        itemORDoneDTO.setTotalAmount(itemsORDone.getTotalAmount());
+                        itemORDoneDTO.setItemName(itemsORDone.getItemID().getItemName());
+                        itemORDoneDTOS.add(itemORDoneDTO);
+                    }
+                    vehicleServiceORRepairDTO.setItemsORDones(itemORDoneDTOS);
+                }
+                vehicleDTO.setVehicleServiceORRepairs(vehicleServiceORRepairDTOSList);
+
             }
             responseDTO.setMessage("Vehicles Fetched Successfully");
             responseDTO.setCode(varList.RSP_SUCCES);

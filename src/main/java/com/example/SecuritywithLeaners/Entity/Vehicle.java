@@ -26,6 +26,9 @@ public class Vehicle {
     private boolean status;
     private String modal;
     private LocalDate dateOfRegistration;
+    private int meterReading;
+    private boolean availability;
+    private String vehicleStatus;
     @ManyToOne()
     private VehicleType typeID;
     @OneToMany(mappedBy = "vehicle" ,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
@@ -34,5 +37,7 @@ public class Vehicle {
     private List<VehicleLicense> vehicleLicenses;
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<EmissionTest> emissionTests;
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<VehicleServicesAndRepair> vehicleServicesAndRepairs;
 
 }
