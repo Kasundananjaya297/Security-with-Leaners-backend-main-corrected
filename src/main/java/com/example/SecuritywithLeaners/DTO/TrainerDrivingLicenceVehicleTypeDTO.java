@@ -1,18 +1,18 @@
 package com.example.SecuritywithLeaners.DTO;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class VehicleTypeDTO {
+public class TrainerDrivingLicenceVehicleTypeDTO {
     private String typeID;
+    private LocalDate updatedOrIssuedOn;
+    private String trainerID;
     private String typeName;
-    private String engineCapacity;
-    private Boolean isHeavy;
-    private Boolean typeAuto;
-    private Boolean typeManual;
+
 }

@@ -2,6 +2,7 @@ package com.example.SecuritywithLeaners.Util;
 
 import com.example.SecuritywithLeaners.Repo.PackageRepo;
 import com.example.SecuritywithLeaners.Repo.StudentRepo;
+import com.example.SecuritywithLeaners.Repo.TrainerRepo;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -19,10 +20,13 @@ import static java.lang.Integer.parseInt;
 public class IDgenerator {
     private String DefaultID = "CN-5000";
     private String DefaultPackageID = "P-100";
+    private String DefaultTrainerID = "T-100";
     @Autowired
     private StudentRepo studentRepo;
     @Autowired
     private PackageRepo packageRepo;
+    @Autowired
+    private TrainerRepo trainerRepo;
 
 
 private String getSeparateStringPart(String ID){
@@ -55,6 +59,15 @@ public String getMaxStudentID() {
         }
         else{
             return NextUserID(DefaultPackageID);
+        }
+    }
+    public String generateTrainerID(){
+        String maxTrainerID = trainerRepo.getMaxTrainerID();
+        if(!(maxTrainerID == null)){
+            return NextUserID(maxTrainerID);
+        }
+        else{
+            return NextUserID(DefaultTrainerID);
         }
     }
 }

@@ -56,6 +56,10 @@ public class AdminServicesController {
     private VehicleServiceOrRepairService vehicleServiceOrRepair;
     @Autowired
     private CommonItemsOrServiesOfferedByServiceService commonItemsOrServiesOfferedByService;
+    @Autowired
+    private TrainerService trainerService;
+    @Autowired
+    private TrainerDrivingLicenceService trainerDrivingLicenceService;
 
     @PostMapping("/registerStudent")
     public ResponseEntity registerStudent(@RequestBody Student studentDTO){
@@ -349,6 +353,23 @@ public class AdminServicesController {
     @PutMapping("/updateCommonItemsOrServiceOfferdByServiceEnd")
     public ResponseEntity updateCommonItemsOrServiceOfferdByServiceEnd(@RequestBody VehicleServiceORRepairDTO vehicleServiceORRepairDTO){
         ResponseDTO responseDTO = vehicleServiceOrRepair.updateVehicleServiceOrRepairEnd(vehicleServiceORRepairDTO);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @PostMapping("/saveTrainer")
+    public ResponseEntity saveTrainer(@RequestBody TrainerDTO trainerDTO){
+        System.out.println(trainerDTO);
+        ResponseDTO responseDTO = trainerService.saveTrainer(trainerDTO);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @GetMapping("/getAllTrainers/{field}/{order}/{pageSize}/{offset}")
+    public ResponseEntity getAllTrainers(@PathVariable String field,@PathVariable String order,@PathVariable int pageSize,@PathVariable int offset){
+        ResponseDTO responseDTO = trainerService.getAllTrainers(field,order,pageSize,offset);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @PostMapping("/saveTrainerDrivingLicence")
+    public ResponseEntity saveTrainerDrivingLicence(@RequestBody TrainerDrivingLicenceDTO trainerDrivingLicenceDTO){
+        System.out.println(trainerDrivingLicenceDTO);
+        ResponseDTO responseDTO = trainerDrivingLicenceService.saveTrainerDrivingLicence(trainerDrivingLicenceDTO);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
 

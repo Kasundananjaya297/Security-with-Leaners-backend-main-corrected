@@ -29,7 +29,7 @@ public class Vehicle {
     private int meterReading;
     private boolean availability;
     private String vehicleStatus;
-    @ManyToOne()
+    @ManyToOne
     private VehicleType typeID;
     @OneToMany(mappedBy = "vehicle" ,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Insurance> insurances;

@@ -1,21 +1,16 @@
-package com.example.SecuritywithLeaners.Entity;
+package com.example.SecuritywithLeaners.DTO;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Entity
-@NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
-public class Trainers {
-    @Id
+@NoArgsConstructor
+@Data
+public class TrainerDTO {
     private String trainerID;
     private String fname;
     private String lname;
@@ -25,18 +20,13 @@ public class Trainers {
     private String adl1;
     private String adl2;
     private String city;
-    private String nic;
     private LocalDate dateOfBirth;
+    private String nic;
+    private int age;
     private String nicURL;
     private String profilePhotoURL;
     private String licenceNo;
     private LocalDate licenceIssuedOn;
     private String bloodType;
-
-    @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<TrainerDrivingLicence> trainerDrivingLicences;
-
-
-
-
+    private List<TrainerDrivingLicenceDTO> trainerDrivingLicences;
 }

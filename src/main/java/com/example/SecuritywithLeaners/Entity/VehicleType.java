@@ -21,13 +21,14 @@ public class VehicleType {
     private String engineCapacity;
     private Boolean typeAuto;
     private Boolean typeManual;
+    private Boolean isHeavy;
     @OneToMany(mappedBy = "selectedType")
     private List<PermitAndVehicleType> permitAndVehicleType;
     @OneToMany(mappedBy = "registrationNo")
     private List<Vehicle> vehicles;
+    @OneToMany(mappedBy = "vehicleType")
+    private List<TrainerDrivingLicenceVehicles> trainerDrivingLicenceVehicles;
+
+
+
 }
-// "typeID": "B",
-//         "typeName": "Motor Tricycle",
-//         "engineCapacity": "",
-//         "typeAuto": false,
-//         "typeManual": true
