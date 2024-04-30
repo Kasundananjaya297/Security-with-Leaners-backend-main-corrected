@@ -60,6 +60,8 @@ public class AdminServicesController {
     private TrainerService trainerService;
     @Autowired
     private TrainerDrivingLicenceService trainerDrivingLicenceService;
+    @Autowired
+    private TrainerPermitService trainerPermitService;
 
     @PostMapping("/registerStudent")
     public ResponseEntity registerStudent(@RequestBody Student studentDTO){
@@ -370,6 +372,11 @@ public class AdminServicesController {
     public ResponseEntity saveTrainerDrivingLicence(@RequestBody TrainerDrivingLicenceDTO trainerDrivingLicenceDTO){
         System.out.println(trainerDrivingLicenceDTO);
         ResponseDTO responseDTO = trainerDrivingLicenceService.saveTrainerDrivingLicence(trainerDrivingLicenceDTO);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @PostMapping("/saveTrainerPermit")
+    public ResponseEntity saveTrainerPermit(@RequestBody TrainerPermitDTO trainerPermitDTO){
+        ResponseDTO responseDTO = trainerPermitService.saveTrainerPermit(trainerPermitDTO);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
 

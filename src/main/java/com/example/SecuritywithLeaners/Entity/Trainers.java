@@ -32,9 +32,13 @@ public class Trainers {
     private String licenceNo;
     private LocalDate licenceIssuedOn;
     private String bloodType;
+    private LocalDate trainerLicenceIssuedON;
+    private int trainerLicenceID;
 
     @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<TrainerDrivingLicence> trainerDrivingLicences;
+    @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<TrainerPermit> trainerPermits;
 
 
 

@@ -1,11 +1,9 @@
 package com.example.SecuritywithLeaners.Service;
 
-import com.example.SecuritywithLeaners.DTO.ResponseDTO;
-import com.example.SecuritywithLeaners.DTO.TrainerDTO;
-import com.example.SecuritywithLeaners.DTO.TrainerDrivingLicenceDTO;
-import com.example.SecuritywithLeaners.DTO.TrainerDrivingLicenceVehicleTypeDTO;
+import com.example.SecuritywithLeaners.DTO.*;
 import com.example.SecuritywithLeaners.Entity.TrainerDrivingLicence;
 import com.example.SecuritywithLeaners.Entity.TrainerDrivingLicenceVehicles;
+import com.example.SecuritywithLeaners.Entity.TrainerPermit;
 import com.example.SecuritywithLeaners.Entity.Trainers;
 import com.example.SecuritywithLeaners.Repo.TrainerRepo;
 import com.example.SecuritywithLeaners.Util.CalculateAge;
@@ -25,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -81,7 +80,6 @@ public class TrainerService {
                 for(TrainerDrivingLicence trainerDrivingLicence : trainer.getTrainerDrivingLicences().stream().sorted(Comparator.comparing(TrainerDrivingLicence::getTrainerDrivingLicenceID).reversed()).toList()){
                     TrainerDrivingLicenceDTO trainerDrivingLicenceDTO1 = modelMapper.map(trainerDrivingLicence, TrainerDrivingLicenceDTO.class);
                     trainerDrivingLicenceDTO.add(trainerDrivingLicenceDTO1);
-
                     List<TrainerDrivingLicenceVehicleTypeDTO> trainerDrivingLicenceVehicleTypeDTO = new ArrayList<>();
                     for (TrainerDrivingLicenceVehicles trainerDrivingLicenceVehicles : trainerDrivingLicence.getTrainerDrivingLicenceVehicles()){
                         TrainerDrivingLicenceVehicleTypeDTO trainerDrivingLicenceVehicleTypeDTO1 = modelMapper.map(trainerDrivingLicenceVehicles, TrainerDrivingLicenceVehicleTypeDTO.class);
@@ -104,8 +102,20 @@ public class TrainerService {
                             trainerDrivingLicenceDTO1.setMonthsForExpireLightWeight(Math.max(months , 0));
                         }
                     }
-                    trainerDrivingLicenceDTO1.setTrainerDrivingLicenceVehicles(trainerDrivingLicenceVehicleTypeDTO);
                 }
+                List<TrainerPermitDTO> trainerPermits = new ArrayList<>();
+                for(TrainerPermit trainerPermit : trainer.getTrainerPermits().stream().sorted(Comparator.comparing(TrainerPermit::getId).reversed()).toList()){
+                    TrainerPermitDTO trainerPermitDTO = new TrainerPermitDTO();
+                    trainerPermitDTO.setExpiryDate(trainerPermit.getExpiryDate());
+                    trainerPermitDTO.setLicenceURL(trainerPermit.getLicenceURL());
+                    trainerPermitDTO.setUpdatedOrIssuedOn(trainerPermit.getUpdatedOrIssuedOn());
+                    int months= calculateAge.calcualteMonth(trainerPermitDTO.getExpiryDate().toString())*-1;
+                    int days = calculateAge.calculateDays(trainerPermitDTO.getExpiryDate().toString())*-1;
+                    trainerDTO.setTrainerPermitValidMonths(Math.max(months, 0));
+                    trainerDTO.setTrainerPermitValidDays(Math.max(days, 0));
+                    trainerPermits.add(trainerPermitDTO);
+                }
+                trainerDTO.setTrainerPermits(trainerPermits);
                 trainerDTO.setTrainerDrivingLicences(trainerDrivingLicenceDTO);
                 trainerDTOS.add(trainerDTO);
 

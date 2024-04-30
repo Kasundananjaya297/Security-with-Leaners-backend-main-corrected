@@ -28,5 +28,10 @@ public class TrainerDTO {
     private String licenceNo;
     private LocalDate licenceIssuedOn;
     private String bloodType;
+    private LocalDate trainerLicenceIssuedON;
+    private int trainerPermitValidMonths;
+    private int trainerPermitValidDays;
+    private int trainerLicenceID;
     private List<TrainerDrivingLicenceDTO> trainerDrivingLicences;
+    private List<TrainerPermitDTO> trainerPermits;
 }
