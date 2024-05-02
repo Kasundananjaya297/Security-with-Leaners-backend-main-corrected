@@ -13,4 +13,6 @@ public class TrainerPermitDTO {
     private LocalDate expiryDate;
     private String licenceURL;
     private String trainerID;
+    private int trainerPermitValidMonths;
+    private int trainerPermitValidDays;
 }

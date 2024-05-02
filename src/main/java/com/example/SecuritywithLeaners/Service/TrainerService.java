@@ -108,11 +108,14 @@ public class TrainerService {
                     TrainerPermitDTO trainerPermitDTO = new TrainerPermitDTO();
                     trainerPermitDTO.setExpiryDate(trainerPermit.getExpiryDate());
                     trainerPermitDTO.setLicenceURL(trainerPermit.getLicenceURL());
+                    trainerPermitDTO.setTrainerID(trainerPermit.getTrainer().getTrainerID());
                     trainerPermitDTO.setUpdatedOrIssuedOn(trainerPermit.getUpdatedOrIssuedOn());
                     int months= calculateAge.calcualteMonth(trainerPermitDTO.getExpiryDate().toString())*-1;
                     int days = calculateAge.calculateDays(trainerPermitDTO.getExpiryDate().toString())*-1;
                     trainerDTO.setTrainerPermitValidMonths(Math.max(months, 0));
                     trainerDTO.setTrainerPermitValidDays(Math.max(days, 0));
+                    trainerPermitDTO.setTrainerPermitValidMonths(Math.max(months, 0));
+                    trainerPermitDTO.setTrainerPermitValidDays(Math.max(days, 0));
                     trainerPermits.add(trainerPermitDTO);
                 }
                 trainerDTO.setTrainerPermits(trainerPermits);
