@@ -5,6 +5,7 @@ import com.example.SecuritywithLeaners.DTO.VehicleLicenceDTO;
 import com.example.SecuritywithLeaners.Entity.Vehicle;
 import com.example.SecuritywithLeaners.Entity.VehicleLicense;
 import com.example.SecuritywithLeaners.Repo.VehicleLicenceRepo;
+import com.example.SecuritywithLeaners.Repo.VehicleRepo;
 import com.example.SecuritywithLeaners.Util.varList;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Service;
 public class VehicleLicenceService {
     @Autowired
     VehicleLicenceRepo vehicleLicenceRepo;
+    @Autowired
+    VehicleRepo vehicleRepo;
     public ResponseDTO saveVehicleLicense(VehicleLicenceDTO vehicleLicenceDTO) {
        ResponseDTO responseDTO = new ResponseDTO();
        try {
@@ -34,6 +37,7 @@ public class VehicleLicenceService {
                vehicle.setRegistrationNo(vehicleLicenceDTO.getRegistrationNo());
                vehicleLicense.setStartDate(vehicleLicenceDTO.getStartDate());
                vehicleLicense.setVehicle(vehicle);
+               vehicleRepo.updateStatus(vehicle.getRegistrationNo(),"Active");
                 vehicleLicenceRepo.save(vehicleLicense);
                 responseDTO.setStatus(HttpStatus.ACCEPTED);
                 responseDTO.setCode(varList.RSP_SUCCES);

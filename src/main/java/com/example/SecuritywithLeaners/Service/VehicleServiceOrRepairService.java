@@ -86,7 +86,7 @@ public class VehicleServiceOrRepairService {
             vehicleServicesAndRepair.setItemsORDones(itemsORDones);
             vehicleServicesAndRepair.setTotalAmountForService(totalAmount);
             serviceOrRepairRepo.saveAndFlush(vehicleServicesAndRepair);
-            vehicleRepo.updateStatus(vehicleServiceORRepairDTO.getRegistrationNo(),"Available");
+            vehicleRepo.updateStatus(vehicleServiceORRepairDTO.getRegistrationNo(),"Active");
 
             responseDTO.setCode(varList.RSP_SUCCES);
             responseDTO.setMessage("Success");

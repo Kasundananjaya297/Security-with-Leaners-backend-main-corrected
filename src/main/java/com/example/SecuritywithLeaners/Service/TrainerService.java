@@ -136,4 +136,31 @@ public class TrainerService {
         }
         return responseDTO;
     }
+    public ResponseDTO getTrainerByLetter(String letter){
+        ResponseDTO responseDTO = new ResponseDTO();
+        try {
+            List<Trainers> trainers= trainerRepo.findByDetail(letter);
+            List<TrainerBasicDTO> trainerDTOS = new ArrayList<>();
+            for(Trainers trainer : trainers){
+                TrainerBasicDTO trainerBasicDTO = modelMapper.map(trainer, TrainerBasicDTO.class);
+                trainerBasicDTO.setAge(calculateAge.CalculateAgeINT(trainer.getDateOfBirth().toString()));
+                trainerDTOS.add(trainerBasicDTO);
+            }
+
+            responseDTO.setCode(varList.RSP_SUCCES);
+            responseDTO.setStatus(HttpStatus.ACCEPTED);
+            responseDTO.setMessage("Trainers fetched successfully");
+            responseDTO.setContent(trainerDTOS);
+        }catch (Exception e){
+            responseDTO.setMessage("An error occurred: " + e.getMessage());
+            responseDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            responseDTO.setCode(varList.RSP_ERROR);
+            responseDTO.setContent(null);
+        }
+
+
+
+        return responseDTO;
+    }
+
 }

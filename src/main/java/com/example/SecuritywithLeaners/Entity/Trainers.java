@@ -39,6 +39,8 @@ public class Trainers {
     private List<TrainerDrivingLicence> trainerDrivingLicences;
     @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<TrainerPermit> trainerPermits;
+    @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Scheduler> schedules;
 
 
 

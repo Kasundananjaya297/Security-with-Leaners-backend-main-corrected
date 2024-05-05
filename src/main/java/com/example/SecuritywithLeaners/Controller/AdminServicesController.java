@@ -62,6 +62,8 @@ public class AdminServicesController {
     private TrainerDrivingLicenceService trainerDrivingLicenceService;
     @Autowired
     private TrainerPermitService trainerPermitService;
+    @Autowired
+    private SchedulerService schedulerService;
 
     @PostMapping("/registerStudent")
     public ResponseEntity registerStudent(@RequestBody Student studentDTO){
@@ -195,6 +197,11 @@ public class AdminServicesController {
     public ResponseEntity getPackageByLetter(@PathVariable String letter){
         System.out.println(letter);
         ResponseDTO responseDTO = packageService.getPackageByLetter(letter);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @GetMapping("/getTrainer/{letter}")
+    public ResponseEntity getTrainerByLetter(@PathVariable String letter){
+        ResponseDTO responseDTO = trainerService.getTrainerByLetter(letter);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
     @GetMapping("/getPackageByID/{packageID}")
@@ -377,6 +384,21 @@ public class AdminServicesController {
     @PostMapping("/saveTrainerPermit")
     public ResponseEntity saveTrainerPermit(@RequestBody TrainerPermitDTO trainerPermitDTO){
         ResponseDTO responseDTO = trainerPermitService.saveTrainerPermit(trainerPermitDTO);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @GetMapping("/getVehicelByClass/{vehicleClass}")
+    public ResponseEntity getVehicleByClass(@PathVariable String vehicleClass){
+        ResponseDTO responseDTO = vechicleService.getVehicleByClass(vehicleClass);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @GetMapping("/getAllVehicleClassIn")
+    public ResponseEntity getVehicleClassIn(){
+        ResponseDTO responseDTO = vechicleService.getVehicleClassIn();
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @PostMapping("/saveSchedules")
+    public ResponseEntity saveSchedules(@RequestBody List<SchedulerDTO> schedulerDTO){
+        ResponseDTO responseDTO = schedulerService.saveSchedules(schedulerDTO);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
 

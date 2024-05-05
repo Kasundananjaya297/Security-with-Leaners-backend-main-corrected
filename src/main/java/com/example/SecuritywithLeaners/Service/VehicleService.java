@@ -14,9 +14,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -34,6 +34,7 @@ public class VehicleService {
         try{
             if(!vehicleRepo.existsById(vehicleDTO.getRegistrationNo())){
                 Vehicle vehicle = modelMapper.map(vehicleDTO, Vehicle.class);
+                vehicle.setVehicleStatus("Not-Ready");
                 vehicleRepo.save(vehicle);
                 responseDTO.setCode(varList.RSP_SUCCES);
                 responseDTO.setMessage("Success");
@@ -93,6 +94,20 @@ public class VehicleService {
                     vehicleLicenceDTO.setValidMonths(Math.max(months,0));
                     vehicleLicenceDTOS.add(vehicleLicenceDTO);
                 }
+                Optional<LocalDate> maxExpiryDate = vehicle.getVehicleLicenses()
+                        .stream()
+                        .map(VehicleLicense::getExpiryDate)
+                        .filter(Objects::nonNull) // Filter out null expiry dates
+                        .max(Comparator.nullsLast(Comparator.naturalOrder())); // Find max expiry date, treating null as last
+                   if (maxExpiryDate.isPresent()) {
+                       LocalDate maxExpiry = maxExpiryDate.get();
+                       int licenceValidMonths = calculateAge.CalculateMonths(maxExpiry.toString());
+                       if(licenceValidMonths<0 && vehicle.getVehicleStatus().equals("Active")){
+                           vehicleRepo.updateStatus(vehicle.getRegistrationNo(),"License Expired");
+                       }else if(licenceValidMonths>0 && vehicle.getVehicleStatus().equals("License Expired")){
+                           vehicleRepo.updateStatus(vehicle.getRegistrationNo(),"Active");
+                       }
+                   }
                 vehicleDTO.setLicenses(vehicleLicenceDTOS);
                 List<InsuranceDTO> insuranceDTOS = new ArrayList<>();
                 for(Insurance insurance:vehicle.getInsurances().stream().sorted(Comparator.comparing(Insurance::getEndDate).reversed()).collect(Collectors.toList())){
@@ -201,5 +216,73 @@ public class VehicleService {
         }
         return responseDTO;
     }
+    public ResponseDTO getVehicleByClass(String vehicleClass){
+        ResponseDTO responseDTO = new ResponseDTO();
+        try {
+            List<Vehicle> vehicles = vehicleRepo.getVehicleByType(vehicleClass);
+            List<VehicleBasicDTO> vehicleDTOS = new ArrayList<>();
+            for (Vehicle vehicle : vehicles){
+                VehicleBasicDTO vehicleDTO = new VehicleBasicDTO();
+                vehicleDTO.setRegistrationNo(vehicle.getRegistrationNo());
+                vehicleDTO.setMake(vehicle.getMake());
+                vehicleDTO.setColor(vehicle.getColor());
+                vehicleDTO.setPassengerCapacity(vehicle.getPassengerCapacity());
+                vehicleDTO.setTypeID(vehicle.getTypeID().getTypeID());
+                vehicleDTO.setStatus(vehicle.isStatus());
+                vehicleDTO.setAutoOrManual(vehicle.getAutoOrManual());
+                vehicleDTO.setVehicleClass(vehicle.getTypeID().getTypeName());
+                vehicleDTO.setModal(vehicle.getModal());
+                vehicleDTO.setVehicleStatus(vehicle.getVehicleStatus());
+                Optional<LocalDate> maxExpiryDate = vehicle.getVehicleLicenses()
+                        .stream()
+                        .map(VehicleLicense::getExpiryDate)
+                        .filter(Objects::nonNull) // Filter out null expiry dates
+                        .max(Comparator.nullsLast(Comparator.naturalOrder())); // Find max expiry date, treating null as last
+                if (maxExpiryDate.isPresent()) {
+                    LocalDate maxExpiry = maxExpiryDate.get();
+                    int licenceValidMonths = calculateAge.CalculateMonths(maxExpiry.toString());
+                    vehicleDTO.setLicenceValidMonths(licenceValidMonths);
+                }
+                Optional<LocalDate> maxInsuranceEndDate = vehicle.getInsurances()
+                        .stream()
+                        .map(Insurance::getEndDate)
+                        .filter(Objects::nonNull) // Filter out null end dates
+                        .max(Comparator.nullsLast(Comparator.naturalOrder())); // Find max end date, treating null as last
+                if (maxInsuranceEndDate.isPresent()) {
+                    LocalDate maxInsuranceEnd = maxInsuranceEndDate.get();
+                    int insuranceValidMonths = calculateAge.CalculateMonths(maxInsuranceEnd.toString());
+                    vehicleDTO.setInsuraceValidMonths(insuranceValidMonths);
+                }
+                vehicleDTOS.add(vehicleDTO);
+            }
+            responseDTO.setMessage("Vehicles Fetched Successfully");
+            responseDTO.setCode(varList.RSP_SUCCES);
+            responseDTO.setStatus(HttpStatus.ACCEPTED);
+            responseDTO.setContent(vehicleDTOS);
+
+        }catch (Exception e){
+            responseDTO.setMessage("An error occurred: " + e.getMessage());
+            responseDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            responseDTO.setCode(varList.RSP_ERROR);
+            responseDTO.setContent(null);
+        }
+        return responseDTO;
+    }
+   public ResponseDTO getVehicleClassIn(){
+        ResponseDTO responseDTO = new ResponseDTO();
+        try {
+            List<String> vehicleTypes = vehicleRepo.getAllVehicleTypes();
+            responseDTO.setContent(vehicleTypes);
+            responseDTO.setMessage("Vehicle Classes Fetched Successfully");
+            responseDTO.setCode(varList.RSP_SUCCES);
+            responseDTO.setStatus(HttpStatus.ACCEPTED);
+        }catch (Exception e){
+            responseDTO.setMessage("An error occurred: " + e.getMessage());
+            responseDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            responseDTO.setCode(varList.RSP_ERROR);
+            responseDTO.setContent(null);
+        }
+        return responseDTO;
+   }
 
 }
