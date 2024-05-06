@@ -271,8 +271,15 @@ public class VehicleService {
    public ResponseDTO getVehicleClassIn(){
         ResponseDTO responseDTO = new ResponseDTO();
         try {
-            List<String> vehicleTypes = vehicleRepo.getAllVehicleTypes();
-            responseDTO.setContent(vehicleTypes);
+            List<Vehicle> vehicleTypes = vehicleRepo.findAll();
+            List<VehicleTypeDTO> vehicleTypesDTO = new ArrayList<>();
+            for(Vehicle vehicle:vehicleTypes){
+                VehicleTypeDTO vehicleTypeDTO = new VehicleTypeDTO();
+                vehicleTypeDTO.setTypeID(vehicle.getTypeID().getTypeID());
+                vehicleTypeDTO.setTypeName(vehicle.getTypeID().getTypeName());
+                vehicleTypesDTO.add(vehicleTypeDTO);
+            }
+            responseDTO.setContent(vehicleTypesDTO.stream().distinct());
             responseDTO.setMessage("Vehicle Classes Fetched Successfully");
             responseDTO.setCode(varList.RSP_SUCCES);
             responseDTO.setStatus(HttpStatus.ACCEPTED);

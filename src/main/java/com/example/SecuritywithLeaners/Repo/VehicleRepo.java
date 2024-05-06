@@ -23,8 +23,5 @@ public interface VehicleRepo extends JpaRepository<Vehicle, String> {
     @Query(value = "SELECT * FROM vehicle WHERE typeid_typeid =:typeId",nativeQuery = true)
     List<Vehicle> getVehicleByType(@Param("typeId") String typeId);
 
-    @Query(value = "SELECT DISTINCT typeid_typeid FROM vehicle",nativeQuery = true)
-    List<String> getAllVehicleTypes();
-
 
 }
