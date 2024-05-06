@@ -157,9 +157,33 @@ public class TrainerService {
             responseDTO.setCode(varList.RSP_ERROR);
             responseDTO.setContent(null);
         }
-
-
-
+        return responseDTO;
+    }
+    public ResponseDTO getTrainerByVehicleClass(String vehicleClass){
+        ResponseDTO responseDTO = new ResponseDTO();
+        try {
+            List<Trainers> trainers= trainerRepo.findAll();
+            List<TrainerBasicDTO> trainerDTOS = new ArrayList<>();
+            trainers = trainers.stream().filter(trainer ->
+                            trainer.getTrainerDrivingLicences().stream().anyMatch(trainerDrivingLicence ->
+                                    trainerDrivingLicence.getTrainerDrivingLicenceVehicles().stream().anyMatch(trainerDrivingLicenceVehicles ->
+                                            trainerDrivingLicenceVehicles.getVehicleType().getTypeID().equals(vehicleClass)))).
+                    collect(Collectors.toList());
+            trainers.forEach(trainer -> {
+                TrainerBasicDTO trainerBasicDTO = modelMapper.map(trainer, TrainerBasicDTO.class);
+                trainerBasicDTO.setAge(calculateAge.CalculateAgeINT(trainer.getDateOfBirth().toString()));
+                trainerDTOS.add(trainerBasicDTO);
+            });
+            responseDTO.setCode(varList.RSP_SUCCES);
+            responseDTO.setStatus(HttpStatus.ACCEPTED);
+            responseDTO.setMessage("Trainers fetched successfully");
+            responseDTO.setContent(trainerDTOS);
+        }catch (Exception e){
+            responseDTO.setMessage("An error occurred: " + e.getMessage());
+            responseDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            responseDTO.setCode(varList.RSP_ERROR);
+            responseDTO.setContent(null);
+        }
         return responseDTO;
     }
 

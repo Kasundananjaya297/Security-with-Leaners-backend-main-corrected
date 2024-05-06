@@ -401,6 +401,11 @@ public class AdminServicesController {
         ResponseDTO responseDTO = schedulerService.saveSchedules(schedulerDTO);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
+    @GetMapping("getTrainerByVehicleClass/{vehicleClass}")
+    public ResponseEntity getTrainerByVehicleClass(@PathVariable String vehicleClass){
+        ResponseDTO responseDTO = trainerService.getTrainerByVehicleClass(vehicleClass);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
 
 
 }
