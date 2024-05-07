@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Date;
 
 @Entity
 @NoArgsConstructor
@@ -18,9 +19,8 @@ public class Scheduler {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long schedulerID;
-    private LocalDate date;
-    private LocalTime start;
-    private LocalTime end;
+    private Date start;
+    private Date end;
     private int studentCount;
     private String title;
     @ManyToOne

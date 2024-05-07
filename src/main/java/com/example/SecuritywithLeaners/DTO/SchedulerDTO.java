@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Date;
 
 @Component
 @AllArgsConstructor
@@ -20,8 +21,8 @@ public class SchedulerDTO {
     private Long schedulerID;
     private String title;
     private LocalDate date;
-    private LocalTime startTime;
-    private LocalTime endTime;
+    private Date start;
+    private Date end;
     private int studentCount;
     private String trainerID;
     private String registrationNo;

@@ -398,12 +398,18 @@ public class AdminServicesController {
     }
     @PostMapping("/saveSchedules")
     public ResponseEntity saveSchedules(@RequestBody List<SchedulerDTO> schedulerDTO){
+        System.out.println(schedulerDTO);
         ResponseDTO responseDTO = schedulerService.saveSchedules(schedulerDTO);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
     @GetMapping("getTrainerByVehicleClass/{vehicleClass}")
     public ResponseEntity getTrainerByVehicleClass(@PathVariable String vehicleClass){
         ResponseDTO responseDTO = trainerService.getTrainerByVehicleClass(vehicleClass);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @GetMapping("getAllSchedules")
+    public ResponseEntity getAllSchedules(){
+        ResponseDTO responseDTO = schedulerService.getAllSchedules();
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
 
