@@ -82,7 +82,16 @@ public class SchedulerService {
             for(Scheduler scheduler : schedulerList){
                 SchedulerDTO schedulerDTO = modelMapper.map(scheduler, SchedulerDTO.class);
                 schedulerDTO.setTrainerID(scheduler.getTrainer().getTrainerID());
+                schedulerDTO.setTrainerFname(scheduler.getTrainer().getFname());
+                schedulerDTO.setTrainerLname(scheduler.getTrainer().getLname());
+                schedulerDTO.setContactNo(scheduler.getTrainer().getTelephone());
                 schedulerDTO.setRegistrationNo(scheduler.getVehicle().getRegistrationNo());
+                schedulerDTO.setMake(scheduler.getVehicle().getMake());
+                schedulerDTO.setModal(scheduler.getVehicle().getModal());
+                schedulerDTO.setVehicleClass(scheduler.getVehicle().getTypeID().getTypeID());
+                schedulerDTO.setVehicleClassName(scheduler.getVehicle().getTypeID().getTypeName());
+                schedulerDTO.setTrainerPhoto(scheduler.getTrainer().getProfilePhotoURL());
+                schedulerDTO.setVehiclePhoto(scheduler.getVehicle().getVehiclePhoto());
                 schedulerDTOList.add(schedulerDTO);
             }
             responseDTO.setContent(schedulerDTOList);
@@ -93,6 +102,44 @@ public class SchedulerService {
         responseDTO.setMessage("Error in fetching schedules");
         responseDTO.setCode(varList.RSP_ERROR);
         responseDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseDTO;
+    }
+    public ResponseDTO updateSchedules(SchedulerDTO schedulerDTO){
+        ResponseDTO responseDTO = new ResponseDTO();
+        try{
+            List<Scheduler> schedulers = schedulerRepo.findAll();
+            Scheduler scheduler = modelMapper.map(schedulerDTO, Scheduler.class);
+            Vehicle vehicle = new Vehicle();
+            vehicle.setRegistrationNo(schedulerDTO.getRegistrationNo());
+            Trainers trainers = new Trainers();
+            trainers.setTrainerID(schedulerDTO.getTrainerID());
+            scheduler.setVehicle(vehicle);
+            scheduler.setTrainer(trainers);
+            //remove the schedule from the list
+            System.out.println(schedulers.size());
+            schedulers.removeIf(scheduler1 -> scheduler1.getSchedulerID().equals(schedulerDTO.getSchedulerID()));
+            System.out.println(schedulers.size());
+            //filter overlaping schedules based on trainerId, date and vehicleId
+            for (Scheduler scheduler1 : schedulers){
+                if(scheduler1.getTrainer().getTrainerID().equals(scheduler.getTrainer().getTrainerID()) || scheduler1.getVehicle().getRegistrationNo().equals(scheduler.getVehicle().getRegistrationNo())){
+                    if(scheduler1.getStart().before(scheduler.getEnd()) && scheduler1.getEnd().after(scheduler.getStart())){
+                        responseDTO.setMessage("Schedule already exists");
+                        responseDTO.setCode(varList.RSP_FAIL);
+                        responseDTO.setStatus(HttpStatus.ALREADY_REPORTED);
+                        return responseDTO;
+                    }
+                }
+            }
+            schedulerRepo.saveAndFlush(scheduler);
+            responseDTO.setMessage("Schedule updated successfully");
+            responseDTO.setCode(varList.RSP_SUCCES);
+            responseDTO.setStatus(HttpStatus.ACCEPTED);
+
+        }catch (Exception e){
+            responseDTO.setMessage("Error in updating schedule");
+            responseDTO.setCode(varList.RSP_ERROR);
+            responseDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return responseDTO;
     }

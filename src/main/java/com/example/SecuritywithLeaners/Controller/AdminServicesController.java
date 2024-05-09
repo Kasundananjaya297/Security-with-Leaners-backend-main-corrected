@@ -412,6 +412,12 @@ public class AdminServicesController {
         ResponseDTO responseDTO = schedulerService.getAllSchedules();
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
+    @PutMapping("/updateSchedules")
+    public ResponseEntity updateSchedules(@RequestBody SchedulerDTO schedulerDTO){
+        System.out.println("+++++++++++++++++++"+schedulerDTO);
+        ResponseDTO responseDTO = schedulerService.updateSchedules(schedulerDTO);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
 
 
 }

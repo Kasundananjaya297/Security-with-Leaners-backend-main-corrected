@@ -34,7 +34,7 @@ public class Trainers {
     private String bloodType;
     private LocalDate trainerLicenceIssuedON;
     private int trainerLicenceID;
-
+    private String trainerStatus;
     @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<TrainerDrivingLicence> trainerDrivingLicences;
     @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL,fetch = FetchType.LAZY)

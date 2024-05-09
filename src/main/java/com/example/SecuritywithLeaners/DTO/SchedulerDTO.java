@@ -20,12 +20,21 @@ import java.util.Date;
 public class SchedulerDTO {
     private Long schedulerID;
     private String title;
-    private LocalDate date;
     private Date start;
     private Date end;
     private int studentCount;
     private String trainerID;
     private String registrationNo;
+    private String trainerFname;
+    private String trainerLname;
+    private int contactNo;
+    private String make;
+    private String modal;
+    private String vehicleClass;
+    private String vehicleClassName;
+    private String trainerPhoto;
+    private String vehiclePhoto;
+
 }
 
 
