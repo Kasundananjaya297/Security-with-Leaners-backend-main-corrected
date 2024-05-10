@@ -19,8 +19,8 @@ public class VehicleType {
     private String typeName;
     @Column(length = 10, nullable = true)
     private String engineCapacity;
-    private Boolean typeAuto;
-    private Boolean typeManual;
+//    private Boolean typeAuto;
+//    private Boolean typeManual;
     private Boolean isHeavy;
     @OneToMany(mappedBy = "selectedType")
     private List<PermitAndVehicleType> permitAndVehicleType;

@@ -277,9 +277,25 @@ public class VehicleService {
                 VehicleTypeDTO vehicleTypeDTO = new VehicleTypeDTO();
                 vehicleTypeDTO.setTypeID(vehicle.getTypeID().getTypeID());
                 vehicleTypeDTO.setTypeName(vehicle.getTypeID().getTypeName());
+                vehicleTypeDTO.setEngineCapacity(vehicle.getTypeID().getEngineCapacity());
+                vehicleTypeDTO.setTypeAuto(vehicle.getAutoOrManual().equals("Auto"));
+                vehicleTypeDTO.setTypeManual(vehicle.getAutoOrManual().equals("Manual"));
+                vehicleTypeDTO.setIsHeavy(vehicle.getTypeID().getIsHeavy());
                 vehicleTypesDTO.add(vehicleTypeDTO);
             }
-            responseDTO.setContent(vehicleTypesDTO.stream().distinct());
+            //vehicleTypesDTO = vehicleTypesDTO.stream().distinct().collect(Collectors.toList());
+            // Merge based on typeID
+            List<VehicleTypeDTO> distinctVehicleTypes = new ArrayList<>(vehicleTypesDTO.stream()
+                    .collect(Collectors.toMap(VehicleTypeDTO::getTypeID, // key mapper
+                            vehicleTypeDTO -> vehicleTypeDTO, // value mapper
+                            (existing, replacement) -> {
+                                // Merge Auto and Manual types
+                                existing.setTypeAuto(existing.getTypeAuto() || replacement.getTypeAuto());
+                                existing.setTypeManual(existing.getTypeManual() || replacement.getTypeManual());
+                                return existing;
+                            })) // merge function
+                    .values());
+            responseDTO.setContent(distinctVehicleTypes);
             responseDTO.setMessage("Vehicle Classes Fetched Successfully");
             responseDTO.setCode(varList.RSP_SUCCES);
             responseDTO.setStatus(HttpStatus.ACCEPTED);
