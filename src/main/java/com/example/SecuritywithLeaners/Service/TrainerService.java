@@ -44,6 +44,7 @@ public class TrainerService {
             if(trainer == null){
                 Trainers trainers = modelMapper.map(trainerDTO, Trainers.class);
                 trainers.setTrainerID(idgenerator.generateTrainerID());
+                trainers.setTrainerStatus("Not-ready");
                 trainerRepo.save(trainers);
                 responseDTO.setMessage("Trainer saved successfully");
                 responseDTO.setStatus(HttpStatus.ACCEPTED);
@@ -118,10 +119,31 @@ public class TrainerService {
                     trainerPermitDTO.setTrainerPermitValidDays(Math.max(days, 0));
                     trainerPermits.add(trainerPermitDTO);
                 }
+                //Trainer Status
+                if(!trainerDrivingLicenceDTO.isEmpty() && !trainerPermits.isEmpty()) {
+                    if (trainerDrivingLicenceDTO.get(0).getExpiryDate().isBefore(LocalDate.now()) && trainerPermits.get(0).getExpiryDate().isBefore(LocalDate.now()))
+                    {
+                        if(trainerDrivingLicenceDTO.get(0).getMonthsForExpiireHevyDuty()>0 ){
+                            trainerDTO.setTrainerStatus("Expired DRL(H/L) & TRP");
+                            trainerRepo.updateTrainerStatus("Expired DRL(H/L) & TRP", trainer.getTrainerID());
+                        }else{
+                            trainerDTO.setTrainerStatus("Expired DRL(L) & TRP");
+                            trainerRepo.updateTrainerStatus("Expired DRL(L) & TRP", trainer.getTrainerID());
+                        }
+                    } else if (trainerDrivingLicenceDTO.get(0).getExpiryDate().isBefore(LocalDate.now())) {
+                        trainerDTO.setTrainerStatus("Expired DRL");
+                        trainerRepo.updateTrainerStatus("Expired DRL", trainer.getTrainerID());
+                    } else if (trainerPermits.get(0).getExpiryDate().isBefore(LocalDate.now())) {
+                        trainerDTO.setTrainerStatus("Expired TRP");
+                        trainerRepo.updateTrainerStatus("Expired TRP", trainer.getTrainerID());
+                    } else {
+                        trainerDTO.setTrainerStatus("Active");
+                        trainerRepo.updateTrainerStatus("Active", trainer.getTrainerID());
+                    }
+                }
                 trainerDTO.setTrainerPermits(trainerPermits);
                 trainerDTO.setTrainerDrivingLicences(trainerDrivingLicenceDTO);
                 trainerDTOS.add(trainerDTO);
-
             }
             responseDTO.setMessage("Trainers fetched successfully");
             responseDTO.setStatus(HttpStatus.ACCEPTED);

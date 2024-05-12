@@ -20,5 +20,6 @@ public class TrainerBasicDTO {
     private int trainerPermitValidMonths;
     private int trainerPermitValidDays;
     private int trainerLicenceID;
+    private String trainerStatus;
     private Boolean isActive;
 }

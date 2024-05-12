@@ -29,6 +29,7 @@ public class TrainerDTO {
     private LocalDate licenceIssuedOn;
     private String bloodType;
     private LocalDate trainerLicenceIssuedON;
+    private String trainerStatus;
     private int trainerPermitValidMonths;
     private int trainerPermitValidDays;
     private int trainerLicenceID;
