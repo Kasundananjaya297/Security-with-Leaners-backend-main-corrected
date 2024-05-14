@@ -63,5 +63,8 @@ public interface AgreementRepo extends JpaRepository<Agreement, AgreementID> {
     @Query(value = "SELECT total_amount_for_extras_not_in_agreement FROM agreement WHERE stdid_stdid =:stdID AND agreement_date =(SELECT MAX(agreement_date) FROM agreement WHERE stdid_stdid=:stdID)", nativeQuery = true)
     Double getTotalAmountForExtrasNotInAgreement(@Param("stdID") String stdID);
 
+    @Query(value = "SELECT * FROM agreement WHERE stdid_stdid =:stdID AND agreement_date =(SELECT MAX(agreement_date) FROM agreement WHERE stdid_stdid=:stdID)", nativeQuery = true)
+    Agreement getLatestAgreement(@Param("stdID") String stdID);
+
 }
 

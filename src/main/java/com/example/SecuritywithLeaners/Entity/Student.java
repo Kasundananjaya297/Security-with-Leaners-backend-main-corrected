@@ -7,6 +7,7 @@ import lombok.*;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -49,4 +50,7 @@ public class Student {
     @Column(name="guardianTelephone",length = 10,nullable = false)
     private int guardianTelephone;
     private String profilePhotoURL;
+
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    private List<BookingSchedule> bookingSchedules;
 }

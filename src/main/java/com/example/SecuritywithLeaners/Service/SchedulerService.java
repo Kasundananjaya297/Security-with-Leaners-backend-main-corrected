@@ -1,10 +1,13 @@
 package com.example.SecuritywithLeaners.Service;
 
+import com.example.SecuritywithLeaners.DTO.BookingScheduleDTO;
 import com.example.SecuritywithLeaners.DTO.ResponseDTO;
 import com.example.SecuritywithLeaners.DTO.SchedulerDTO;
-import com.example.SecuritywithLeaners.Entity.Scheduler;
-import com.example.SecuritywithLeaners.Entity.Trainers;
-import com.example.SecuritywithLeaners.Entity.Vehicle;
+import com.example.SecuritywithLeaners.DTO.VehiclesFilteringDTO;
+import com.example.SecuritywithLeaners.Entity.*;
+import com.example.SecuritywithLeaners.Entity.Package;
+import com.example.SecuritywithLeaners.Repo.AgreementRepo;
+import com.example.SecuritywithLeaners.Repo.PackageRepo;
 import com.example.SecuritywithLeaners.Repo.SchedulerRepo;
 import com.example.SecuritywithLeaners.Util.varList;
 import jakarta.transaction.Transactional;
@@ -23,7 +26,10 @@ public class SchedulerService {
     @Autowired
     private SchedulerRepo schedulerRepo;
     @Autowired
+    private AgreementRepo agreementRepo;
+    @Autowired
     private ModelMapper modelMapper;
+
 
     public ResponseDTO saveSchedules(List<SchedulerDTO> schedulerDTO) {
         ResponseDTO responseDTO = new ResponseDTO();
@@ -92,6 +98,16 @@ public class SchedulerService {
                 schedulerDTO.setVehicleClassName(scheduler.getVehicle().getTypeID().getTypeName());
                 schedulerDTO.setTrainerPhoto(scheduler.getTrainer().getProfilePhotoURL());
                 schedulerDTO.setVehiclePhoto(scheduler.getVehicle().getVehiclePhoto());
+                List<BookingScheduleDTO> bookingScheduleDTOList = new ArrayList<>();
+                for(BookingSchedule bookingSchedule : scheduler.getBookingSchedule()){
+                    BookingScheduleDTO bookingScheduleDTO = modelMapper.map(bookingSchedule, BookingScheduleDTO.class);
+                    bookingScheduleDTO.setStdID(bookingSchedule.getStudent().getStdID());
+                    bookingScheduleDTO.setStdFname(bookingSchedule.getStudent().getFname());
+                    bookingScheduleDTO.setStdLname(bookingSchedule.getStudent().getLname());
+                    bookingScheduleDTO.setTelephone(bookingSchedule.getStudent().getTelephone());
+                    bookingScheduleDTOList.add(bookingScheduleDTO);
+                }
+                schedulerDTO.setBookingScheduleDTO(bookingScheduleDTOList);
                 schedulerDTOList.add(schedulerDTO);
             }
             responseDTO.setContent(schedulerDTOList);
@@ -140,6 +156,81 @@ public class SchedulerService {
             responseDTO.setMessage("Error in updating schedule");
             responseDTO.setCode(varList.RSP_ERROR);
             responseDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseDTO;
+    }
+//filter schedules based on student trial permit vehicles
+    public ResponseDTO getStudentSchedules(String stdID){
+        ResponseDTO responseDTO = new ResponseDTO();
+        try{
+            List<Scheduler> schedulers = schedulerRepo.findAll();
+            List<SchedulerDTO> schedulerDTOList = new ArrayList<>();
+            for(Scheduler scheduler : schedulers){
+                SchedulerDTO schedulerDTO = modelMapper.map(scheduler, SchedulerDTO.class);
+                schedulerDTO.setTrainerID(scheduler.getTrainer().getTrainerID());
+                schedulerDTO.setTrainerFname(scheduler.getTrainer().getFname());
+                schedulerDTO.setTrainerLname(scheduler.getTrainer().getLname());
+                schedulerDTO.setContactNo(scheduler.getTrainer().getTelephone());
+                schedulerDTO.setRegistrationNo(scheduler.getVehicle().getRegistrationNo());
+                schedulerDTO.setMake(scheduler.getVehicle().getMake());
+                schedulerDTO.setModal(scheduler.getVehicle().getModal());
+                schedulerDTO.setVehicleClass(scheduler.getVehicle().getTypeID().getTypeID());
+                schedulerDTO.setVehicleClassName(scheduler.getVehicle().getTypeID().getTypeName());
+                schedulerDTO.setTrainerPhoto(scheduler.getTrainer().getProfilePhotoURL());
+                schedulerDTO.setVehicleControl(scheduler.getVehicle().getAutoOrManual());
+                schedulerDTO.setVehiclePhoto(scheduler.getVehicle().getVehiclePhoto());
+                List<BookingScheduleDTO> bookingScheduleDTOList = new ArrayList<>();
+                for(BookingSchedule bookingSchedule : scheduler.getBookingSchedule()){
+                    BookingScheduleDTO bookingScheduleDTO = modelMapper.map(bookingSchedule, BookingScheduleDTO.class);
+                    bookingScheduleDTO.setStdID(bookingSchedule.getStudent().getStdID());
+                    bookingScheduleDTO.setStdFname(bookingSchedule.getStudent().getFname());
+                    bookingScheduleDTO.setStdLname(bookingSchedule.getStudent().getLname());
+                    bookingScheduleDTO.setTelephone(bookingSchedule.getStudent().getTelephone());
+                    bookingScheduleDTOList.add(bookingScheduleDTO);
+                }
+                schedulerDTO.setBookingScheduleDTO(bookingScheduleDTOList);
+                schedulerDTOList.add(schedulerDTO);
+            }
+            Agreement agreementList = agreementRepo.getLatestAgreement(stdID);
+            List<VehiclesFilteringDTO> vehicleTypes = new ArrayList<>();
+
+            for(PackageAndVehicleType packageAndVehicleType : agreementList.getPackageID().getPackageAndVehicleType()){
+                VehiclesFilteringDTO vehiclesFilteringDTO = new VehiclesFilteringDTO();
+                vehiclesFilteringDTO.setVehicleClass(packageAndVehicleType.getTypeID().getTypeID());
+                vehiclesFilteringDTO.setVehicleControl(packageAndVehicleType.getAutoOrManual());
+                vehicleTypes.add(vehiclesFilteringDTO);
+            }
+            for(ExtrasNotINAgreement extrasNotINAgreement : agreementList.getExtrasNotINAgreement()){
+                VehiclesFilteringDTO vehiclesFilteringDTO = new VehiclesFilteringDTO();
+                vehiclesFilteringDTO.setVehicleClass(extrasNotINAgreement.getTypeID());
+                vehiclesFilteringDTO.setVehicleControl(extrasNotINAgreement.getExtraLessonVehicleType());
+                vehicleTypes.add(vehiclesFilteringDTO);
+            }
+            //filter schedules based on student trial permit vehicles
+            schedulerDTOList.removeIf(schedulerDTO -> {
+                for(VehiclesFilteringDTO vehiclesFilteringDTO : vehicleTypes){
+                    if(schedulerDTO.getVehicleClass().equals(vehiclesFilteringDTO.getVehicleClass()) && schedulerDTO.getVehicleControl().equals(vehiclesFilteringDTO.getVehicleControl())){
+                        return false;
+                    }
+                }
+                return true;
+            });
+            //filter schdules basd on current date
+            schedulerDTOList.removeIf(schedulerDTO -> schedulerDTO.getStart().before(new java.util.Date()));
+
+
+            responseDTO.setContent(schedulerDTOList);
+            responseDTO.setStatus(HttpStatus.ACCEPTED);
+            responseDTO.setCode(varList.RSP_SUCCES);
+            responseDTO.setMessage("Schedules fetched successfully");
+
+
+
+        }catch (Exception e){
+            responseDTO.setMessage("Error in fetching schedules");
+            responseDTO.setCode(varList.RSP_ERROR);
+            responseDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+
         }
         return responseDTO;
     }

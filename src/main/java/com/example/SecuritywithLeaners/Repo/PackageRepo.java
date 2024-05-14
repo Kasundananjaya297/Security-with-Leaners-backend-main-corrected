@@ -26,6 +26,8 @@ public interface PackageRepo extends JpaRepository<Package,String> {
             "CASE WHEN :order = 'DESC' THEN package_price END DESC",
             nativeQuery = true)
     List<Package> findAllByIdSorted(@Param("packageIDs") List<String> packageIDs, @Param("order") String order);
+    //get package by stdID
+
 
 
 

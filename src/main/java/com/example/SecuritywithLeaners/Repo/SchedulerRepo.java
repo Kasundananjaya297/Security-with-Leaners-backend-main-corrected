@@ -10,4 +10,7 @@ import java.util.Optional;
 public interface SchedulerRepo extends JpaRepository<Scheduler, Long>{
     @Query(value = "SELECT * FROM scheduler WHERE trainerid_fk =:trainerId AND date =:date AND vehicleid_fk =:vehicleID", nativeQuery = true)
     Optional<Scheduler> getScheduleByTrainerAndDateAndVehicle(@Param("trainerId")String trainerId, @Param("date") String date, @Param("vehicleID") String vehicleID);
+
+    @Query(value = "SELECT student_count FROM scheduler WHERE schedulerid =:schedulerID", nativeQuery = true)
+    int getStudentCountBySchedulerID(@Param("schedulerID") Long schedulerID);
 }

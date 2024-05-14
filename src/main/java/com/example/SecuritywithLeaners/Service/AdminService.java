@@ -200,9 +200,9 @@ public class AdminService {
                 StudentDTO studentDTO = modelMapper.map(student.get(), StudentDTO.class);
                 int age = calculateAge.CalculateAgeINT(student.get().getDateOfBirth().toString());
                 studentDTO.setAge(age);
-//                System.out.println(agreementRepo.getPackagePrice(stdID));
-//                studentDTO.setPackagePrice(100.00);
-//                studentDTO.setFullPayment(agreementRepo.getTotalAmount(stdID).get());
+                studentDTO.setPackagePrice((agreementRepo.getPackagePrice(stdID)!=null?agreementRepo.getPackagePrice(stdID):0.0));
+                studentDTO.setFullPayment((agreementRepo.getTotalAmountToPay(stdID)!=null?agreementRepo.getTotalAmountToPay(stdID):0.0));
+                studentDTO.setBalance((agreementRepo.getTotalAmountToPay(stdID)!=null?agreementRepo.getTotalAmountToPay(stdID):0.0) - (agreementRepo.getTotalAmountToPaid(stdID)!=null?agreementRepo.getTotalAmountToPaid(stdID):0.0));
                 System.out.println(age);
                 responseDTO.setCode(varList.RSP_SUCCES);
                 responseDTO.setMessage("Success");
