@@ -1,9 +1,6 @@
 package com.example.SecuritywithLeaners.Entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,6 +27,8 @@ public class Users implements UserDetails {
     private String role;
     @Column(nullable = false)
     private Boolean isActive;
+    private String generatedPassword;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

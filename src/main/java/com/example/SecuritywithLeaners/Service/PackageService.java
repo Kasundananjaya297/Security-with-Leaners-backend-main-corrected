@@ -37,7 +37,8 @@ private TrialPermitRepo trialPermitRepo;
 private PermitAndVehicleTypeRepo permitAndVehicleTypeRepo;
 @Autowired
 private PackageAndVehicleTypeRepo packageAndVehicleTypeRepo;
-
+@Autowired
+private AuthenticationService authenticationService;
 
     public ResponseDTO savePackage(PackageDTO packageDTO){
         ResponseDTO responseDTO = new ResponseDTO();

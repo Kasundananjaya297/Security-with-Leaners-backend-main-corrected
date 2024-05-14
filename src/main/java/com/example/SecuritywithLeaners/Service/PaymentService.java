@@ -2,11 +2,13 @@ package com.example.SecuritywithLeaners.Service;
 
 import com.example.SecuritywithLeaners.DTO.PaymentsDTO;
 import com.example.SecuritywithLeaners.DTO.ResponseDTO;
+import com.example.SecuritywithLeaners.DTO.UsersDTO;
 import com.example.SecuritywithLeaners.Entity.*;
 import com.example.SecuritywithLeaners.Entity.Package;
 import com.example.SecuritywithLeaners.Repo.AgreementRepo;
 import com.example.SecuritywithLeaners.Repo.PaymentsRepo;
 import com.example.SecuritywithLeaners.Repo.StudentRepo;
+import com.example.SecuritywithLeaners.Util.SaveUer;
 import com.example.SecuritywithLeaners.Util.varList;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +29,10 @@ public class PaymentService {
     private AgreementRepo agreementRepo; //inject agreementRepo
     @Autowired
     private StudentRepo studentRepo;
+    @Autowired
+    private AuthenticationService authenticationService;
+    @Autowired
+    private SaveUer saveUer;
 
     public ResponseDTO savePayments(PaymentsDTO PaymentsDTO){
         ResponseDTO responseDTO = new ResponseDTO();
@@ -61,6 +67,13 @@ public class PaymentService {
 //                System.out.printf("Amount paid: %.2f\n",PaymentsDTO.getAmount());
                 if(totalAmountPaid == 0){
                     studentRepo.updateRegistrationStatus(true,PaymentsDTO.getStdID());
+                    //gernerate passord and add student to user table
+                    UsersDTO usersDTO = new UsersDTO();
+                    usersDTO.setUsername(PaymentsDTO.getStdID());
+                    usersDTO.setRole("STUDENT");
+                    usersDTO.setIsActive(true);
+                    usersDTO.setGeneratedPassword(SaveUer.generateRandomPassword(PaymentsDTO.getStdID()));
+                    authenticationService.SaveUserInternally(usersDTO);
                 }
 
                 if(amount >= (totalAmountPaid+ PaymentsDTO.getAmount())){

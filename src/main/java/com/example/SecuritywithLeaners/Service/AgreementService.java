@@ -29,8 +29,8 @@ public class AgreementService {
     PackageRepo packageRepo;
     @Autowired
     StudentRepo studentRepo;
-
-
+    @Autowired
+    UsersRepo usersRepo;
     @Autowired
     PackageAndVehicleTypeRepo packageAndVehicleTypeRepo;
 
@@ -126,8 +126,13 @@ public class AgreementService {
             List<Agreement> agreement = agreementRepo.getAgreementsByStdID(stdID).stream().toList();
             AgreementDTO agreementDTO = new AgreementDTO();
             List<AgreementDTO> agreementDTOS =new ArrayList<>();
+            System.out.println("get Agreement Triggered");
             for (Agreement a: agreement) {
                 agreementDTO.setStdID(a.getAgreementID().getStdID().getStdID());
+                Optional<Users> users = usersRepo.findById(a.getAgreementID().getStdID().getStdID());
+                if(users.isPresent()){
+                    agreementDTO.setGeneratedPassword(users.get().getGeneratedPassword());
+                }
                 agreementDTO.setPackageID(a.getAgreementID().getPackageID().getPackageID());
                 agreementDTO.setPackagePrice(a.getPackagePrice());
                 agreementDTO.setAgreementDate(a.getAgreementDate());

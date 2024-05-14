@@ -27,6 +27,7 @@ public class AgreementDTO {
     private double totalAmountForExtraSessions;
     private  double totalAmountPaid;
     private double totalAmountForExtrasNotInAgreement;
+    private String generatedPassword;
     private List<PackageAndVehicleTypeDTO> packageAndVehicleType;
     private List<ExtraSessionDTO> extraSession;
 }
