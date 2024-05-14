@@ -9,6 +9,7 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -29,4 +30,6 @@ public class Scheduler {
     @ManyToOne
     @JoinColumn(name = "vehicleID_Fk", referencedColumnName = "registrationNo")
     private Vehicle vehicle;
+    @OneToMany(mappedBy = "scheduler", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<BookingSchedule> bookingSchedule;
 }

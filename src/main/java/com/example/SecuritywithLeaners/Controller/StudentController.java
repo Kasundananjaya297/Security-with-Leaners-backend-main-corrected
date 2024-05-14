@@ -1,17 +1,31 @@
 package com.example.SecuritywithLeaners.Controller;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.SecuritywithLeaners.DTO.BookingScheduleDTO;
+import com.example.SecuritywithLeaners.DTO.ResponseDTO;
+import com.example.SecuritywithLeaners.Service.BookingService;
+import com.example.SecuritywithLeaners.Service.SchedulerService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping( "api/student")
 @CrossOrigin
 public class StudentController {
-    @GetMapping("/getStudent")
-    public String getStudent(){
+    @Autowired
+    private SchedulerService schedulerService;
+    @Autowired
+    private BookingService bookingService;
 
-        return "Student";
+    @GetMapping("/getScheduelsByStudentID/{stdID}")
+    public ResponseEntity getStudent(@PathVariable String stdID){
+        ResponseDTO responseDTO = schedulerService.getStudentSchedules(stdID);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
+    @PostMapping("/makeBooking")
+    public ResponseEntity makeBooking(@RequestBody BookingScheduleDTO bookingScheduleDTO){
+        ResponseDTO responseDTO = bookingService.makeBooking(bookingScheduleDTO);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+
 }

@@ -34,6 +34,7 @@ public class SchedulerDTO {
     private String vehicleClassName;
     private String trainerPhoto;
     private String vehiclePhoto;
+    private String vehicleControl;
 
 }
 
