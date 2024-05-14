@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.List;
 
 @Component
 @AllArgsConstructor
@@ -35,6 +36,7 @@ public class SchedulerDTO {
     private String trainerPhoto;
     private String vehiclePhoto;
     private String vehicleControl;
+    private List<BookingScheduleDTO> bookingScheduleDTO;
 
 }
 

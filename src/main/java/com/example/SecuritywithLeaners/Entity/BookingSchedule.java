@@ -23,10 +23,10 @@ public class BookingSchedule {
     private Boolean isAccepted;
     private Boolean isCanceled;
     private Boolean isCompleted;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "schedulerID_Fk", referencedColumnName = "schedulerID")
     private Scheduler scheduler;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "studentID_Fk", referencedColumnName = "stdID")
     private Student student;
 

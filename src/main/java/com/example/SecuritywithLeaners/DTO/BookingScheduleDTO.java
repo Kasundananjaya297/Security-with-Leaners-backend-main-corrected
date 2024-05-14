@@ -23,6 +23,9 @@ public class BookingScheduleDTO {
     private Boolean isAccepted;
     private Boolean isCanceled;
     private Boolean isCompleted;
-    private String schedulerID;
+    private Long schedulerID;
     private String stdID;
+    private String stdFname;
+    private String stdLname;
+    private int telephone;
 }
