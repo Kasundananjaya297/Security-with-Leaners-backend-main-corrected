@@ -21,5 +21,6 @@ public class PackageDTO {
     private String packageName;
     private String description;
     private Double packagePrice;
+    private String randomPassword;
     private List<PackageAndVehicleTypeDTO> packageAndVehicleType;
 }

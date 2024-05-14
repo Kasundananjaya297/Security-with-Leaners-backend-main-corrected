@@ -5,6 +5,7 @@ import com.example.SecuritywithLeaners.DTO.UsersDTO;
 import com.example.SecuritywithLeaners.Entity.Users;
 import com.example.SecuritywithLeaners.Repo.UsersRepo;
 import com.example.SecuritywithLeaners.Util.JWTUtils;
+import com.example.SecuritywithLeaners.Util.SaveUer;
 import com.example.SecuritywithLeaners.Util.varList;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,8 @@ public class AuthenticationService  {
     private ModelMapper modelMapper;
     @Autowired
     private JWTUtils jwtUtils;
+    @Autowired
+    private SaveUer saveUer;
 
     public ResponseDTO SaveUser(UsersDTO usersDTO){
         ResponseDTO responseDTO = new ResponseDTO();
@@ -124,6 +127,23 @@ public class AuthenticationService  {
             responseDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return responseDTO;
+    }
+    public Boolean SaveUserInternally(UsersDTO usersDTO){
+
+        try {
+            if(!usersRepo.existsById(usersDTO.getUsername())){
+                String EncodedPassword = passwordEncoder.encode(usersDTO.getGeneratedPassword());
+                usersDTO.setPassword(EncodedPassword);
+                usersRepo.save(modelMapper.map(usersDTO, Users.class));
+                return true;
+            }
+            else{
+                return false;
+            }
+        }catch (Exception e){
+            return false;
+        }
+
     }
 
 

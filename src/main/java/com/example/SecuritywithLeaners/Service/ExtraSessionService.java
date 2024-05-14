@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -35,6 +36,9 @@ public class ExtraSessionService {
     private AgreementRepo agreementRepo;
     @Autowired
     private PackageAndVehicleTypeRepo packageAndVehicleTypeRepo;
+    @Autowired
+    private VehicleRepo vehicleRepo;
+
     public ResponseDTO UpdateExtraSession(List<ExtraSessionDTO> extraSessionDTO) {
         ResponseDTO responseDTO = new ResponseDTO();
         ExtraSession extraSessions = new ExtraSession();
@@ -76,6 +80,9 @@ public class ExtraSessionService {
                 responseDTO.setStatus(HttpStatus.NOT_FOUND);
 
             }else {
+
+
+
                 String serial_no = trialPermitRepo.findByStdID(stdID);
                 List<String> types = permitAndVehicleTypeRepo.findSelectedTypeBySerialNo(serial_no);
                 String packageID = agreementRepo.PackageID(stdID);
@@ -83,9 +90,37 @@ public class ExtraSessionService {
                 List<String> typesNotINAgreement = extrasNotInAgreementRepo.getTypeID(stdID, packageID);
                 types.removeAll(typesNotINAgreement);
                 types.removeAll(typesInPackage);
-                List<VehicleType> vehicleTypes = vehicleTypeRepo.findAllById(types);
-                List<VehicleTypeDTO> vehicleTypeDTOList = vehicleTypes.stream().map(vehicleType -> modelMapper.map(vehicleType, VehicleTypeDTO.class)).toList();
-                responseDTO.setContent(vehicleTypeDTOList);
+
+                List<Vehicle> vehicles = vehicleRepo.findAll();
+
+                List<Vehicle> vehicleTypes = vehicleRepo.findAll();
+                List<VehicleTypeDTO> vehicleTypesDTO = new ArrayList<>();
+                for(Vehicle vehicle:vehicleTypes){
+                    VehicleTypeDTO vehicleTypeDTO = new VehicleTypeDTO();
+                    vehicleTypeDTO.setTypeID(vehicle.getTypeID().getTypeID());
+                    vehicleTypeDTO.setTypeName(vehicle.getTypeID().getTypeName());
+                    vehicleTypeDTO.setEngineCapacity(vehicle.getTypeID().getEngineCapacity());
+                    vehicleTypeDTO.setTypeAuto(vehicle.getAutoOrManual().equals("Auto"));
+                    vehicleTypeDTO.setTypeManual(vehicle.getAutoOrManual().equals("Manual"));
+                    vehicleTypeDTO.setIsHeavy(vehicle.getTypeID().getIsHeavy());
+                    vehicleTypesDTO.add(vehicleTypeDTO);
+                }
+                // Merge based on typeID
+                List<VehicleTypeDTO> distinctVehicleTypes = new ArrayList<>(vehicleTypesDTO.stream()
+                        .collect(Collectors.toMap(VehicleTypeDTO::getTypeID, // key mapper
+                                vehicleTypeDTO -> vehicleTypeDTO, // value mapper
+                                (existing, replacement) -> {
+                                    // Merge Auto and Manual types
+                                    existing.setTypeAuto(existing.getTypeAuto() || replacement.getTypeAuto());
+                                    existing.setTypeManual(existing.getTypeManual() || replacement.getTypeManual());
+                                    return existing;
+                                })) // merge function
+                        .values());
+
+
+                List<VehicleTypeDTO> vehicleTypeDTO = distinctVehicleTypes.stream().filter(vehicleType -> types.contains(vehicleType.getTypeID())).collect(Collectors.toList());
+
+                responseDTO.setContent(vehicleTypeDTO);
                 responseDTO.setCode(varList.RSP_SUCCES);
                 responseDTO.setMessage("Success");
             }
