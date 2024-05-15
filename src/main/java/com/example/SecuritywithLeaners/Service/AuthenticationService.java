@@ -145,6 +145,37 @@ public class AuthenticationService  {
         }
 
     }
+    public ResponseDTO updatePassword(UsersDTO usersDTO){
+        ResponseDTO responseDTO = new ResponseDTO();
+        try {
+            if(usersRepo.existsById(usersDTO.getUsername())){
+                Optional<Users> userOptional = usersRepo.findById(usersDTO.getUsername());
+                Users user = userOptional.get();
+                String storedPassword = user.getPassword();
+                if ((usersRepo.existsById(usersDTO.getUsername()))&&(passwordEncoder.matches(usersDTO.getPassword(), storedPassword))) {
+                    String EncodedPassword = passwordEncoder.encode(usersDTO.getNewPassword());
+                    user.setPassword(EncodedPassword);
+                    user.setGeneratedPassword("");
+                    user.setIsActive(true);
+                    usersRepo.saveAndFlush(user);
+                    responseDTO.setCode(varList.RSP_SUCCES);
+                    responseDTO.setMessage("Password Updated");
+                    responseDTO.setStatus(HttpStatus.ACCEPTED);
+                } else {
+                    responseDTO.setCode(varList.RSP_FAIL);
+                    responseDTO.setMessage("Invalid User");
+                    responseDTO.setContent(null);
+                    responseDTO.setStatus(HttpStatus.ACCEPTED);
+                }
+            }
+        }catch (Exception e){
+            responseDTO.setCode(varList.RSP_FAIL);
+            responseDTO.setMessage("Failed");
+            responseDTO.setContent(null);
+            responseDTO.setStatus(HttpStatus.BAD_REQUEST);
+        }
+        return responseDTO;
+    }
 
 
 
