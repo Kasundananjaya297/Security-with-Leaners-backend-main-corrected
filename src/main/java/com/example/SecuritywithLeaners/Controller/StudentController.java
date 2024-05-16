@@ -26,6 +26,7 @@ public class StudentController {
         ResponseDTO responseDTO = schedulerService.getStudentSchedules(stdID);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
+
     @PostMapping("/makeBooking")
     public ResponseEntity makeBooking(@RequestBody BookingScheduleDTO bookingScheduleDTO){
         ResponseDTO responseDTO = bookingService.makeBooking(bookingScheduleDTO);

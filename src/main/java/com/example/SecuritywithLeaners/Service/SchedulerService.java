@@ -217,21 +217,63 @@ public class SchedulerService {
             });
             //filter schdules basd on current date
             schedulerDTOList.removeIf(schedulerDTO -> schedulerDTO.getStart().before(new java.util.Date()));
-
-
             responseDTO.setContent(schedulerDTOList);
             responseDTO.setStatus(HttpStatus.ACCEPTED);
             responseDTO.setCode(varList.RSP_SUCCES);
             responseDTO.setMessage("Schedules fetched successfully");
-
-
-
         }catch (Exception e){
             responseDTO.setMessage("Error in fetching schedules");
             responseDTO.setCode(varList.RSP_ERROR);
             responseDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
 
         }
+        return responseDTO;
+    }
+    public ResponseDTO getTrainerSchedules(String trainerID){
+        ResponseDTO responseDTO = new ResponseDTO();
+        try{
+            List<Scheduler> schedulers = schedulerRepo.findAll();
+            List<SchedulerDTO> schedulerDTOList = new ArrayList<>();
+            for(Scheduler scheduler : schedulers){
+                SchedulerDTO schedulerDTO = modelMapper.map(scheduler, SchedulerDTO.class);
+                schedulerDTO.setTrainerID(scheduler.getTrainer().getTrainerID());
+                schedulerDTO.setTrainerFname(scheduler.getTrainer().getFname());
+                schedulerDTO.setTrainerLname(scheduler.getTrainer().getLname());
+                schedulerDTO.setContactNo(scheduler.getTrainer().getTelephone());
+                schedulerDTO.setRegistrationNo(scheduler.getVehicle().getRegistrationNo());
+                schedulerDTO.setMake(scheduler.getVehicle().getMake());
+                schedulerDTO.setModal(scheduler.getVehicle().getModal());
+                schedulerDTO.setVehicleClass(scheduler.getVehicle().getTypeID().getTypeID());
+                schedulerDTO.setVehicleClassName(scheduler.getVehicle().getTypeID().getTypeName());
+                schedulerDTO.setTrainerPhoto(scheduler.getTrainer().getProfilePhotoURL());
+                schedulerDTO.setVehicleControl(scheduler.getVehicle().getAutoOrManual());
+                schedulerDTO.setVehiclePhoto(scheduler.getVehicle().getVehiclePhoto());
+                List<BookingScheduleDTO> bookingScheduleDTOList = new ArrayList<>();
+                for(BookingSchedule bookingSchedule : scheduler.getBookingSchedule()){
+                    BookingScheduleDTO bookingScheduleDTO = modelMapper.map(bookingSchedule, BookingScheduleDTO.class);
+                    bookingScheduleDTO.setStdID(bookingSchedule.getStudent().getStdID());
+                    bookingScheduleDTO.setStdFname(bookingSchedule.getStudent().getFname());
+                    bookingScheduleDTO.setStdLname(bookingSchedule.getStudent().getLname());
+                    bookingScheduleDTO.setTelephone(bookingSchedule.getStudent().getTelephone());
+                    bookingScheduleDTOList.add(bookingScheduleDTO);
+                }
+                schedulerDTO.setBookingScheduleDTO(bookingScheduleDTOList);
+                schedulerDTOList.add(schedulerDTO);
+            }
+            //filter schedules based on trainerID
+//       schedulerDTOList.removeIf(schedulerDTO -> !schedulerDTO.getTrainerID().equals(trainerID));
+            responseDTO.setContent(schedulerDTOList);
+            responseDTO.setStatus(HttpStatus.ACCEPTED);
+            responseDTO.setCode(varList.RSP_SUCCES);
+            responseDTO.setMessage("Schedules fetched successfully");
+        }catch (Exception e){
+            responseDTO.setMessage("Error in fetching schedules");
+            responseDTO.setCode(varList.RSP_ERROR);
+            responseDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+
+
         return responseDTO;
     }
 
