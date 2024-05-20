@@ -7,9 +7,11 @@ import com.example.SecuritywithLeaners.DTO.StudentDTO;
 import com.example.SecuritywithLeaners.Entity.Agreement;
 import com.example.SecuritywithLeaners.Entity.MedicalReport;
 import com.example.SecuritywithLeaners.Entity.Student;
+import com.example.SecuritywithLeaners.Entity.Users;
 import com.example.SecuritywithLeaners.Repo.AgreementRepo;
 import com.example.SecuritywithLeaners.Repo.PaymentsRepo;
 import com.example.SecuritywithLeaners.Repo.StudentRepo;
+import com.example.SecuritywithLeaners.Repo.UsersRepo;
 import com.example.SecuritywithLeaners.Util.CalculateAge;
 import com.example.SecuritywithLeaners.Util.IDgenerator;
 import com.example.SecuritywithLeaners.Util.varList;
@@ -46,6 +48,8 @@ public class AdminService {
     private AgreementRepo agreementRepo;
     @Autowired
     private PaymentsRepo paymentsRepo;
+    @Autowired
+    UsersRepo usersRepo;
     private StudentDTO studentDTO;
     public ResponseDTO saveStudent(Student studentDTO) {
         ResponseDTO responseDTO = new ResponseDTO();
@@ -141,8 +145,6 @@ public class AdminService {
 
     public ResponseDTO getStudentBySortingAndPagination(String field, String order, int pageSize, int offset) {
         ResponseDTO responseDTO = new ResponseDTO();
-
-
         try {
             Page<Student> studentDataPage = studentRepo.findAll(PageRequest.of(offset, pageSize, Sort.by(Sort.Direction.valueOf(order), field)));
             List<StudentDTO> studentDTOS = new ArrayList<>();
@@ -151,6 +153,12 @@ public class AdminService {
                 studentDTO.setPackagePrice((agreementRepo.getPackagePrice(student.getStdID())!=null?agreementRepo.getPackagePrice(student.getStdID()):0.0));
                 studentDTO.setFullPayment((agreementRepo.getTotalAmountToPay(student.getStdID())!=null?agreementRepo.getTotalAmountToPay(student.getStdID()):0.0));
                 studentDTO.setBalance((agreementRepo.getTotalAmountToPay(student.getStdID())!=null?agreementRepo.getTotalAmountToPay(student.getStdID()):0.0) - (agreementRepo.getTotalAmountToPaid(student.getStdID())!=null?agreementRepo.getTotalAmountToPaid(student.getStdID()):0.0));
+                if(usersRepo.existsById(student.getStdID())){
+                    Optional<Users> user = usersRepo.findById(student.getStdID());
+                    user.ifPresent(users -> studentDTO.setGeneratedPassword(users.getGeneratedPassword()));
+                }else {
+                    studentDTO.setGeneratedPassword("");
+                }
                 int age = calculateAge.CalculateAgeINT(student.getDateOfBirth().toString());
                 studentDTO.setAge(age);
                 studentDTOS.add(studentDTO);
@@ -203,6 +211,13 @@ public class AdminService {
                 studentDTO.setPackagePrice((agreementRepo.getPackagePrice(stdID)!=null?agreementRepo.getPackagePrice(stdID):0.0));
                 studentDTO.setFullPayment((agreementRepo.getTotalAmountToPay(stdID)!=null?agreementRepo.getTotalAmountToPay(stdID):0.0));
                 studentDTO.setBalance((agreementRepo.getTotalAmountToPay(stdID)!=null?agreementRepo.getTotalAmountToPay(stdID):0.0) - (agreementRepo.getTotalAmountToPaid(stdID)!=null?agreementRepo.getTotalAmountToPaid(stdID):0.0));
+                if(usersRepo.existsById(stdID)){
+                    Optional<Users> user = usersRepo.findById(stdID);
+                    user.ifPresent(users -> studentDTO.setGeneratedPassword(users.getGeneratedPassword()));
+                }else {
+                    studentDTO.setGeneratedPassword("");
+                }
+
                 System.out.println(age);
                 responseDTO.setCode(varList.RSP_SUCCES);
                 responseDTO.setMessage("Success");

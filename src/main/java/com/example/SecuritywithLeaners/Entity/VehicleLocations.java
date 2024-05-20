@@ -11,11 +11,14 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
+@Entity
 public class VehicleLocations {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne(mappedBy = "")
-    @JoinColumn(name = "vehicleID_FK" )
+    @OneToOne
+    @JoinColumn(name = "vehicleID_Fk", referencedColumnName = "registrationNo")
     private Vehicle registrationNo;
+    private float latitude;
+    private float longitude;
 }

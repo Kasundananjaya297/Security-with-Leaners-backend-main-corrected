@@ -33,4 +33,5 @@ public class StudentDTO {
     private LocalDate dateOfBirth;
     private String profilePhotoURL;
     private double packagePrice;
+    private String generatedPassword;
 }

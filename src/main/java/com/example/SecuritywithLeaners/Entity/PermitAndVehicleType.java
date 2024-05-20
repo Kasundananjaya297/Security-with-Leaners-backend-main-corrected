@@ -18,4 +18,5 @@ public class PermitAndVehicleType {
     @ManyToOne()
     @MapsId("selectedType")
     private VehicleType selectedType;
+    private Boolean isPassed;
 }

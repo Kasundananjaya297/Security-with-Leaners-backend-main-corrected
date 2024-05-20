@@ -12,4 +12,6 @@ import org.springframework.stereotype.Component;
 public class VehiclesFilteringDTO {
     private String vehicleClass;
     private String vehicleControl;
+    private int lessonCount;
+    private int lessonsCompleted;
 }

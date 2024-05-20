@@ -40,7 +40,7 @@ public class Vehicle {
     private List<VehicleServicesAndRepair> vehicleServicesAndRepairs;
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Scheduler> schedules;
-//    @OneToOne
-//    private VehicleLocations vehicleLocations;
+    @OneToOne(mappedBy = "registrationNo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private VehicleLocations vehicleLocations;
 
 }

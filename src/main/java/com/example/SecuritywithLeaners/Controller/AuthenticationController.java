@@ -34,5 +34,4 @@ public class AuthenticationController {
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
 
-
 }

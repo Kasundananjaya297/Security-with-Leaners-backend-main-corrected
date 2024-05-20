@@ -6,8 +6,10 @@ import com.example.SecuritywithLeaners.Entity.TrainerDrivingLicenceVehicles;
 import com.example.SecuritywithLeaners.Entity.TrainerPermit;
 import com.example.SecuritywithLeaners.Entity.Trainers;
 import com.example.SecuritywithLeaners.Repo.TrainerRepo;
+import com.example.SecuritywithLeaners.Repo.UsersRepo;
 import com.example.SecuritywithLeaners.Util.CalculateAge;
 import com.example.SecuritywithLeaners.Util.IDgenerator;
+import com.example.SecuritywithLeaners.Util.SaveUer;
 import com.example.SecuritywithLeaners.Util.varList;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
@@ -36,6 +38,11 @@ public class TrainerService {
     private IDgenerator idgenerator;
     @Autowired
     private CalculateAge calculateAge;
+    @Autowired
+    private AuthenticationService authenticationService;
+    @Autowired
+    private UsersRepo usersRepo;
+
 
     public ResponseDTO saveTrainer(TrainerDTO trainerDTO){
         ResponseDTO responseDTO = new ResponseDTO();
@@ -46,6 +53,11 @@ public class TrainerService {
                 trainers.setTrainerID(idgenerator.generateTrainerID());
                 trainers.setTrainerStatus("Not-ready");
                 trainerRepo.save(trainers);
+                UsersDTO usersDTO = new UsersDTO();
+                usersDTO.setUsername(trainers.getTrainerID());
+                usersDTO.setRole("TRAINER");
+                usersDTO.setGeneratedPassword(SaveUer.generateRandomPassword(trainers.getTrainerID()));
+                authenticationService.SaveUserInternally(usersDTO);
                 responseDTO.setMessage("Trainer saved successfully");
                 responseDTO.setStatus(HttpStatus.ACCEPTED);
                 responseDTO.setCode(varList.RSP_SUCCES);
@@ -65,7 +77,6 @@ public class TrainerService {
             responseDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
             responseDTO.setMessage("An error occurred: " + e.getMessage());
             responseDTO.setContent(null);
-
         }
         return responseDTO;
     }
@@ -77,6 +88,7 @@ public class TrainerService {
             for(Trainers trainer : trainers){
                 TrainerDTO trainerDTO = modelMapper.map(trainer, TrainerDTO.class);
                 trainerDTO.setAge(calculateAge.CalculateAgeINT(trainerDTO.getDateOfBirth().toString()));
+                trainerDTO.setGeneratedPassword(usersRepo.findUsersByUsername(trainer.getTrainerID()).get().getGeneratedPassword());
                 List<TrainerDrivingLicenceDTO> trainerDrivingLicenceDTO =new ArrayList<>();
                 for(TrainerDrivingLicence trainerDrivingLicence : trainer.getTrainerDrivingLicences().stream().sorted(Comparator.comparing(TrainerDrivingLicence::getTrainerDrivingLicenceID).reversed()).toList()){
                     TrainerDrivingLicenceDTO trainerDrivingLicenceDTO1 = modelMapper.map(trainerDrivingLicence, TrainerDrivingLicenceDTO.class);

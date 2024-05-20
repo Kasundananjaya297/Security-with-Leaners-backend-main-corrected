@@ -38,5 +38,10 @@ public class StudentController {
         ResponseDTO responseDTO = authenticationService.updatePassword(usersDTO);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
+    @PutMapping("/studentCancelBooking/{bookingID}")
+    public ResponseEntity cancelBooking(@PathVariable Long bookingID){
+        ResponseDTO responseDTO = bookingService.cancelBooking(bookingID);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
 
 }

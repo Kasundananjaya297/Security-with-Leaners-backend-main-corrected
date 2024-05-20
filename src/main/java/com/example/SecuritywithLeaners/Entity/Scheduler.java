@@ -1,10 +1,8 @@
 package com.example.SecuritywithLeaners.Entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -24,6 +22,8 @@ public class Scheduler {
     private Date end;
     private int studentCount;
     private String title;
+    @ColumnDefault("false")
+    private Boolean trainerRequestToCancel;
     @ManyToOne
     @JoinColumn(name = "trainerID_Fk", referencedColumnName = "trainerID")
     private Trainers trainer;

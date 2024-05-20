@@ -24,4 +24,5 @@ public class PermitAndVehicleTypeDTO {
     private int totalLessons;
     private int participatedLessons;
     private int remainingLessons;
+    private Boolean isPassed;
 }

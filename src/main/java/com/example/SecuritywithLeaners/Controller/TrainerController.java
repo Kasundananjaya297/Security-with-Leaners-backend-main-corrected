@@ -19,5 +19,11 @@ public class TrainerController {
         ResponseDTO responseDTO = schedulerService.getTrainerSchedules(TrainerID);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
+    @PutMapping("/trainerCancleSchedule/{scheduleID}")
+    public ResponseEntity cancelSchedule(@PathVariable Long scheduleID){
+        ResponseDTO responseDTO = schedulerService.cancelSchedule(scheduleID);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+
 
 }

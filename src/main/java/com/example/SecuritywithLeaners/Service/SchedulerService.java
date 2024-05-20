@@ -1,13 +1,8 @@
 package com.example.SecuritywithLeaners.Service;
 
-import com.example.SecuritywithLeaners.DTO.BookingScheduleDTO;
-import com.example.SecuritywithLeaners.DTO.ResponseDTO;
-import com.example.SecuritywithLeaners.DTO.SchedulerDTO;
-import com.example.SecuritywithLeaners.DTO.VehiclesFilteringDTO;
+import com.example.SecuritywithLeaners.DTO.*;
 import com.example.SecuritywithLeaners.Entity.*;
-import com.example.SecuritywithLeaners.Entity.Package;
 import com.example.SecuritywithLeaners.Repo.AgreementRepo;
-import com.example.SecuritywithLeaners.Repo.PackageRepo;
 import com.example.SecuritywithLeaners.Repo.SchedulerRepo;
 import com.example.SecuritywithLeaners.Util.varList;
 import jakarta.transaction.Transactional;
@@ -16,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +23,8 @@ public class SchedulerService {
     private AgreementRepo agreementRepo;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private NotificationService notificationService;
 
 
     public ResponseDTO saveSchedules(List<SchedulerDTO> schedulerDTO) {
@@ -87,16 +83,25 @@ public class SchedulerService {
             List<SchedulerDTO> schedulerDTOList = new ArrayList<>();
             for(Scheduler scheduler : schedulerList){
                 SchedulerDTO schedulerDTO = modelMapper.map(scheduler, SchedulerDTO.class);
-                schedulerDTO.setTrainerID(scheduler.getTrainer().getTrainerID());
-                schedulerDTO.setTrainerFname(scheduler.getTrainer().getFname());
-                schedulerDTO.setTrainerLname(scheduler.getTrainer().getLname());
-                schedulerDTO.setContactNo(scheduler.getTrainer().getTelephone());
+                if(!scheduler.getTrainer().getSchedules().isEmpty()){
+                    schedulerDTO.setTrainerID(scheduler.getTrainer().getTrainerID());
+                    schedulerDTO.setTrainerFname(scheduler.getTrainer().getFname());
+                    schedulerDTO.setTrainerLname(scheduler.getTrainer().getLname());
+                    schedulerDTO.setContactNo(scheduler.getTrainer().getTelephone());
+                    schedulerDTO.setTrainerPhoto(scheduler.getTrainer().getProfilePhotoURL());
+                }else {
+                    schedulerDTO.setTrainerID(null);
+                    schedulerDTO.setTrainerFname(null);
+                    schedulerDTO.setTrainerLname(null);
+                    schedulerDTO.setContactNo(0);
+                    schedulerDTO.setTrainerPhoto(null);
+                }
+                schedulerDTO.setTrainerRequestToCancel(scheduler.getTrainerRequestToCancel());
                 schedulerDTO.setRegistrationNo(scheduler.getVehicle().getRegistrationNo());
                 schedulerDTO.setMake(scheduler.getVehicle().getMake());
                 schedulerDTO.setModal(scheduler.getVehicle().getModal());
                 schedulerDTO.setVehicleClass(scheduler.getVehicle().getTypeID().getTypeID());
                 schedulerDTO.setVehicleClassName(scheduler.getVehicle().getTypeID().getTypeName());
-                schedulerDTO.setTrainerPhoto(scheduler.getTrainer().getProfilePhotoURL());
                 schedulerDTO.setVehiclePhoto(scheduler.getVehicle().getVehiclePhoto());
                 List<BookingScheduleDTO> bookingScheduleDTOList = new ArrayList<>();
                 for(BookingSchedule bookingSchedule : scheduler.getBookingSchedule()){
@@ -261,7 +266,7 @@ public class SchedulerService {
                 schedulerDTOList.add(schedulerDTO);
             }
             //filter schedules based on trainerID
-//       schedulerDTOList.removeIf(schedulerDTO -> !schedulerDTO.getTrainerID().equals(trainerID));
+            schedulerDTOList.removeIf(schedulerDTO -> !schedulerDTO.getTrainerID().equals(trainerID));
             responseDTO.setContent(schedulerDTOList);
             responseDTO.setStatus(HttpStatus.ACCEPTED);
             responseDTO.setCode(varList.RSP_SUCCES);
@@ -271,9 +276,29 @@ public class SchedulerService {
             responseDTO.setCode(varList.RSP_ERROR);
             responseDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-
-
+        return responseDTO;
+    }
+    public ResponseDTO cancelSchedule(Long schedulerID){
+        ResponseDTO responseDTO = new ResponseDTO();
+        try{
+            Scheduler scheduler = schedulerRepo.findById(schedulerID).get();
+            schedulerRepo.TrainerRequsetToCancel(schedulerID);
+            NotificationDTO notificationDTO = new NotificationDTO();
+            notificationDTO.setItemID(scheduler.getTrainer().getTrainerID());
+            notificationDTO.setItemFname(scheduler.getTrainer().getFname());
+            notificationDTO.setItemLname(scheduler.getTrainer().getLname());
+            notificationDTO.setStatus("Request");
+            notificationDTO.setMessage("Request to Cancel");
+            notificationDTO.setItemOrEventDate(scheduler.getStart());
+            notificationService.saveNotification(notificationDTO);
+            responseDTO.setMessage("Recieved successfully");
+            responseDTO.setCode(varList.RSP_SUCCES);
+            responseDTO.setStatus(HttpStatus.ACCEPTED);
+        }catch (Exception e){
+            responseDTO.setMessage("Error in deleting schedule");
+            responseDTO.setCode(varList.RSP_ERROR);
+            responseDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         return responseDTO;
     }
 
