@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "StudentDetails")
+//@Table(name = "StudentDetails")
 public class Student {
     @Id
     @Column(length = 10, nullable = false, unique = true)

@@ -347,6 +347,39 @@ public class TrialPermitService {
 //        }
 //        return responseDTO;
 //    }
+    public ResponseDTO updatePassOrFailStudentInTrialPermit(PermitAndVehicleTypeDTO permitAndVehicleTypeDTO) {
+        ResponseDTO responseDTO = new ResponseDTO();
+        try {
+            if (trialPermitRepo.existsById(permitAndVehicleTypeDTO.getSerialNo())) {
+                PermitAndVehicleTypeId permitAndVehicleTypeId = new PermitAndVehicleTypeId();
+                permitAndVehicleTypeId.setSerialNo(trialPermitRepo.findById(permitAndVehicleTypeDTO.getSerialNo()).get());
+                permitAndVehicleTypeId.setSelectedType(vehicleTypeRepo.findById(permitAndVehicleTypeDTO.getSelectedType()).get());
+                if (permitAndVehicleTypeRepo.existsById(permitAndVehicleTypeId)) {
+                    permitAndVehicleTypeRepo.updateIsPassed(permitAndVehicleTypeDTO.getIsPassed(), permitAndVehicleTypeDTO.getSerialNo(), permitAndVehicleTypeDTO.getSelectedType());
+                    responseDTO.setCode(varList.RSP_SUCCES);
+                    responseDTO.setMessage("Success");
+                    responseDTO.setContent("Updated");
+                    responseDTO.setStatus(HttpStatus.ACCEPTED);
+                } else {
+                    responseDTO.setCode(varList.RSP_NO_DATA_FOUND);
+                    responseDTO.setMessage("No data found");
+                    responseDTO.setContent(null);
+                    responseDTO.setStatus(HttpStatus.NO_CONTENT);
+                }
+            } else {
+                responseDTO.setCode(varList.RSP_NO_DATA_FOUND);
+                responseDTO.setMessage("No data found");
+                responseDTO.setContent(null);
+                responseDTO.setStatus(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            responseDTO.setCode(varList.RSP_FAIL);
+            responseDTO.setMessage("Failed");
+            responseDTO.setContent(null);
+            responseDTO.setStatus(HttpStatus.BAD_REQUEST);
+        }
+        return responseDTO;
+    }
 }
 
 

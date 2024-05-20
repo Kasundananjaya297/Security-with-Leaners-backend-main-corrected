@@ -33,6 +33,7 @@ public class SchedulerDTO {
     private String modal;
     private String vehicleClass;
     private String vehicleClassName;
+    private Boolean trainerRequestToCancel;
     private String trainerPhoto;
     private String vehiclePhoto;
     private String vehicleControl;

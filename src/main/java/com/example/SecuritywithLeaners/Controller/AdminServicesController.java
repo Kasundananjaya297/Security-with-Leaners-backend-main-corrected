@@ -64,6 +64,12 @@ public class AdminServicesController {
     private TrainerPermitService trainerPermitService;
     @Autowired
     private SchedulerService schedulerService;
+    @Autowired
+    private AuthenticationService authenticationService;
+    @Autowired
+    private BookingService bookingService;
+    @Autowired
+    private NotificationService notificationService;
 
     @PostMapping("/registerStudent")
     public ResponseEntity registerStudent(@RequestBody Student studentDTO){
@@ -414,10 +420,28 @@ public class AdminServicesController {
     }
     @PutMapping("/updateSchedules")
     public ResponseEntity updateSchedules(@RequestBody SchedulerDTO schedulerDTO){
-        System.out.println("+++++++++++++++++++"+schedulerDTO);
         ResponseDTO responseDTO = schedulerService.updateSchedules(schedulerDTO);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
-
+    @PutMapping("/resetPassword")
+    public ResponseEntity resetPassword(@RequestBody UsersDTO usersDTO){
+        ResponseDTO responseDTO = authenticationService.resetPassword(usersDTO);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @PutMapping("/updatePassOrFailStudentInTrialPermit")
+    public ResponseEntity updatePassOrFailStudentInTrialPermit(@RequestBody PermitAndVehicleTypeDTO permitAndVehicleTypeDTO){
+        ResponseDTO responseDTO = trialPermitService.updatePassOrFailStudentInTrialPermit(permitAndVehicleTypeDTO);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @PutMapping("/acceptOrRegectBookingRequest")
+    public ResponseEntity acceptOrRegectBookingRequest(@RequestBody BookingScheduleDTO bookingDTO){
+        ResponseDTO responseDTO = bookingService.acceptOrRegectBookingRequest(bookingDTO);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @GetMapping("getAllNotifications")
+    public ResponseEntity getAllNotifications(){
+        ResponseDTO responseDTO = notificationService.getAllNotification();
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
 
 }

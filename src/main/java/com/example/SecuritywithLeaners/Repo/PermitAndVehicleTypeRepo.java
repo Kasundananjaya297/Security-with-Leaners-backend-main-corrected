@@ -22,5 +22,9 @@ public interface PermitAndVehicleTypeRepo extends JpaRepository<PermitAndVehicle
     @Query(value = "SELECT selected_type_typeid FROM permit_and_vehicle_type WHERE serial_no_serial_no = :serialNo", nativeQuery = true)
     List<String> findSelectedTypeBySerialNo(@Param("serialNo") String serialNo);
 
+    @Modifying
+    @Query(value = "UPDATE permit_and_vehicle_type SET is_passed = :isPassed WHERE serial_no_serial_no = :serialNo AND selected_type_typeid = :selectedType", nativeQuery = true)
+    void updateIsPassed(@Param("isPassed") Boolean isPassed, @Param("serialNo") String serialNo, @Param("selectedType") String selectedType);
+
 
 }
