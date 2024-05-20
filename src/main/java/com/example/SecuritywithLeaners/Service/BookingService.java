@@ -150,6 +150,7 @@ public class BookingService {
                 scheduleBookingRepo.save(bookingSchedule);
                 //get max booking id
                 BookingSchedule bookingSchedule1 = scheduleBookingRepo.findByStdID(bookingScheduleDTO.getStdID()).get(0);
+                System.out.println("++++++++++++++++++++"+bookingSchedule1.getStudent().getFname());
                 NotificationDTO notificationDTO = new NotificationDTO();
                 notificationDTO.setItemID(bookingSchedule1.getStudent().getStdID());
                 notificationDTO.setItemFname(bookingSchedule1.getStudent().getFname());
@@ -157,6 +158,7 @@ public class BookingService {
                 notificationDTO.setItemOrEventDate(bookingSchedule1.getScheduler().getStart());
                 notificationDTO.setMessage("Booking Requested");
                 notificationDTO.setStatus("Success");
+                notificationDTO.setViewsFor("ADMIN");
                 notificationService.saveNotification(notificationDTO);
                 responseDTO.setCode(varList.RSP_SUCCES);
                 responseDTO.setStatus(HttpStatus.ACCEPTED);
@@ -174,6 +176,10 @@ public class BookingService {
         ResponseDTO responseDTO = new ResponseDTO();
         try {
             scheduleBookingRepo.updateBookingSchedule(bookingScheduleDTO.getBookingID(),bookingScheduleDTO.getIsAccepted());
+            NotificationDTO notificationDTO = new NotificationDTO();
+
+            notificationDTO.setItemID(bookingScheduleDTO.getStdID());
+
             responseDTO.setCode(varList.RSP_SUCCES);
             responseDTO.setStatus(HttpStatus.ACCEPTED);
             responseDTO.setMessage("Success");
@@ -185,11 +191,11 @@ public class BookingService {
         }
         return responseDTO;
     }
-    public ResponseDTO cancelBooking(Long bookingID){
+    public ResponseDTO cancelBooking(Long bookingID,String viewfor){
         ResponseDTO responseDTO = new ResponseDTO();
         try {
             BookingSchedule bookingSchedule = scheduleBookingRepo.findById(bookingID).get();
-
+            BookingSchedule bookingSchedule1 = scheduleBookingRepo.findById(bookingID).get();
             scheduleBookingRepo.deleteBookingSchedule(bookingID);
             NotificationDTO notificationDTO = new NotificationDTO();
             notificationDTO.setItemID(bookingSchedule.getStudent().getStdID());
@@ -198,6 +204,7 @@ public class BookingService {
             notificationDTO.setItemOrEventDate(bookingSchedule.getScheduler().getStart());
             notificationDTO.setMessage("Booking Canceled");
             notificationDTO.setStatus("Success");
+            notificationDTO.setViewsFor(viewfor);
             notificationService.saveNotification(notificationDTO);
             responseDTO.setCode(varList.RSP_SUCCES);
             responseDTO.setStatus(HttpStatus.ACCEPTED);

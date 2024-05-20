@@ -30,5 +30,6 @@ public class Notification {
     private Boolean isRead;
     private String status;
     private Date itemOrEventDate;
+    private String viewsFor;
 
 }

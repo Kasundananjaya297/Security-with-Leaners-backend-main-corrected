@@ -36,6 +36,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/admin/getPayments/*/*").hasAnyAuthority("ADMIN","STUDENT")
                         .requestMatchers("/api/admin/getAgreement/*").hasAnyAuthority("ADMIN","STUDENT")
                         .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
+                        .requestMatchers("/api/student/studentCancelBooking/*/*").hasAnyAuthority( "STUDENT","ADMIN")
                         .requestMatchers("/api/student/**").hasAnyAuthority( "STUDENT")
                         .requestMatchers("/api/trainer/**").hasAuthority("TRAINER")
                         .requestMatchers("/user/**").hasAnyAuthority("USER")

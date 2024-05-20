@@ -38,9 +38,9 @@ public class StudentController {
         ResponseDTO responseDTO = authenticationService.updatePassword(usersDTO);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
-    @PutMapping("/studentCancelBooking/{bookingID}")
-    public ResponseEntity cancelBooking(@PathVariable Long bookingID){
-        ResponseDTO responseDTO = bookingService.cancelBooking(bookingID);
+    @PutMapping("/studentCancelBooking/{bookingID}/{viewfor}")
+    public ResponseEntity cancelBooking(@PathVariable Long bookingID,@PathVariable String viewfor){
+        ResponseDTO responseDTO = bookingService.cancelBooking(bookingID,viewfor);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
 

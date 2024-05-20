@@ -21,4 +21,5 @@ public class NotificationDTO {
     private Date itemOrEventDate;
     private Boolean isRead;
     private String status;
+    private String viewsFor;
 }
