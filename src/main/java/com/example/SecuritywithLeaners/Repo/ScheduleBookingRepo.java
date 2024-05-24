@@ -4,6 +4,7 @@ import com.example.SecuritywithLeaners.Entity.BookingSchedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -23,5 +24,9 @@ public interface ScheduleBookingRepo extends JpaRepository<BookingSchedule,Long>
     @Modifying
     @Query(value = "DELETE FROM booking_schedule WHERE bookingid = :bookingID", nativeQuery = true)
     void deleteBookingSchedule(Long bookingID);
+    //update student attendance
+    @Modifying
+    @Query(value = "UPDATE booking_schedule SET is_completed = :isAttended WHERE bookingid = :bookingID", nativeQuery = true)
+    void updateStudentAttendance(@Param("isAttended") boolean isAttended,@Param("bookingID") Long bookingID);
 
 }

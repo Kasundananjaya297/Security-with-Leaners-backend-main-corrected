@@ -157,6 +157,7 @@ public class TrainerService {
                 trainerDTO.setTrainerDrivingLicences(trainerDrivingLicenceDTO);
                 trainerDTOS.add(trainerDTO);
             }
+            responseDTO.setRecordCount(trainerDTOS.size());
             responseDTO.setMessage("Trainers fetched successfully");
             responseDTO.setStatus(HttpStatus.ACCEPTED);
             responseDTO.setCode(varList.RSP_SUCCES);
@@ -220,5 +221,90 @@ public class TrainerService {
         }
         return responseDTO;
     }
+    public ResponseDTO getTrainerByID(String trainerID){
+        ResponseDTO responseDTO = new ResponseDTO();
+        try{
+            Trainers trainer = trainerRepo.findById(trainerID).get();
+            TrainerDTO trainerDTO = modelMapper.map(trainer, TrainerDTO.class);
+            trainerDTO.setAge(calculateAge.CalculateAgeINT(trainerDTO.getDateOfBirth().toString()));
+            trainerDTO.setGeneratedPassword(usersRepo.findUsersByUsername(trainer.getTrainerID()).get().getGeneratedPassword());
+            List<TrainerDrivingLicenceDTO> trainerDrivingLicenceDTO =new ArrayList<>();
+            for(TrainerDrivingLicence trainerDrivingLicence : trainer.getTrainerDrivingLicences().stream().sorted(Comparator.comparing(TrainerDrivingLicence::getTrainerDrivingLicenceID).reversed()).toList()){
+                TrainerDrivingLicenceDTO trainerDrivingLicenceDTO1 = modelMapper.map(trainerDrivingLicence, TrainerDrivingLicenceDTO.class);
+                trainerDrivingLicenceDTO.add(trainerDrivingLicenceDTO1);
+                List<TrainerDrivingLicenceVehicleTypeDTO> trainerDrivingLicenceVehicleTypeDTO = new ArrayList<>();
+                for (TrainerDrivingLicenceVehicles trainerDrivingLicenceVehicles : trainerDrivingLicence.getTrainerDrivingLicenceVehicles()){
+                    TrainerDrivingLicenceVehicleTypeDTO trainerDrivingLicenceVehicleTypeDTO1 = modelMapper.map(trainerDrivingLicenceVehicles, TrainerDrivingLicenceVehicleTypeDTO.class);
+                    trainerDrivingLicenceVehicleTypeDTO.add(trainerDrivingLicenceVehicleTypeDTO1);
+                    if(trainerDrivingLicenceVehicles.getVehicleType().getIsHeavy()){
+                        trainerDrivingLicenceDTO1.setExpireDateForHeavy(trainerDrivingLicenceDTO1.getExpiryDate());
+                        int monthsForHeavyDuty = calculateAge.CalculateMonths(trainerDrivingLicenceDTO1.getExpiryDate().toString()) -4*12;
+                        int daysForHeavyDuty = calculateAge.calculateDays(trainerDrivingLicenceDTO1.getExpiryDate().toString())-4*12*365;
+                        int mothsForLightWeigh = calculateAge.calcualteMonth(trainerDrivingLicenceDTO1.getExpiryDate().toString())*-1;
+                        int daysForLightWeight = calculateAge.calculateDays(trainerDrivingLicenceDTO1.getExpiryDate().toString());
+                        trainerDrivingLicenceDTO1.setDaysForExpireLightWeight(Math.max(daysForLightWeight, 0));
+                        trainerDrivingLicenceDTO1.setDaysForExpireHeavyDuty(Math.max(daysForHeavyDuty, 0));
+                        trainerDrivingLicenceDTO1.setMonthsForExpireLightWeight(Math.max(mothsForLightWeigh, 0));
+                        trainerDrivingLicenceDTO1.setMonthsForExpiireHevyDuty(Math.max(monthsForHeavyDuty, 0));
+                    }else{
+                        trainerDrivingLicenceDTO1.setMonthsForExpiireHevyDuty(-1);
+                        int months = calculateAge.calcualteMonth(trainerDrivingLicenceDTO1.getExpiryDate().toString())*-1;
+                        int days = calculateAge.calculateDays(trainerDrivingLicenceDTO1.getExpiryDate().toString());
+                        trainerDrivingLicenceDTO1.setDaysForExpireLightWeight(Math.max(days, 0));
+                        trainerDrivingLicenceDTO1.setMonthsForExpireLightWeight(Math.max(months , 0));
+                    }
+                }
+            }
+            List<TrainerPermitDTO> trainerPermits = new ArrayList<>();
+            for(TrainerPermit trainerPermit : trainer.getTrainerPermits().stream().sorted(Comparator.comparing(TrainerPermit::getId).reversed()).toList()){
+                TrainerPermitDTO trainerPermitDTO = new TrainerPermitDTO();
+                trainerPermitDTO.setExpiryDate(trainerPermit.getExpiryDate());
+                trainerPermitDTO.setLicenceURL(trainerPermit.getLicenceURL());
+                trainerPermitDTO.setTrainerID(trainerPermit.getTrainer().getTrainerID());
+                trainerPermitDTO.setUpdatedOrIssuedOn(trainerPermit.getUpdatedOrIssuedOn());
+                int months= calculateAge.calcualteMonth(trainerPermitDTO.getExpiryDate().toString())*-1;
+                int days = calculateAge.calculateDays(trainerPermitDTO.getExpiryDate().toString())*-1;
+                trainerDTO.setTrainerPermitValidMonths(Math.max(months, 0));
+                trainerDTO.setTrainerPermitValidDays(Math.max(days, 0));
+                trainerPermitDTO.setTrainerPermitValidMonths(Math.max(months, 0));
+                trainerPermitDTO.setTrainerPermitValidDays(Math.max(days, 0));
+                trainerPermits.add(trainerPermitDTO);
+            }
+            //Trainer Status
+            if(!trainerDrivingLicenceDTO.isEmpty() && !trainerPermits.isEmpty()) {
+                if (trainerDrivingLicenceDTO.get(0).getExpiryDate().isBefore(LocalDate.now()) && trainerPermits.get(0).getExpiryDate().isBefore(LocalDate.now()))
+                {
+                    if(trainerDrivingLicenceDTO.get(0).getMonthsForExpiireHevyDuty()>0 ){
+                        trainerDTO.setTrainerStatus("Expired DRL(H/L) & TRP");
+                        trainerRepo.updateTrainerStatus("Expired DRL(H/L) & TRP", trainer.getTrainerID());
+                    }else{
+                        trainerDTO.setTrainerStatus("Expired DRL(L) & TRP");
+                        trainerRepo.updateTrainerStatus("Expired DRL(L) & TRP", trainer.getTrainerID());
+                    }
+                } else if (trainerDrivingLicenceDTO.get(0).getExpiryDate().isBefore(LocalDate.now())) {
+                    trainerDTO.setTrainerStatus("Expired DRL");
+                    trainerRepo.updateTrainerStatus("Expired DRL", trainer.getTrainerID());
+                } else if (trainerPermits.get(0).getExpiryDate().isBefore(LocalDate.now())) {
+                    trainerDTO.setTrainerStatus("Expired TRP");
+                    trainerRepo.updateTrainerStatus("Expired TRP", trainer.getTrainerID());
+                } else {
+                    trainerDTO.setTrainerStatus("Active");
+                    trainerRepo.updateTrainerStatus("Active", trainer.getTrainerID());
+                }
+            }
+            trainerDTO.setTrainerPermits(trainerPermits);
+            trainerDTO.setTrainerDrivingLicences(trainerDrivingLicenceDTO);
+            responseDTO.setMessage("Trainer fetched successfully");
+            responseDTO.setStatus(HttpStatus.ACCEPTED);
+            responseDTO.setCode(varList.RSP_SUCCES);
+            responseDTO.setContent(trainerDTO);
+        }catch (Exception e){
+            responseDTO.setMessage("An error occurred: " + e.getMessage());
+            responseDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            responseDTO.setCode(varList.RSP_ERROR);
+            responseDTO.setContent(null);
+        }
 
+    return responseDTO;
+    }
 }

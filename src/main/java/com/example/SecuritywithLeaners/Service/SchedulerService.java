@@ -317,6 +317,20 @@ public class SchedulerService {
         }
         return responseDTO;
     }
+    public ResponseDTO completeSchedule(Long scheduleID){
+        ResponseDTO responseDTO = new ResponseDTO();
+        try{
+            schedulerRepo.updateIsCompleted(scheduleID);
+            responseDTO.setMessage("Schedules completed successfully");
+            responseDTO.setCode(varList.RSP_SUCCES);
+            responseDTO.setStatus(HttpStatus.ACCEPTED);
+        }catch (Exception e){
+            responseDTO.setMessage("Error in completing schedules");
+            responseDTO.setCode(varList.RSP_ERROR);
+            responseDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseDTO;
+    }
 
 
 }

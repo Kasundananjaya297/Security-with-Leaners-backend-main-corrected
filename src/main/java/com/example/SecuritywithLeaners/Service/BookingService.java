@@ -217,5 +217,20 @@ public class BookingService {
         }
         return responseDTO;
     }
+    public ResponseDTO updateStudentAttendance(BookingScheduleDTO bookingScheduleDTO){
+        ResponseDTO responseDTO = new ResponseDTO();
+        try {
+            scheduleBookingRepo.updateStudentAttendance(bookingScheduleDTO.getIsCompleted(),bookingScheduleDTO.getBookingID());
+            responseDTO.setCode(varList.RSP_SUCCES);
+            responseDTO.setStatus(HttpStatus.ACCEPTED);
+            responseDTO.setMessage("Success");
+        }catch (Exception e){
+            responseDTO.setCode(varList.RSP_ERROR);
+            responseDTO.setStatus(HttpStatus.BAD_REQUEST);
+            responseDTO.setMessage("Failed");
+            responseDTO.setContent(null);
+        }
+        return responseDTO;
+    }
 
 }

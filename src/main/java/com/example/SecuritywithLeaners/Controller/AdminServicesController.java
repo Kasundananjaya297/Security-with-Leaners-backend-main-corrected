@@ -70,6 +70,8 @@ public class AdminServicesController {
     private BookingService bookingService;
     @Autowired
     private NotificationService notificationService;
+    @Autowired
+    private VehicleLocationService vehicleLocationService;
 
     @PostMapping("/registerStudent")
     public ResponseEntity registerStudent(@RequestBody Student studentDTO){
@@ -208,6 +210,11 @@ public class AdminServicesController {
     @GetMapping("/getTrainer/{letter}")
     public ResponseEntity getTrainerByLetter(@PathVariable String letter){
         ResponseDTO responseDTO = trainerService.getTrainerByLetter(letter);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @GetMapping("/getTrainerByID/{trainerID}")
+    public ResponseEntity getTrainerByID(@PathVariable String trainerID){
+        ResponseDTO responseDTO = trainerService.getTrainerByID(trainerID);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
     @GetMapping("/getPackageByID/{packageID}")
@@ -438,9 +445,24 @@ public class AdminServicesController {
         ResponseDTO responseDTO = bookingService.acceptOrRegectBookingRequest(bookingDTO);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
-    @GetMapping("getAllNotifications")
+    @GetMapping("/getAllNotifications")
     public ResponseEntity getAllNotifications(){
         ResponseDTO responseDTO = notificationService.getAllNotification();
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @GetMapping("/getVehicleLocationByVehicleID/{vehicleID}")
+    public ResponseEntity getVehicleLocationByVehicleID(@PathVariable String vehicleID){
+        ResponseDTO responseDTO = vehicleLocationService.getVehicleLocationByVehicleID(vehicleID);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @GetMapping("/getVehicleById/{vehicleID}")
+    public ResponseEntity getVehicleById(@PathVariable String vehicleID){
+        ResponseDTO responseDTO = vechicleService.getVehicleById(vehicleID);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @GetMapping("/getVehhicleByLetter/{letter}")
+    public ResponseEntity getVehicleByLetter(@PathVariable String letter){
+        ResponseDTO responseDTO = vechicleService.getVehicleByLetter(letter);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
 

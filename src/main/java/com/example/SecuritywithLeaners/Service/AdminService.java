@@ -165,7 +165,7 @@ public class AdminService {
             }
             log.info("Student data page: {}", studentDataPage);
             responseDTO.setContent(studentDTOS);
-            responseDTO.setRecordCount(studentDataPage.getSize());
+            responseDTO.setRecordCount(studentDTOS.size());
             responseDTO.setCode(varList.RSP_SUCCES);
             responseDTO.setMessage("Success");
             responseDTO.setStatus(HttpStatus.ACCEPTED);

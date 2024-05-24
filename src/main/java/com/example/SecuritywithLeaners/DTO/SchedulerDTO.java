@@ -7,6 +7,7 @@ import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -37,6 +38,8 @@ public class SchedulerDTO {
     private String trainerPhoto;
     private String vehiclePhoto;
     private String vehicleControl;
+    private Boolean isStarted;
+    private Boolean isCompleted;
     private List<BookingScheduleDTO> bookingScheduleDTO;
 
 }
