@@ -1,6 +1,7 @@
 package com.example.SecuritywithLeaners.Repo;
 
 import com.example.SecuritywithLeaners.Entity.Vehicle;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -22,6 +23,9 @@ public interface VehicleRepo extends JpaRepository<Vehicle, String> {
 
     @Query(value = "SELECT * FROM vehicle WHERE typeid_typeid =:typeId",nativeQuery = true)
     List<Vehicle> getVehicleByType(@Param("typeId") String typeId);
+    //find by letter
+    @Query(value = "SELECT * FROM vehicle where registration_no LIKE %:ltter% OR make LIKE %:ltter% OR modal LIKE %:ltter%",nativeQuery = true)
+    List<Vehicle> findByLetter(@Param("ltter") String ltter);
 
 
 }

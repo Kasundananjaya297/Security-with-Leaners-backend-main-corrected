@@ -19,6 +19,8 @@ public class VehicleLocations {
     @OneToOne
     @JoinColumn(name = "vehicleID_Fk", referencedColumnName = "registrationNo")
     private Vehicle registrationNo;
-    private float latitude;
-    private float longitude;
+    private Float startLatitude;
+    private Float startLongitude;
+    private Float endLatitude;
+    private Float endLongitude;
 }

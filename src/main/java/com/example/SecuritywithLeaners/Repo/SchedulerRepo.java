@@ -23,6 +23,14 @@ public interface SchedulerRepo extends JpaRepository<Scheduler, Long>{
     @Query(value = "UPDATE scheduler SET trainer_request_to_cancel = true WHERE  schedulerid =:schedulerid", nativeQuery = true)
     void TrainerRequsetToCancel(@Param("schedulerid") Long schedulerid);
 
+    @Modifying
+    @Query(value = "UPDATE scheduler SET is_started = true WHERE  schedulerid =:schedulerid", nativeQuery = true)
+    void updateIsStarted(@Param("schedulerid") Long schedulerid);
+
+    @Modifying
+    @Query(value = "UPDATE scheduler SET is_completed = true WHERE  schedulerid =:schedulerid", nativeQuery = true)
+    void updateIsCompleted(@Param("schedulerid") Long schedulerid);
+
 
 
 }

@@ -152,7 +152,18 @@ public class SchedulerService {
                     }
                 }
             }
+            scheduler.setTrainerRequestToCancel(false);
             schedulerRepo.saveAndFlush(scheduler);
+            Scheduler scheduler1 = schedulerRepo.findById(schedulerDTO.getSchedulerID()).get();
+            NotificationDTO notificationDTO = new NotificationDTO();
+            notificationDTO.setItemID(scheduler1.getTrainer().getTrainerID());
+            notificationDTO.setItemFname(scheduler1.getTrainer().getFname());
+            notificationDTO.setItemLname(scheduler1.getTrainer().getLname());
+            notificationDTO.setStatus("Update");
+            notificationDTO.setMessage("Schedule Updated");
+            notificationDTO.setItemOrEventDate(scheduler1.getStart());
+            notificationDTO.setViewsFor("TRAINER,STUDENT");
+            notificationService.saveNotification(notificationDTO);
             responseDTO.setMessage("Schedule updated successfully");
             responseDTO.setCode(varList.RSP_SUCCES);
             responseDTO.setStatus(HttpStatus.ACCEPTED);
@@ -267,6 +278,10 @@ public class SchedulerService {
             }
             //filter schedules based on trainerID
             schedulerDTOList.removeIf(schedulerDTO -> !schedulerDTO.getTrainerID().equals(trainerID));
+            //filter student Booking based on admin accepted booking
+            for(SchedulerDTO schedulerDTO : schedulerDTOList){
+                schedulerDTO.getBookingScheduleDTO().removeIf(bookingScheduleDTO -> !bookingScheduleDTO.getIsAccepted());
+            }
             responseDTO.setContent(schedulerDTOList);
             responseDTO.setStatus(HttpStatus.ACCEPTED);
             responseDTO.setCode(varList.RSP_SUCCES);
@@ -290,12 +305,27 @@ public class SchedulerService {
             notificationDTO.setStatus("Request");
             notificationDTO.setMessage("Request to Cancel");
             notificationDTO.setItemOrEventDate(scheduler.getStart());
+            notificationDTO.setViewsFor("ADMIN");
             notificationService.saveNotification(notificationDTO);
             responseDTO.setMessage("Recieved successfully");
             responseDTO.setCode(varList.RSP_SUCCES);
             responseDTO.setStatus(HttpStatus.ACCEPTED);
         }catch (Exception e){
             responseDTO.setMessage("Error in deleting schedule");
+            responseDTO.setCode(varList.RSP_ERROR);
+            responseDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseDTO;
+    }
+    public ResponseDTO completeSchedule(Long scheduleID){
+        ResponseDTO responseDTO = new ResponseDTO();
+        try{
+            schedulerRepo.updateIsCompleted(scheduleID);
+            responseDTO.setMessage("Schedules completed successfully");
+            responseDTO.setCode(varList.RSP_SUCCES);
+            responseDTO.setStatus(HttpStatus.ACCEPTED);
+        }catch (Exception e){
+            responseDTO.setMessage("Error in completing schedules");
             responseDTO.setCode(varList.RSP_ERROR);
             responseDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }

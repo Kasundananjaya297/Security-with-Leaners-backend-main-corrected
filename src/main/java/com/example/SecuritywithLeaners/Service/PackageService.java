@@ -113,6 +113,7 @@ private AuthenticationService authenticationService;
                 packageData.setPackageAndVehicleType(packageAndVehicleTypeDTOList);
                 packageDTOList.add(packageData);
             }
+            responseDTO.setRecordCount(packageDTOList.size());
             responseDTO.setCode(varList.RSP_SUCCES);
             responseDTO.setStatus(HttpStatus.ACCEPTED);
             responseDTO.setMessage("Success");

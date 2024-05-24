@@ -24,6 +24,10 @@ public class Scheduler {
     private String title;
     @ColumnDefault("false")
     private Boolean trainerRequestToCancel;
+    @ColumnDefault("false")
+    private Boolean isStarted;
+    @ColumnDefault("false")
+    private Boolean isCompleted;
     @ManyToOne
     @JoinColumn(name = "trainerID_Fk", referencedColumnName = "trainerID")
     private Trainers trainer;
