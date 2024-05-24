@@ -1,10 +1,7 @@
 package com.example.SecuritywithLeaners.Service;
 
 import com.example.SecuritywithLeaners.DTO.*;
-import com.example.SecuritywithLeaners.Entity.TrainerDrivingLicence;
-import com.example.SecuritywithLeaners.Entity.TrainerDrivingLicenceVehicles;
-import com.example.SecuritywithLeaners.Entity.TrainerPermit;
-import com.example.SecuritywithLeaners.Entity.Trainers;
+import com.example.SecuritywithLeaners.Entity.*;
 import com.example.SecuritywithLeaners.Repo.TrainerRepo;
 import com.example.SecuritywithLeaners.Repo.UsersRepo;
 import com.example.SecuritywithLeaners.Util.CalculateAge;
@@ -131,6 +128,25 @@ public class TrainerService {
                     trainerPermitDTO.setTrainerPermitValidDays(Math.max(days, 0));
                     trainerPermits.add(trainerPermitDTO);
                 }
+                List<BookingSchedule> bookingSchedules = trainer.getSchedules().stream().flatMap(scheduler -> scheduler.getBookingSchedule().stream()).collect(Collectors.toList());
+                //filter booking schedule is accepted & isCompleted
+                bookingSchedules = bookingSchedules.stream().filter(bookingSchedule -> bookingSchedule.getIsAccepted() && bookingSchedule.getIsCompleted()).collect(Collectors.toList());
+                List<BookingScheduleDTO> bookingScheduleDTOS = new ArrayList<>();
+                for(BookingSchedule bookingSchedule : bookingSchedules){
+                    BookingScheduleDTO bookingScheduleDTO = modelMapper.map(bookingSchedule, BookingScheduleDTO.class);
+                    bookingScheduleDTO.setStdID(bookingSchedule.getStudent().getStdID());
+                    bookingScheduleDTO.setStdFname(bookingSchedule.getStudent().getFname());
+                    bookingScheduleDTO.setStdLname(bookingSchedule.getStudent().getLname());
+                    bookingScheduleDTO.setTelephone(bookingSchedule.getStudent().getTelephone());
+                    bookingScheduleDTO.setStartTime(bookingSchedule.getScheduler().getStart());
+                    bookingScheduleDTO.setEndTime(bookingSchedule.getScheduler().getEnd());
+                    bookingScheduleDTO.setVehicleModal(bookingSchedule.getScheduler().getVehicle().getModal());
+                    bookingScheduleDTO.setVehicleMade(bookingSchedule.getScheduler().getVehicle().getMake());
+                    bookingScheduleDTO.setVehicleRegistrationNo(bookingSchedule.getScheduler().getVehicle().getRegistrationNo());
+                    bookingScheduleDTO.setVehicleClass(bookingSchedule.getScheduler().getVehicle().getTypeID().getTypeID());
+                    bookingScheduleDTOS.add(bookingScheduleDTO);
+                }
+                trainerDTO.setBookingSchedules(bookingScheduleDTOS);
                 //Trainer Status
                 if(!trainerDrivingLicenceDTO.isEmpty() && !trainerPermits.isEmpty()) {
                     if (trainerDrivingLicenceDTO.get(0).getExpiryDate().isBefore(LocalDate.now()) && trainerPermits.get(0).getExpiryDate().isBefore(LocalDate.now()))
@@ -153,6 +169,7 @@ public class TrainerService {
                         trainerRepo.updateTrainerStatus("Active", trainer.getTrainerID());
                     }
                 }
+
                 trainerDTO.setTrainerPermits(trainerPermits);
                 trainerDTO.setTrainerDrivingLicences(trainerDrivingLicenceDTO);
                 trainerDTOS.add(trainerDTO);
