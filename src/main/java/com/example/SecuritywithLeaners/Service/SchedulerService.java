@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -320,7 +322,7 @@ public class SchedulerService {
     public ResponseDTO completeSchedule(Long scheduleID){
         ResponseDTO responseDTO = new ResponseDTO();
         try{
-            schedulerRepo.updateIsCompleted(scheduleID);
+            schedulerRepo.updateIsCompleted(scheduleID, LocalTime.now());
             responseDTO.setMessage("Schedules completed successfully");
             responseDTO.setCode(varList.RSP_SUCCES);
             responseDTO.setStatus(HttpStatus.ACCEPTED);

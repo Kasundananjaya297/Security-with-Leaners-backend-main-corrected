@@ -24,6 +24,7 @@ public class BookingScheduleDTO {
     private Boolean isAccepted;
     private Boolean isCanceled;
     private Boolean isCompleted;
+    private LocalTime completedON;
     private Long schedulerID;
     private String vehicleClass;
     private String stdID;

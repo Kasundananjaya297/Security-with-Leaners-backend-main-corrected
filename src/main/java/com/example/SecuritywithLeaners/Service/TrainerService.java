@@ -128,25 +128,50 @@ public class TrainerService {
                     trainerPermitDTO.setTrainerPermitValidDays(Math.max(days, 0));
                     trainerPermits.add(trainerPermitDTO);
                 }
-                List<BookingSchedule> bookingSchedules = trainer.getSchedules().stream().flatMap(scheduler -> scheduler.getBookingSchedule().stream()).collect(Collectors.toList());
-                //filter booking schedule is accepted & isCompleted
-                bookingSchedules = bookingSchedules.stream().filter(bookingSchedule -> bookingSchedule.getIsAccepted() && bookingSchedule.getIsCompleted()).collect(Collectors.toList());
-                List<BookingScheduleDTO> bookingScheduleDTOS = new ArrayList<>();
-                for(BookingSchedule bookingSchedule : bookingSchedules){
-                    BookingScheduleDTO bookingScheduleDTO = modelMapper.map(bookingSchedule, BookingScheduleDTO.class);
-                    bookingScheduleDTO.setStdID(bookingSchedule.getStudent().getStdID());
-                    bookingScheduleDTO.setStdFname(bookingSchedule.getStudent().getFname());
-                    bookingScheduleDTO.setStdLname(bookingSchedule.getStudent().getLname());
-                    bookingScheduleDTO.setTelephone(bookingSchedule.getStudent().getTelephone());
-                    bookingScheduleDTO.setStartTime(bookingSchedule.getScheduler().getStart());
-                    bookingScheduleDTO.setEndTime(bookingSchedule.getScheduler().getEnd());
-                    bookingScheduleDTO.setVehicleModal(bookingSchedule.getScheduler().getVehicle().getModal());
-                    bookingScheduleDTO.setVehicleMade(bookingSchedule.getScheduler().getVehicle().getMake());
-                    bookingScheduleDTO.setVehicleRegistrationNo(bookingSchedule.getScheduler().getVehicle().getRegistrationNo());
-                    bookingScheduleDTO.setVehicleClass(bookingSchedule.getScheduler().getVehicle().getTypeID().getTypeID());
-                    bookingScheduleDTOS.add(bookingScheduleDTO);
+                List<Scheduler> trainerSchedulesList = trainer.getSchedules().stream().toList();
+                List<SchedulerDTO> schedulerDTOS = new ArrayList<>();
+                for(Scheduler scheduler : trainerSchedulesList){
+                    SchedulerDTO schedulerDTO = new SchedulerDTO();
+                    schedulerDTO.setTrainerRequestToCancel(scheduler.getTrainerRequestToCancel());
+                    schedulerDTO.setTrainerFname(scheduler.getTrainer().getFname());
+                    schedulerDTO.setTrainerLname(scheduler.getTrainer().getLname());
+                    schedulerDTO.setTrainerID(scheduler.getTrainer().getTrainerID());
+                    schedulerDTO.setSchedulerID(scheduler.getSchedulerID());
+                    schedulerDTO.setStart(scheduler.getStart());
+                    schedulerDTO.setEnd(scheduler.getEnd());
+                    schedulerDTO.setStudentCount(scheduler.getStudentCount());
+                    schedulerDTO.setTitle(scheduler.getTitle());
+                    schedulerDTO.setIsStarted(scheduler.getIsStarted());
+                    schedulerDTO.setIsCompleted(scheduler.getIsCompleted());
+                    schedulerDTO.setVehicleRegistrationNo(scheduler.getVehicle().getRegistrationNo());
+                    schedulerDTO.setMake(scheduler.getVehicle().getMake());
+                    schedulerDTO.setModal(scheduler.getVehicle().getModal());
+                    schedulerDTO.setVehicleClass(scheduler.getVehicle().getTypeID().getTypeID());
+                    schedulerDTO.setVehicleClassName(scheduler.getVehicle().getTypeID().getTypeName());
+                    schedulerDTO.setVehiclePhoto(scheduler.getVehicle().getVehiclePhoto());
+                    schedulerDTO.setCompleteOn(scheduler.getCompleteOn());
+                    schedulerDTO.setStartedOn(scheduler.getStartedOn());
+                    schedulerDTO.setVehicleClass(scheduler.getVehicle().getTypeID().getTypeID());
+                    schedulerDTO.setVehicleClassName(scheduler.getVehicle().getTypeID().getTypeName());
+                    List<BookingSchedule> bookingSchedules = scheduler.getBookingSchedule().stream().toList();
+                    List<BookingScheduleDTO> bookingScheduleDTOS = new ArrayList<>();
+                    for (BookingSchedule bookingSchedule : bookingSchedules){
+                        BookingScheduleDTO bookingScheduleDTO = new BookingScheduleDTO();
+                        bookingScheduleDTO.setBookingID(bookingSchedule.getBookingID());
+                        bookingScheduleDTO.setBookingDate(bookingSchedule.getBookingDate());
+                        bookingScheduleDTO.setBookingTime(bookingSchedule.getBookingTime());
+                        bookingScheduleDTO.setStdFname(bookingSchedule.getStudent().getFname());
+                        bookingScheduleDTO.setStdLname(bookingSchedule.getStudent().getLname());
+                        bookingScheduleDTO.setStdID(bookingSchedule.getStudent().getStdID());
+                        bookingScheduleDTO.setIsAccepted(bookingSchedule.getIsAccepted());
+                        bookingScheduleDTO.setIsCanceled(bookingSchedule.getIsCanceled());
+                        bookingScheduleDTO.setIsCompleted(bookingSchedule.getIsCompleted());
+                        bookingScheduleDTOS.add(bookingScheduleDTO);
+                    }
+                    schedulerDTO.setBookingScheduleDTO(bookingScheduleDTOS);
+                    schedulerDTOS.add(schedulerDTO);
                 }
-                trainerDTO.setBookingSchedules(bookingScheduleDTOS);
+                trainerDTO.setSchedulerDTO(schedulerDTOS);
                 //Trainer Status
                 if(!trainerDrivingLicenceDTO.isEmpty() && !trainerPermits.isEmpty()) {
                     if (trainerDrivingLicenceDTO.get(0).getExpiryDate().isBefore(LocalDate.now()) && trainerPermits.get(0).getExpiryDate().isBefore(LocalDate.now()))

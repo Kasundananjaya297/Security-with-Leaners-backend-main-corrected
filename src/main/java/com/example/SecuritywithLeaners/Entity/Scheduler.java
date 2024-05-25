@@ -28,6 +28,8 @@ public class Scheduler {
     private Boolean isStarted;
     @ColumnDefault("false")
     private Boolean isCompleted;
+    private LocalTime completeOn;
+    private LocalTime startedOn;
     @ManyToOne
     @JoinColumn(name = "trainerID_Fk", referencedColumnName = "trainerID")
     private Trainers trainer;

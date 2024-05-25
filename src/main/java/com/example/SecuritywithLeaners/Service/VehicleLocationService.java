@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
+
 @Transactional
 @Service
 public class VehicleLocationService {
@@ -46,7 +48,7 @@ public class VehicleLocationService {
                 VehicleLocations vehicleLoc = vehicleLocationRepo.getVehicleLocationByRegNo(vehicleLocations.getRegistrationNo());
                 if (vehicleLoc == null) {
                     vehicleLoc = modelMapper.map(vehicleLocations, VehicleLocations.class);
-                    schedulerRepo.updateIsStarted(vehicleLocations.getSchedulerID());
+                    schedulerRepo.updateIsStarted(vehicleLocations.getSchedulerID(), LocalTime.now());
                     vehicleLocationRepo.save(vehicleLoc);
                     responseDTO.setStatus(HttpStatus.ACCEPTED);
                     responseDTO.setCode(varList.RSP_SUCCES);
@@ -57,7 +59,7 @@ public class VehicleLocationService {
                     vehicleLoc.setEndLatitude(vehicleLocations.getStartLatitude());
                     vehicleLoc.setEndLongitude(vehicleLocations.getStartLongitude());
                     vehicleLocationRepo.saveAndFlush(vehicleLoc);
-                    schedulerRepo.updateIsStarted(vehicleLocations.getSchedulerID());
+                    schedulerRepo.updateIsStarted(vehicleLocations.getSchedulerID(),LocalTime.now());
                     responseDTO.setStatus(HttpStatus.ACCEPTED);
                     responseDTO.setCode(varList.RSP_SUCCES);
                 }
