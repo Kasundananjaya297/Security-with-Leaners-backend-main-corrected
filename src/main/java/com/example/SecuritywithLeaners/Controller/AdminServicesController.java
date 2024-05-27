@@ -445,9 +445,9 @@ public class AdminServicesController {
         ResponseDTO responseDTO = bookingService.acceptOrRegectBookingRequest(bookingDTO);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
-    @GetMapping("/getAllNotifications")
-    public ResponseEntity getAllNotifications(){
-        ResponseDTO responseDTO = notificationService.getAllNotification();
+    @GetMapping("/getAllNotifications/{viewedFor}")
+    public ResponseEntity getAllNotifications(@PathVariable String viewedFor){
+        ResponseDTO responseDTO = notificationService.getAllNotification(viewedFor);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
     @GetMapping("/getVehicleLocationByVehicleID/{vehicleID}")

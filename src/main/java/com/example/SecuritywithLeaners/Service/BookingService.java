@@ -1,13 +1,11 @@
 package com.example.SecuritywithLeaners.Service;
 
-import com.example.SecuritywithLeaners.DTO.BookingScheduleDTO;
-import com.example.SecuritywithLeaners.DTO.NotificationDTO;
-import com.example.SecuritywithLeaners.DTO.ResponseDTO;
-import com.example.SecuritywithLeaners.DTO.VehiclesFilteringDTO;
+import com.example.SecuritywithLeaners.DTO.*;
 import com.example.SecuritywithLeaners.Entity.*;
 import com.example.SecuritywithLeaners.Repo.AgreementRepo;
 import com.example.SecuritywithLeaners.Repo.ScheduleBookingRepo;
 import com.example.SecuritywithLeaners.Repo.SchedulerRepo;
+import com.example.SecuritywithLeaners.Repo.StudentRepo;
 import com.example.SecuritywithLeaners.Util.varList;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +28,8 @@ public class BookingService {
     private AgreementRepo agreementRepo;
     @Autowired
     private NotificationService notificationService;
+    @Autowired
+    private StudentRepo studentRepo;
 
 
 
@@ -149,16 +149,23 @@ public class BookingService {
                 bookingSchedule.setStudent(student);
                 scheduleBookingRepo.save(bookingSchedule);
                 //get max booking id
-                BookingSchedule bookingSchedule1 = scheduleBookingRepo.findByStdID(bookingScheduleDTO.getStdID()).get(0);
-                System.out.println("++++++++++++++++++++"+bookingSchedule1.getStudent().getFname());
+                //set notifications
                 NotificationDTO notificationDTO = new NotificationDTO();
-                notificationDTO.setItemID(bookingSchedule1.getStudent().getStdID());
-                notificationDTO.setItemFname(bookingSchedule1.getStudent().getFname());
-                notificationDTO.setItemLname(bookingSchedule1.getStudent().getLname());
-                notificationDTO.setItemOrEventDate(bookingSchedule1.getScheduler().getStart());
+                Student student1 = studentRepo.findById(bookingScheduleDTO.getStdID()).get();
+                Scheduler scheduler2 = schedulerRepo.findById(bookingScheduleDTO.getSchedulerID()).get();
+
+                notificationDTO.setItemID(bookingScheduleDTO.getStdID());
+                notificationDTO.setItemFname(student1.getFname());
+                notificationDTO.setItemLname(student1.getLname());
+                notificationDTO.setItemOrEventDate(scheduler2.getStart());
                 notificationDTO.setMessage("Booking Requested");
                 notificationDTO.setStatus("Success");
-                notificationDTO.setViewsFor("ADMIN");
+                notificationDTO.setImage(student1.getProfilePhotoURL());
+                List<NotificationViewedForDTO> notificationViewedForDTOList = new ArrayList<>();
+                NotificationViewedForDTO notificationViewedForDTO = new NotificationViewedForDTO();
+                notificationViewedForDTO.setViewsFor("ADMIN");
+                notificationViewedForDTOList.add(notificationViewedForDTO);
+                notificationDTO.setNotificationVievedForList(notificationViewedForDTOList);
                 notificationService.saveNotification(notificationDTO);
                 responseDTO.setCode(varList.RSP_SUCCES);
                 responseDTO.setStatus(HttpStatus.ACCEPTED);
@@ -179,7 +186,6 @@ public class BookingService {
             NotificationDTO notificationDTO = new NotificationDTO();
 
             notificationDTO.setItemID(bookingScheduleDTO.getStdID());
-
             responseDTO.setCode(varList.RSP_SUCCES);
             responseDTO.setStatus(HttpStatus.ACCEPTED);
             responseDTO.setMessage("Success");
@@ -195,7 +201,6 @@ public class BookingService {
         ResponseDTO responseDTO = new ResponseDTO();
         try {
             BookingSchedule bookingSchedule = scheduleBookingRepo.findById(bookingID).get();
-            BookingSchedule bookingSchedule1 = scheduleBookingRepo.findById(bookingID).get();
             scheduleBookingRepo.deleteBookingSchedule(bookingID);
             NotificationDTO notificationDTO = new NotificationDTO();
             notificationDTO.setItemID(bookingSchedule.getStudent().getStdID());
@@ -204,7 +209,14 @@ public class BookingService {
             notificationDTO.setItemOrEventDate(bookingSchedule.getScheduler().getStart());
             notificationDTO.setMessage("Booking Canceled");
             notificationDTO.setStatus("Success");
-            notificationDTO.setViewsFor(viewfor);
+            List<NotificationViewedForDTO> notificationViewedForDTOList = new ArrayList<>();
+            NotificationViewedForDTO notificationViewedForDTO = new NotificationViewedForDTO();
+            notificationViewedForDTO.setViewsFor("ADMIN");
+            notificationViewedForDTOList.add(notificationViewedForDTO);
+            notificationViewedForDTO.setViewsFor("TRAINER");
+            notificationDTO.setImage(bookingSchedule.getStudent().getProfilePhotoURL());
+            notificationViewedForDTOList.add(notificationViewedForDTO);
+            notificationDTO.setNotificationVievedForList(notificationViewedForDTOList);
             notificationService.saveNotification(notificationDTO);
             responseDTO.setCode(varList.RSP_SUCCES);
             responseDTO.setStatus(HttpStatus.ACCEPTED);

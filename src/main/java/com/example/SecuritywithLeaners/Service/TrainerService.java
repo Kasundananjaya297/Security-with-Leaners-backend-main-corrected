@@ -152,6 +152,8 @@ public class TrainerService {
                     schedulerDTO.setCompleteOn(scheduler.getCompleteOn());
                     schedulerDTO.setStartedOn(scheduler.getStartedOn());
                     schedulerDTO.setVehicleClass(scheduler.getVehicle().getTypeID().getTypeID());
+                    schedulerDTO.setNumberofBooking(scheduler.getBookingSchedule().size());
+                    schedulerDTO.setNumberofAttendance((int) scheduler.getBookingSchedule().stream().filter(bookingSchedule -> bookingSchedule.getIsCompleted()).count());
                     schedulerDTO.setVehicleClassName(scheduler.getVehicle().getTypeID().getTypeName());
                     List<BookingSchedule> bookingSchedules = scheduler.getBookingSchedule().stream().toList();
                     List<BookingScheduleDTO> bookingScheduleDTOS = new ArrayList<>();
@@ -347,6 +349,70 @@ public class TrainerService {
             responseDTO.setContent(null);
         }
 
-    return responseDTO;
+            return responseDTO;
+    }
+
+    public ResponseDTO getBookingDataByID(String trainerID){
+        ResponseDTO responseDTO = new ResponseDTO();
+        try {
+            Trainers trainer = trainerRepo.findById(trainerID).get();
+            List<Scheduler> trainerSchedulesList = trainer.getSchedules().stream().toList();
+            List<SchedulerDTO> schedulerDTOS = new ArrayList<>();
+            for (Scheduler scheduler : trainerSchedulesList) {
+                SchedulerDTO schedulerDTO = new SchedulerDTO();
+                schedulerDTO.setTrainerRequestToCancel(scheduler.getTrainerRequestToCancel());
+                schedulerDTO.setTrainerFname(scheduler.getTrainer().getFname());
+                schedulerDTO.setTrainerLname(scheduler.getTrainer().getLname());
+                schedulerDTO.setTrainerID(scheduler.getTrainer().getTrainerID());
+                schedulerDTO.setSchedulerID(scheduler.getSchedulerID());
+                schedulerDTO.setStart(scheduler.getStart());
+                schedulerDTO.setEnd(scheduler.getEnd());
+                schedulerDTO.setStudentCount(scheduler.getStudentCount());
+                schedulerDTO.setTitle(scheduler.getTitle());
+                schedulerDTO.setIsStarted(scheduler.getIsStarted());
+                schedulerDTO.setIsCompleted(scheduler.getIsCompleted());
+                schedulerDTO.setVehicleRegistrationNo(scheduler.getVehicle().getRegistrationNo());
+                schedulerDTO.setMake(scheduler.getVehicle().getMake());
+                schedulerDTO.setModal(scheduler.getVehicle().getModal());
+                schedulerDTO.setVehicleClass(scheduler.getVehicle().getTypeID().getTypeID());
+                schedulerDTO.setVehicleClassName(scheduler.getVehicle().getTypeID().getTypeName());
+                schedulerDTO.setVehiclePhoto(scheduler.getVehicle().getVehiclePhoto());
+                schedulerDTO.setCompleteOn(scheduler.getCompleteOn());
+                schedulerDTO.setStartedOn(scheduler.getStartedOn());
+                schedulerDTO.setVehicleClass(scheduler.getVehicle().getTypeID().getTypeID());
+                schedulerDTO.setNumberofBooking(scheduler.getBookingSchedule().size());
+                schedulerDTO.setNumberofAttendance((int) scheduler.getBookingSchedule().stream().filter(bookingSchedule -> bookingSchedule.getIsCompleted()).count());
+                schedulerDTO.setVehicleClassName(scheduler.getVehicle().getTypeID().getTypeName());
+                List<BookingSchedule> bookingSchedules = scheduler.getBookingSchedule().stream().toList();
+                List<BookingScheduleDTO> bookingScheduleDTOS = new ArrayList<>();
+                for (BookingSchedule bookingSchedule : bookingSchedules) {
+                    BookingScheduleDTO bookingScheduleDTO = new BookingScheduleDTO();
+                    bookingScheduleDTO.setBookingID(bookingSchedule.getBookingID());
+                    bookingScheduleDTO.setBookingDate(bookingSchedule.getBookingDate());
+                    bookingSchedule.setBookingTime(bookingSchedule.getBookingTime());
+                    bookingScheduleDTO.setStdFname(bookingSchedule.getStudent().getFname());
+                    bookingScheduleDTO.setStdLname(bookingSchedule.getStudent().getLname());
+                    bookingScheduleDTO.setStdID(bookingSchedule.getStudent().getStdID());
+                    bookingScheduleDTO.setIsAccepted(bookingSchedule.getIsAccepted());
+                    bookingScheduleDTO.setIsCanceled(bookingSchedule.getIsCanceled());
+                    bookingScheduleDTO.setIsCompleted(bookingSchedule.getIsCompleted());
+                    bookingScheduleDTOS.add(bookingScheduleDTO);
+                }
+                schedulerDTO.setBookingScheduleDTO(bookingScheduleDTOS);
+                schedulerDTOS.add(schedulerDTO);
+            }
+            responseDTO.setMessage("Booking data fetched successfully");
+            responseDTO.setStatus(HttpStatus.ACCEPTED);
+            responseDTO.setCode(varList.RSP_SUCCES);
+            responseDTO.setContent(schedulerDTOS);
+        }catch (Exception e){
+            responseDTO.setMessage("An error occurred: " + e.getMessage());
+            responseDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            responseDTO.setCode(varList.RSP_ERROR);
+            responseDTO.setContent(null);
+        }
+
+
+        return responseDTO;
     }
 }

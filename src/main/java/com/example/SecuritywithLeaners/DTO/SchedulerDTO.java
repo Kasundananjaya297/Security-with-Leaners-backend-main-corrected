@@ -43,6 +43,8 @@ public class SchedulerDTO {
     private Boolean isCompleted;
     private LocalTime completeOn;
     private LocalTime startedOn;
+    private int numberofBooking;
+    private int numberofAttendance;
     private List<BookingScheduleDTO> bookingScheduleDTO;
 
 }

@@ -22,11 +22,11 @@ public class Scheduler {
     private Date end;
     private int studentCount;
     private String title;
-    @ColumnDefault("false")
+    @Column(columnDefinition = "boolean default false")
     private Boolean trainerRequestToCancel;
-    @ColumnDefault("false")
+    @Column(columnDefinition = "boolean default false")
     private Boolean isStarted;
-    @ColumnDefault("false")
+    @Column(columnDefinition = "boolean default false")
     private Boolean isCompleted;
     private LocalTime completeOn;
     private LocalTime startedOn;

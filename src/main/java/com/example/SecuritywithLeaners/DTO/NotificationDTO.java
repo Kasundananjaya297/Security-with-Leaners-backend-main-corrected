@@ -1,5 +1,6 @@
 package com.example.SecuritywithLeaners.DTO;
 
+import com.example.SecuritywithLeaners.Entity.NotificationVievedFor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,5 +23,6 @@ public class NotificationDTO {
     private Date itemOrEventDate;
     private Boolean isRead;
     private String status;
-    private String viewsFor;
+    private String image;
+    private List<NotificationViewedForDTO> notificationVievedForList;
 }
