@@ -181,11 +181,28 @@ public class BookingService {
     }
     public ResponseDTO acceptOrRegectBookingRequest(BookingScheduleDTO bookingScheduleDTO ){
         ResponseDTO responseDTO = new ResponseDTO();
+        System.out.println(bookingScheduleDTO.getStdID());
         try {
             scheduleBookingRepo.updateBookingSchedule(bookingScheduleDTO.getBookingID(),bookingScheduleDTO.getIsAccepted());
             NotificationDTO notificationDTO = new NotificationDTO();
+            Student student1 = studentRepo.findById(bookingScheduleDTO.getStdID()).get();
+            Scheduler scheduler2 = schedulerRepo.findById(bookingScheduleDTO.getSchedulerID()).get();
 
             notificationDTO.setItemID(bookingScheduleDTO.getStdID());
+            notificationDTO.setItemFname(student1.getFname());
+            notificationDTO.setItemLname(student1.getLname());
+            notificationDTO.setItemOrEventDate(scheduler2.getStart());
+            notificationDTO.setMessage("Admin Accepted Request");
+            notificationDTO.setStatus("Success");
+            notificationDTO.setImage(student1.getProfilePhotoURL());
+            List<NotificationViewedForDTO> notificationViewedForDTOList = new ArrayList<>();
+            NotificationViewedForDTO notificationViewedForDTO = new NotificationViewedForDTO();
+            notificationViewedForDTO.setViewsFor("STUDENT");
+            notificationViewedForDTOList.add(notificationViewedForDTO);
+            notificationDTO.setNotificationVievedForList(notificationViewedForDTOList);
+            notificationDTO.setImage("https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png");
+            notificationService.saveNotification(notificationDTO);
+
             responseDTO.setCode(varList.RSP_SUCCES);
             responseDTO.setStatus(HttpStatus.ACCEPTED);
             responseDTO.setMessage("Success");
@@ -213,9 +230,7 @@ public class BookingService {
             NotificationViewedForDTO notificationViewedForDTO = new NotificationViewedForDTO();
             notificationViewedForDTO.setViewsFor("ADMIN");
             notificationViewedForDTOList.add(notificationViewedForDTO);
-            notificationViewedForDTO.setViewsFor("TRAINER");
             notificationDTO.setImage(bookingSchedule.getStudent().getProfilePhotoURL());
-            notificationViewedForDTOList.add(notificationViewedForDTO);
             notificationDTO.setNotificationVievedForList(notificationViewedForDTOList);
             notificationService.saveNotification(notificationDTO);
             responseDTO.setCode(varList.RSP_SUCCES);

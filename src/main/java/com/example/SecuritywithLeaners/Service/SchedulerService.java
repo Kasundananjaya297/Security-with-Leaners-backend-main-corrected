@@ -158,8 +158,10 @@ public class SchedulerService {
                 }
             }
             scheduler.setTrainerRequestToCancel(false);
+
             schedulerRepo.saveAndFlush(scheduler);
             Scheduler scheduler1 = schedulerRepo.findById(schedulerDTO.getSchedulerID()).get();
+
             NotificationDTO notificationDTO = new NotificationDTO();
             notificationDTO.setItemID(scheduler1.getTrainer().getTrainerID());
             notificationDTO.setItemFname(scheduler1.getTrainer().getFname());
@@ -168,14 +170,13 @@ public class SchedulerService {
             notificationDTO.setMessage("Schedule Updated");
             notificationDTO.setItemOrEventDate(scheduler1.getStart());
             List<NotificationViewedForDTO> notificationViewedForDTOList = new ArrayList<>();
-            NotificationViewedForDTO notificationViewedForDTO = new NotificationViewedForDTO();
-            notificationViewedForDTO.setViewsFor("TRAINER");
-            notificationViewedForDTOList.add(notificationViewedForDTO);
-            notificationViewedForDTO.setViewsFor("STUDENT");
-            notificationViewedForDTOList.add(notificationViewedForDTO);
-            notificationDTO.setNotificationVievedForList(notificationViewedForDTOList);
-            notificationDTO.setImage("https://visualpharm.com/assets/381/Admin-595b40b65ba036ed117d3b23.svg");
-            notificationService.saveNotification(notificationDTO);
+                NotificationViewedForDTO notificationViewedForDTO = new NotificationViewedForDTO();
+                notificationViewedForDTO.setViewsFor("TRAINER");
+                notificationViewedForDTOList.add(notificationViewedForDTO);
+                notificationDTO.setNotificationVievedForList(notificationViewedForDTOList);
+                notificationDTO.setImage("https://visualpharm.com/assets/381/Admin-595b40b65ba036ed117d3b23.svg");
+                notificationService.saveNotification(notificationDTO);
+
             responseDTO.setMessage("Schedule updated successfully");
             responseDTO.setCode(varList.RSP_SUCCES);
             responseDTO.setStatus(HttpStatus.ACCEPTED);

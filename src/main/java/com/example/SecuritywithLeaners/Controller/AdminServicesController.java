@@ -435,9 +435,9 @@ public class AdminServicesController {
         ResponseDTO responseDTO = authenticationService.resetPassword(usersDTO);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
-    @PutMapping("/updatePassOrFailStudentInTrialPermit")
-    public ResponseEntity updatePassOrFailStudentInTrialPermit(@RequestBody PermitAndVehicleTypeDTO permitAndVehicleTypeDTO){
-        ResponseDTO responseDTO = trialPermitService.updatePassOrFailStudentInTrialPermit(permitAndVehicleTypeDTO);
+    @PutMapping("/updatePassOrFailStudentInTrialPermit/{serialNo}/{vehicleClass}/{isPassed}")
+    public ResponseEntity updatePassOrFailStudentInTrialPermit(@PathVariable String serialNo,@PathVariable String vehicleClass,@PathVariable Boolean isPassed){
+        ResponseDTO responseDTO = trialPermitService.updatePassOrFailStudentInTrialPermit(serialNo,vehicleClass,isPassed);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
     @PutMapping("/acceptOrRegectBookingRequest")
@@ -448,6 +448,11 @@ public class AdminServicesController {
     @GetMapping("/getAllNotifications/{viewedFor}")
     public ResponseEntity getAllNotifications(@PathVariable String viewedFor){
         ResponseDTO responseDTO = notificationService.getAllNotification(viewedFor);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @GetMapping("/getAllnotificationByID/{id}/{viewedFor}")
+    public ResponseEntity getAllNotificationByID(@PathVariable String id,@PathVariable String viewedFor){
+        ResponseDTO responseDTO = notificationService.getAllNotificationByID(id,viewedFor);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
     @GetMapping("/getVehicleLocationByVehicleID/{vehicleID}")
@@ -463,6 +468,12 @@ public class AdminServicesController {
     @GetMapping("/getVehhicleByLetter/{letter}")
     public ResponseEntity getVehicleByLetter(@PathVariable String letter){
         ResponseDTO responseDTO = vechicleService.getVehicleByLetter(letter);
+        return new ResponseEntity(responseDTO,responseDTO.getStatus());
+    }
+    @DeleteMapping("/deleteNotification/{notificationID}")
+    public ResponseEntity deleteNotification(@PathVariable String notificationID){
+        System.out.println("deleteNotification");
+        ResponseDTO responseDTO = notificationService.deleteNotification(notificationID);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
 

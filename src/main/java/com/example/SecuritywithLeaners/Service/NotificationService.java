@@ -77,4 +77,69 @@ public class NotificationService {
         }
         return responseDTO;
     }
+    public ResponseDTO deleteNotification(String notificationID){
+        ResponseDTO responseDTO = new ResponseDTO();
+        try {
+            Optional<Notification> notification = notificationRepo.findById(Long.parseLong(notificationID));
+            if (notification.isPresent()){
+                notificationRepo.delete(notification.get());
+                responseDTO.setCode(varList.RSP_SUCCES);
+                responseDTO.setMessage("Notification successfully deleted");
+                responseDTO.setContent(null);
+                responseDTO.setStatus(HttpStatus.ACCEPTED);
+            }else {
+                responseDTO.setCode(varList.RSP_FAIL);
+                responseDTO.setMessage("Notification not found");
+                responseDTO.setContent(null);
+                responseDTO.setStatus(HttpStatus.BAD_REQUEST);
+            }
+        }catch (Exception e){
+            responseDTO.setCode(varList.RSP_FAIL);
+            responseDTO.setMessage("Notification failed to delete");
+            responseDTO.setContent(null);
+            responseDTO.setStatus(HttpStatus.BAD_REQUEST);
+        }
+        return responseDTO;
+    }
+    public ResponseDTO getAllNotificationByID(String id,String viewedFor){
+        ResponseDTO responseDTO = new ResponseDTO();
+        try {
+            List<Notification> notificationList = notificationRepo.findAll();
+            //filter notification based on viewsFor
+            List<Notification> filteredNotificationList = new ArrayList<>();
+            for (Notification notification: notificationList) {
+                for (NotificationVievedFor notificationVievedFor: notification.getNotificationVievedForList()) {
+                    if (notificationVievedFor.getViewsFor().equals(viewedFor)){
+                        filteredNotificationList.add(notification);
+                        break;
+                    }
+                }
+            }
+            // filter notification based on item ID
+            List<Notification> filteredNotificationListByID = new ArrayList<>();
+            for (Notification notification: filteredNotificationList) {
+                if (notification.getItemID().equals(id)){
+                    filteredNotificationListByID.add(notification);
+                }
+            }
+            //set to dto
+            List<NotificationDTO> notificationDTOList = new ArrayList<>();
+            for (Notification notification: filteredNotificationListByID) {
+                NotificationDTO notificationDTO = modelMapper.map(notification, NotificationDTO.class);
+                notificationDTOList.add(notificationDTO);
+            }
+            responseDTO.setCode(varList.RSP_SUCCES);
+            responseDTO.setMessage("Notification List successfully fetched");
+            System.out.println("+++++++++++++++++++");
+            responseDTO.setContent(notificationDTOList);
+            responseDTO.setStatus(HttpStatus.ACCEPTED);
+
+        }catch (Exception e){
+            responseDTO.setCode(varList.RSP_FAIL);
+            responseDTO.setMessage("Notification List failed to fetch");
+            responseDTO.setContent(null);
+            responseDTO.setStatus(HttpStatus.BAD_REQUEST);
+        }
+        return responseDTO;
+    }
 }
