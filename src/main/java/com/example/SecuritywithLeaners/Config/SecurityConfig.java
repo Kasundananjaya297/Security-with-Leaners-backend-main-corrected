@@ -33,6 +33,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(request ->
                         request.requestMatchers("/api/authentication/**").permitAll()
+                                .requestMatchers("/api/admin/getAllPackage/*/*/*/*").permitAll()
                         .requestMatchers("/api/admin/getStudentByID/*").hasAnyAuthority("STUDENT","ADMIN")
                         .requestMatchers("/api/admin/getPayments/*/*").hasAnyAuthority("ADMIN","STUDENT")
                                 .requestMatchers("/api/admin/getAllnotificationByID/*/*").hasAnyAuthority("TRAINER","STUDENT")
