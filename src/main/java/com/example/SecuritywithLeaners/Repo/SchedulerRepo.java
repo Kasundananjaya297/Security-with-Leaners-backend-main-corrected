@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.Optional;
 
 public interface SchedulerRepo extends JpaRepository<Scheduler, Long>{
@@ -24,12 +26,12 @@ public interface SchedulerRepo extends JpaRepository<Scheduler, Long>{
     void TrainerRequsetToCancel(@Param("schedulerid") Long schedulerid);
 
     @Modifying
-    @Query(value = "UPDATE scheduler SET is_started = true WHERE  schedulerid =:schedulerid", nativeQuery = true)
-    void updateIsStarted(@Param("schedulerid") Long schedulerid);
+    @Query(value = "UPDATE scheduler SET is_started = true, started_on =:time WHERE  schedulerid =:schedulerid", nativeQuery = true)
+    void updateIsStarted(@Param("schedulerid") Long schedulerid,@Param("time") LocalTime time);
 
     @Modifying
-    @Query(value = "UPDATE scheduler SET is_completed = true WHERE  schedulerid =:schedulerid", nativeQuery = true)
-    void updateIsCompleted(@Param("schedulerid") Long schedulerid);
+    @Query(value = "UPDATE scheduler SET is_completed = true , complete_on =:time  WHERE  schedulerid =:schedulerid", nativeQuery = true)
+    void updateIsCompleted(@Param("schedulerid") Long schedulerid, @Param("time") LocalTime time);
 
 
 

@@ -18,5 +18,6 @@ public class PackageAndVehicleTypeDTO {
     private int extraLessons;
     private double priceForExtraLesson;
     private int totalLessons;
+    private int participatedLessons;
     private double price;
 }

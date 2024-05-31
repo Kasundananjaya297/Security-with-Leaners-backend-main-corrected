@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Date;
 
 @Entity
 @NoArgsConstructor
@@ -23,10 +24,10 @@ public class BookingSchedule {
     private Boolean isAccepted;
     private Boolean isCanceled;
     private Boolean isCompleted;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "schedulerID_Fk", referencedColumnName = "schedulerID")
     private Scheduler scheduler;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "studentID_Fk", referencedColumnName = "stdID")
     private Student student;
 

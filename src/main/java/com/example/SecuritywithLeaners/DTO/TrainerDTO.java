@@ -35,6 +35,8 @@ public class TrainerDTO {
     private int trainerLicenceID;
     private List<TrainerDrivingLicenceDTO> trainerDrivingLicences;
     private List<TrainerPermitDTO> trainerPermits;
+    private List<BookingScheduleDTO> bookingSchedules;
+    private List <SchedulerDTO> schedulerDTO;
     private Boolean isActive;
     private String generatedPassword;
 }

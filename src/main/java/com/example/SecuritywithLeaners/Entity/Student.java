@@ -14,7 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-//@Table(name = "StudentDetails")
 public class Student {
     @Id
     @Column(length = 10, nullable = false, unique = true)
@@ -51,6 +50,6 @@ public class Student {
     private int guardianTelephone;
     private String profilePhotoURL;
 
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<BookingSchedule> bookingSchedules;
 }

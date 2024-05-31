@@ -30,6 +30,7 @@ public class SchedulerDTO {
     private String trainerFname;
     private String trainerLname;
     private int contactNo;
+    private String vehicleRegistrationNo;
     private String make;
     private String modal;
     private String vehicleClass;
@@ -40,6 +41,10 @@ public class SchedulerDTO {
     private String vehicleControl;
     private Boolean isStarted;
     private Boolean isCompleted;
+    private LocalTime completeOn;
+    private LocalTime startedOn;
+    private int numberofBooking;
+    private int numberofAttendance;
     private List<BookingScheduleDTO> bookingScheduleDTO;
 
 }

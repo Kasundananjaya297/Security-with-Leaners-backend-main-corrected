@@ -1,9 +1,6 @@
 package com.example.SecuritywithLeaners.Service;
 
-import com.example.SecuritywithLeaners.DTO.AgreementDTO;
-import com.example.SecuritywithLeaners.DTO.PackageAndVehicleTypeDTO;
-import com.example.SecuritywithLeaners.DTO.PermitAndVehicleTypeDTO;
-import com.example.SecuritywithLeaners.DTO.ResponseDTO;
+import com.example.SecuritywithLeaners.DTO.*;
 import com.example.SecuritywithLeaners.Entity.*;
 import com.example.SecuritywithLeaners.Entity.Package;
 import com.example.SecuritywithLeaners.Repo.*;
@@ -33,6 +30,8 @@ public class AgreementService {
     UsersRepo usersRepo;
     @Autowired
     PackageAndVehicleTypeRepo packageAndVehicleTypeRepo;
+    @Autowired
+    private ScheduleBookingRepo scheduleBookingRepo;
 
     public ResponseDTO saveAgreement(AgreementDTO agreementDTO) {
         ResponseDTO responseDTO = new ResponseDTO();
@@ -161,6 +160,43 @@ public class AgreementService {
                     packageAndVehicleTypeDTO.setPrice(agreement.get(0).getExtraSessions().stream().filter(e -> e.getPackageAndVehicleType().getPackageID().getPackageID().equals(p.getPackageID().getPackageID())).toList().get(i).getPrice());
                     packageAndVehicleTypeDTOS.add(packageAndVehicleTypeDTO);
                     i++;
+                }
+                List<BookingSchedule> bookingSchedules = scheduleBookingRepo.getParticipatedLessons(stdID);
+                List<BookingScheduleDTO> bookingScheduleDTOS = new ArrayList<>();
+                for(BookingSchedule b : bookingSchedules){
+                    BookingScheduleDTO bookingScheduleDTO = new BookingScheduleDTO();
+                    bookingScheduleDTO.setBookingID(b.getBookingID());
+                    bookingScheduleDTO.setBookingDate(b.getBookingDate());
+                    bookingScheduleDTO.setBookingTime(b.getBookingTime());
+                    bookingScheduleDTO.setIsAccepted(b.getIsAccepted());
+                    bookingScheduleDTO.setIsCanceled(b.getIsCanceled());
+                    bookingScheduleDTO.setIsCompleted(b.getIsCompleted());
+                    bookingScheduleDTO.setSchedulerID(b.getScheduler().getSchedulerID());
+                    bookingScheduleDTO.setVehicleClass(b.getScheduler().getVehicle().getTypeID().getTypeID());
+                    bookingScheduleDTOS.add(bookingScheduleDTO);
+                }
+                //filter vehicle classes and set participated lessons count and mereged list
+                List<VehicleClassAndParticipation> vehicleClassAndParticipations = new ArrayList<>();
+                for(PackageAndVehicleTypeDTO p : packageAndVehicleTypeDTOS){
+                    VehicleClassAndParticipation vehicleClassAndParticipation = new VehicleClassAndParticipation();
+                    vehicleClassAndParticipation.setVehicleClass(p.getTypeID());
+                    vehicleClassAndParticipations.add(vehicleClassAndParticipation);
+                }
+                //merge vehicle classes and participated lessons
+                for(VehicleClassAndParticipation v : vehicleClassAndParticipations){
+                    for(BookingScheduleDTO b : bookingScheduleDTOS){
+                        if(v.getVehicleClass().equals(b.getVehicleClass())){
+                            v.setParticipation(v.getParticipation()+1);
+                        }
+                    }
+                }
+                //set Lessons count for package and vehicle type
+                for(PackageAndVehicleTypeDTO p : packageAndVehicleTypeDTOS){
+                    for(VehicleClassAndParticipation v : vehicleClassAndParticipations){
+                        if(p.getTypeID().equals(v.getVehicleClass())){
+                            p.setParticipatedLessons(v.getParticipation());
+                        }
+                    }
                 }
                 agreementDTO.setPackageAndVehicleType(packageAndVehicleTypeDTOS);
                 agreementDTOS.add(agreementDTO);

@@ -1,9 +1,6 @@
 package com.example.SecuritywithLeaners.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +9,7 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -30,6 +28,8 @@ public class Notification {
     private Boolean isRead;
     private String status;
     private Date itemOrEventDate;
-    private String viewsFor;
+    private String image;
+    @OneToMany(mappedBy = "notification", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<NotificationVievedFor> notificationVievedForList;
 
 }

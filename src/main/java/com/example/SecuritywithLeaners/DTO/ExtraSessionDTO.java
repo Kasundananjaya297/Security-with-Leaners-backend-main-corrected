@@ -20,6 +20,7 @@ public class ExtraSessionDTO {
     private String typeID;
     private int extraLessons;
     private double priceForExtraLesson;
+    private int participatedLessons;
     private int totalLessons;
     private double price;
     private String extraLessonVehicleType;

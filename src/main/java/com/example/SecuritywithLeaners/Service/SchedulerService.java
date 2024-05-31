@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +51,9 @@ public class SchedulerService {
                 Vehicle vehicle = new Vehicle();
                 vehicle.setRegistrationNo(scheduler.getRegistrationNo());
                 Scheduler scheduler1 = modelMapper.map(scheduler, Scheduler.class);
+                scheduler1.setTrainerRequestToCancel(false);
+                scheduler1.setIsCompleted(false);
+                scheduler1.setIsStarted(false);
                 scheduler1.setTrainer(trainers);
                 scheduler1.setVehicle(vehicle);
                 schedulerList.add(scheduler1);
@@ -153,8 +158,10 @@ public class SchedulerService {
                 }
             }
             scheduler.setTrainerRequestToCancel(false);
+
             schedulerRepo.saveAndFlush(scheduler);
             Scheduler scheduler1 = schedulerRepo.findById(schedulerDTO.getSchedulerID()).get();
+
             NotificationDTO notificationDTO = new NotificationDTO();
             notificationDTO.setItemID(scheduler1.getTrainer().getTrainerID());
             notificationDTO.setItemFname(scheduler1.getTrainer().getFname());
@@ -162,8 +169,14 @@ public class SchedulerService {
             notificationDTO.setStatus("Update");
             notificationDTO.setMessage("Schedule Updated");
             notificationDTO.setItemOrEventDate(scheduler1.getStart());
-            notificationDTO.setViewsFor("TRAINER,STUDENT");
-            notificationService.saveNotification(notificationDTO);
+            List<NotificationViewedForDTO> notificationViewedForDTOList = new ArrayList<>();
+                NotificationViewedForDTO notificationViewedForDTO = new NotificationViewedForDTO();
+                notificationViewedForDTO.setViewsFor("TRAINER");
+                notificationViewedForDTOList.add(notificationViewedForDTO);
+                notificationDTO.setNotificationVievedForList(notificationViewedForDTOList);
+                notificationDTO.setImage("https://visualpharm.com/assets/381/Admin-595b40b65ba036ed117d3b23.svg");
+                notificationService.saveNotification(notificationDTO);
+
             responseDTO.setMessage("Schedule updated successfully");
             responseDTO.setCode(varList.RSP_SUCCES);
             responseDTO.setStatus(HttpStatus.ACCEPTED);
@@ -305,7 +318,12 @@ public class SchedulerService {
             notificationDTO.setStatus("Request");
             notificationDTO.setMessage("Request to Cancel");
             notificationDTO.setItemOrEventDate(scheduler.getStart());
-            notificationDTO.setViewsFor("ADMIN");
+            List<NotificationViewedForDTO> notificationViewedForDTOList = new ArrayList<>();
+            NotificationViewedForDTO notificationViewedForDTO = new NotificationViewedForDTO();
+            notificationViewedForDTO.setViewsFor("ADMIN");
+            notificationViewedForDTOList.add(notificationViewedForDTO);
+            notificationDTO.setNotificationVievedForList(notificationViewedForDTOList);
+            notificationDTO.setImage(scheduler.getTrainer().getProfilePhotoURL());
             notificationService.saveNotification(notificationDTO);
             responseDTO.setMessage("Recieved successfully");
             responseDTO.setCode(varList.RSP_SUCCES);
@@ -320,7 +338,7 @@ public class SchedulerService {
     public ResponseDTO completeSchedule(Long scheduleID){
         ResponseDTO responseDTO = new ResponseDTO();
         try{
-            schedulerRepo.updateIsCompleted(scheduleID);
+            schedulerRepo.updateIsCompleted(scheduleID, LocalTime.now());
             responseDTO.setMessage("Schedules completed successfully");
             responseDTO.setCode(varList.RSP_SUCCES);
             responseDTO.setStatus(HttpStatus.ACCEPTED);
