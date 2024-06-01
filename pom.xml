@@ -11,9 +11,9 @@
 	<groupId>com.example</groupId>
 	<artifactId>Security-with-Leaners</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
 	<name>Security-with-Leaners</name>
 	<description>Demo project for Spring Boot</description>
+	<packaging>war</packaging>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -127,7 +127,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		<finalName>spring-docker</finalName>
+		<finalName>Charika-Leaners-spring</finalName>
 	</build>
 
 </project>
