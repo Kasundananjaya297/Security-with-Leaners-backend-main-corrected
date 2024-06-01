@@ -146,6 +146,7 @@ public class AdminService {
     public ResponseDTO getStudentBySortingAndPagination(String field, String order, int pageSize, int offset) {
         ResponseDTO responseDTO = new ResponseDTO();
         try {
+            int size = studentRepo.findAll().size();
             Page<Student> studentDataPage = studentRepo.findAll(PageRequest.of(offset, pageSize, Sort.by(Sort.Direction.valueOf(order), field)));
             List<StudentDTO> studentDTOS = new ArrayList<>();
             for(Student student:studentDataPage){
@@ -165,7 +166,7 @@ public class AdminService {
             }
             log.info("Student data page: {}", studentDataPage);
             responseDTO.setContent(studentDTOS);
-            responseDTO.setRecordCount(studentDTOS.size());
+            responseDTO.setRecordCount(size);
             responseDTO.setCode(varList.RSP_SUCCES);
             responseDTO.setMessage("Success");
             responseDTO.setStatus(HttpStatus.ACCEPTED);

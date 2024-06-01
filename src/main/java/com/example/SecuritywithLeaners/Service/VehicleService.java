@@ -58,6 +58,7 @@ public class VehicleService {
     public ResponseDTO getVehicles(String field,String order,int pageSize,int offset){
         ResponseDTO responseDTO = new ResponseDTO();
         try {
+            int size = vehicleRepo.findAll().size();
             Page<Vehicle> vehicles = vehicleRepo.findAll(PageRequest.of(offset, pageSize, Sort.by(Sort.Direction.valueOf(order), field)));
             List<VehicleDTO> vehicleDTOS = new ArrayList<>();
             for(Vehicle vehicle:vehicles){
@@ -189,7 +190,7 @@ public class VehicleService {
                 vehicleDTO.setVehicleServiceORRepairs(vehicleServiceORRepairDTOSList);
 
             }
-            responseDTO.setRecordCount(vehicleDTOS.size());
+            responseDTO.setRecordCount(size);
             responseDTO.setMessage("Vehicles Fetched Successfully");
             responseDTO.setCode(varList.RSP_SUCCES);
             responseDTO.setStatus(HttpStatus.ACCEPTED);
