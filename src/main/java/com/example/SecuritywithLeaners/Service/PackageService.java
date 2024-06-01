@@ -91,6 +91,7 @@ private AuthenticationService authenticationService;
         ResponseDTO responseDTO = new ResponseDTO();
         PackageDTO packageDTO = new PackageDTO();
         try{
+            int size = packageRepo.findAll().size();
             List<Package> packages = packageRepo.findAll(PageRequest.of(offset, pageSize, Sort.by(Sort.Direction.valueOf(order), field))).toList();
             List<PackageDTO> packageDTOList = new ArrayList<>();
             for(Package packData : packages){
@@ -113,7 +114,7 @@ private AuthenticationService authenticationService;
                 packageData.setPackageAndVehicleType(packageAndVehicleTypeDTOList);
                 packageDTOList.add(packageData);
             }
-            responseDTO.setRecordCount(packageDTOList.size());
+            responseDTO.setRecordCount(size);
             responseDTO.setCode(varList.RSP_SUCCES);
             responseDTO.setStatus(HttpStatus.ACCEPTED);
             responseDTO.setMessage("Success");

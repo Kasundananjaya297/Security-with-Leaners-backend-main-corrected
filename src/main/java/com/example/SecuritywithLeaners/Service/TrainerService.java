@@ -80,6 +80,7 @@ public class TrainerService {
     public ResponseDTO getAllTrainers(String field, String order,int pageSize, int offset){
         ResponseDTO responseDTO = new ResponseDTO();
         try{
+            int size = trainerRepo.findAll().size();
             Page<Trainers> trainers = trainerRepo.findAll(PageRequest.of(offset, pageSize, Sort.by(Sort.Direction.fromString(order), field)));
             List<TrainerDTO> trainerDTOS = new ArrayList<>();
             for(Trainers trainer : trainers){
@@ -201,7 +202,7 @@ public class TrainerService {
                 trainerDTO.setTrainerDrivingLicences(trainerDrivingLicenceDTO);
                 trainerDTOS.add(trainerDTO);
             }
-            responseDTO.setRecordCount(trainerDTOS.size());
+            responseDTO.setRecordCount(size);
             responseDTO.setMessage("Trainers fetched successfully");
             responseDTO.setStatus(HttpStatus.ACCEPTED);
             responseDTO.setCode(varList.RSP_SUCCES);
