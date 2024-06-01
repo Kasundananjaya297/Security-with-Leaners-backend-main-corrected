@@ -7,6 +7,7 @@ import com.example.SecuritywithLeaners.DTO.VehicleLocationDTO;
 import com.example.SecuritywithLeaners.Entity.VehicleLocations;
 import com.example.SecuritywithLeaners.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping( "api/trainer")
 @CrossOrigin
-public class TrainerController {
+public class TrainerController  {
     @Autowired
     private SchedulerService schedulerService;
     @Autowired

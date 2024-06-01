@@ -5,6 +5,7 @@ import com.example.SecuritywithLeaners.DTO.UsersDTO;
 import com.example.SecuritywithLeaners.Service.AuthenticationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping( "api/authentication")
 @CrossOrigin
-public class AuthenticationController {
+public class AuthenticationController  {
     @Autowired
     AuthenticationService authenticationService;
 
