@@ -44,7 +44,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/admin/getExtraSessionNotINAgreement/*/*").hasAnyAuthority("ADMIN","STUDENT")
                         .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/api/student/studentCancelBooking/*/*").hasAnyAuthority( "STUDENT","ADMIN")
-                        .requestMatchers("/api/student/changePassword").hasAnyAuthority( "STUDENT","TRAINER")
+                        .requestMatchers("/api/student/changePassword").hasAnyAuthority( "STUDENT","TRAINER","ADMIN")
                         .requestMatchers("/api/student/**").hasAnyAuthority( "STUDENT")
                         .requestMatchers("/api/trainer/**").hasAuthority("TRAINER")
                         .requestMatchers("/user/**").hasAnyAuthority("USER")
