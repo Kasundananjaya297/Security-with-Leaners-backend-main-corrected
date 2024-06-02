@@ -11,7 +11,7 @@
 	<groupId>com.example</groupId>
 	<artifactId>Security-with-Leaners</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>Security-with-Leaners</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
@@ -115,13 +115,6 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>3.4.0</version>
-				<configuration>
-					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
 		</plugins>
