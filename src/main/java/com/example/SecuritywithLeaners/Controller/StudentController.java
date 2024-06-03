@@ -36,6 +36,7 @@ public class StudentController {
     }
     @PutMapping("/changePassword")
     public ResponseEntity updatePassword(@RequestBody UsersDTO usersDTO){
+        System.out.println(usersDTO);
         ResponseDTO responseDTO = authenticationService.updatePassword(usersDTO);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
