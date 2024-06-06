@@ -30,9 +30,6 @@ public class BookingService {
     private NotificationService notificationService;
     @Autowired
     private StudentRepo studentRepo;
-
-
-
     public ResponseDTO makeBooking(BookingScheduleDTO bookingScheduleDTO){
         ResponseDTO responseDTO = new ResponseDTO();
         try {
@@ -110,7 +107,7 @@ public class BookingService {
                     vehiclesFilteringDTO.setVehicleControl(bookingSchedule1.getScheduler().getVehicle().getAutoOrManual());
                     vehicleTypesBookedByStudent.add(vehiclesFilteringDTO);
                 }
-                //set booking count per vehicle type
+                //set booking
                 List<VehiclesFilteringDTO> vehicleTypesBookedByStudentMerged = new ArrayList<>();
                 for(VehiclesFilteringDTO vehiclesFilteringDTO : vehicleTypesBookedByStudent){
                     boolean isExist = false;
@@ -125,17 +122,42 @@ public class BookingService {
                         vehicleTypesBookedByStudentMerged.add(vehiclesFilteringDTO);
                     }
                 }
-                System.out.println(vehicleTypesMerged);
-                //check student booking count per vehicle Type and based on booking
+
+
+
+
+                //merge vehicleTypesMerged, vehicleTypesBookedByStudentMerged and if any vehicle type donset have booking setlesson count as 0
                 for(VehiclesFilteringDTO vehiclesFilteringDTO : vehicleTypesMerged){
+                    boolean isExist = false;
                     for(VehiclesFilteringDTO vehiclesFilteringDTO1 : vehicleTypesBookedByStudentMerged){
                         if(vehiclesFilteringDTO.getVehicleClass().equals(vehiclesFilteringDTO1.getVehicleClass()) && vehiclesFilteringDTO.getVehicleControl().equals(vehiclesFilteringDTO1.getVehicleControl())){
-                            if(vehiclesFilteringDTO.getLessonCount() <= vehiclesFilteringDTO1.getLessonCount()){
-                                responseDTO.setCode(varList.RSP_DUPLICATED);
-                                responseDTO.setStatus(HttpStatus.ALREADY_REPORTED);
-                                responseDTO.setMessage("Student already booked maximum lesson count for this vehicle type");
-                                responseDTO.setContent(null);
-                                return responseDTO;
+                            isExist = true;
+                        }
+                    }
+                    if(!isExist){
+                        VehiclesFilteringDTO vehiclesFilteringDTO1 = new VehiclesFilteringDTO();
+                        vehiclesFilteringDTO1.setVehicleClass(vehiclesFilteringDTO.getVehicleClass());
+                        vehiclesFilteringDTO1.setVehicleControl(vehiclesFilteringDTO.getVehicleControl());
+                        vehiclesFilteringDTO1.setLessonCount(0);
+                        vehicleTypesBookedByStudentMerged.add(vehiclesFilteringDTO1);
+                    }
+                }
+                //check student booked lesson count is less than or equal to maximum lesson count for the request vehicle class
+//                System.out.println("booked+++++++++++++++++++++++"+vehicleTypesBookedByStudentMerged);
+//                System.out.println("Mergered vehicles+++++++++++++++++++++++"+vehicleTypesMerged);
+//                System.out.println("Booking DTO ++++++++"+bookingScheduleDTO.getVehicleClass());
+                //compare requested vehicle type and student booked vehicle type is exceeded
+                for(VehiclesFilteringDTO vehiclesFilteringDTO : vehicleTypesMerged){
+                    if(vehiclesFilteringDTO.getVehicleClass().equals(bookingScheduleDTO.getVehicleClass())){
+                        for(VehiclesFilteringDTO vehiclesFilteringDTO1 : vehicleTypesBookedByStudentMerged){
+                            if(vehiclesFilteringDTO1.getVehicleClass().equals(bookingScheduleDTO.getVehicleClass())){
+                                if(vehiclesFilteringDTO1.getLessonCount() >= vehiclesFilteringDTO.getLessonCount()){
+                                    responseDTO.setCode(varList.RSP_FAIL);
+                                    responseDTO.setStatus(HttpStatus.ALREADY_REPORTED);
+                                    responseDTO.setMessage("Student Exceeded Maximum Lesson Count for this Vehicle Class");
+                                    responseDTO.setContent(null);
+                                    return responseDTO;
+                                }
                             }
                         }
                     }

@@ -208,6 +208,7 @@ public class SchedulerService {
                 schedulerDTO.setTrainerPhoto(scheduler.getTrainer().getProfilePhotoURL());
                 schedulerDTO.setVehicleControl(scheduler.getVehicle().getAutoOrManual());
                 schedulerDTO.setVehiclePhoto(scheduler.getVehicle().getVehiclePhoto());
+                schedulerDTO.setIsCompleted(scheduler.getIsCompleted());
                 List<BookingScheduleDTO> bookingScheduleDTOList = new ArrayList<>();
                 for(BookingSchedule bookingSchedule : scheduler.getBookingSchedule()){
                     BookingScheduleDTO bookingScheduleDTO = modelMapper.map(bookingSchedule, BookingScheduleDTO.class);
@@ -244,8 +245,9 @@ public class SchedulerService {
                 }
                 return true;
             });
-            //filter schdules basd on current date
-            schedulerDTOList.removeIf(schedulerDTO -> schedulerDTO.getStart().before(new java.util.Date()));
+            //filter schdules basd on current date and completed sessions
+           //schedulerDTOList.removeIf(schedulerDTO -> schedulerDTO.getStart().before(new java.util.Date()));
+            schedulerDTOList.removeIf(schedulerDTO -> schedulerDTO.getStart().before(new java.util.Date()) && ! schedulerDTO.getIsCompleted());
             responseDTO.setContent(schedulerDTOList);
             responseDTO.setStatus(HttpStatus.ACCEPTED);
             responseDTO.setCode(varList.RSP_SUCCES);
@@ -277,6 +279,7 @@ public class SchedulerService {
                 schedulerDTO.setTrainerPhoto(scheduler.getTrainer().getProfilePhotoURL());
                 schedulerDTO.setVehicleControl(scheduler.getVehicle().getAutoOrManual());
                 schedulerDTO.setVehiclePhoto(scheduler.getVehicle().getVehiclePhoto());
+                schedulerDTO.setIsCompleted(scheduler.getIsCompleted());
                 List<BookingScheduleDTO> bookingScheduleDTOList = new ArrayList<>();
                 for(BookingSchedule bookingSchedule : scheduler.getBookingSchedule()){
                     BookingScheduleDTO bookingScheduleDTO = modelMapper.map(bookingSchedule, BookingScheduleDTO.class);
