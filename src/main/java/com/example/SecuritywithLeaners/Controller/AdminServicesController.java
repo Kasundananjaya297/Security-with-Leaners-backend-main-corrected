@@ -380,7 +380,8 @@ public class AdminServicesController  {
     }
     @PostMapping("/saveTrainer")
     public ResponseEntity saveTrainer(@RequestBody TrainerDTO trainerDTO){
-        System.out.println(trainerDTO);
+
+        System.out.println("+++++++++++"+trainerDTO);
         ResponseDTO responseDTO = trainerService.saveTrainer(trainerDTO);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }

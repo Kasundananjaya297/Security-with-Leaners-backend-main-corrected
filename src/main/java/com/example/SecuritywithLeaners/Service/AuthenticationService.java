@@ -133,6 +133,7 @@ public class AuthenticationService  {
             if(!usersRepo.existsById(usersDTO.getUsername())){
                 String EncodedPassword = passwordEncoder.encode(usersDTO.getGeneratedPassword());
                 usersDTO.setPassword(EncodedPassword);
+                System.out.println("++++++++++++++++++"+usersDTO);
                 usersRepo.save(modelMapper.map(usersDTO, Users.class));
                 return true;
             }
