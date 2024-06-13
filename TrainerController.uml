@@ -1,0 +1,608 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.example.SecuritywithLeaners.Controller.TrainerController</OriginalElement>
+  <nodes>
+    <node x="1900.5" y="1723.5">com.example.SecuritywithLeaners.Repo.StudentRepo</node>
+    <node x="1459.0" y="5527.5">com.example.SecuritywithLeaners.Service.ExtraSessionService</node>
+    <node x="1962.0" y="4495.5">com.example.SecuritywithLeaners.Repo.VehicleLicenceRepo</node>
+    <node x="2330.0" y="2311.5">com.example.SecuritywithLeaners.Controller.AdminServicesController</node>
+    <node x="2375.0" y="999.5">com.example.SecuritywithLeaners.Repo.AgreementRepo</node>
+    <node x="2577.5" y="5377.0">com.example.SecuritywithLeaners.Repo.VehicleTypeRepo</node>
+    <node x="4438.0" y="2039.5">com.example.SecuritywithLeaners.Service.UserService</node>
+    <node x="1820.5" y="1447.5">com.example.SecuritywithLeaners.Service.AgreementService</node>
+    <node x="1695.5" y="3154.5">com.example.SecuritywithLeaners.Repo.InsuranceTypeRepo</node>
+    <node x="1406.5" y="3779.5">com.example.SecuritywithLeaners.Service.InsuranceService</node>
+    <node x="1882.0" y="3751.5">com.example.SecuritywithLeaners.Repo.VehicleRepo</node>
+    <node x="2499.0" y="5883.5">com.example.SecuritywithLeaners.Repo.TrialPermitRepo</node>
+    <node x="1446.5" y="3882.5">com.example.SecuritywithLeaners.Repo.InsuranceRepo</node>
+    <node x="1883.0" y="3319.5">com.example.SecuritywithLeaners.Service.TrainerPermitService</node>
+    <node x="3425.5" y="1827.5">com.example.SecuritywithLeaners.Service.PaymentService</node>
+    <node x="3609.5" y="4919.5">com.example.SecuritywithLeaners.Service.TrainerService</node>
+    <node x="1485.0" y="3297.0">com.example.SecuritywithLeaners.Repo.NotificationViewsForRepo</node>
+    <node x="2702.0" y="4334.5">com.example.SecuritywithLeaners.Repo.CommonItemsOrServicesOfferedByServiceRepo</node>
+    <node x="486.0" y="4419.5">com.example.SecuritywithLeaners.Repo.SchedulerRepo</node>
+    <node x="4039.0" y="2039.5">com.example.SecuritywithLeaners.Repo.UsersRepo</node>
+    <node x="1655.5" y="3027.5">com.example.SecuritywithLeaners.Service.InsuranceTypeService</node>
+    <node x="561.5" y="4695.5">com.example.SecuritywithLeaners.Service.VehicleLocationService</node>
+    <node x="1364.5" y="3379.5">com.example.SecuritywithLeaners.Service.EmissionTestSevice</node>
+    <node x="1560.5" y="4257.0">com.example.SecuritywithLeaners.Repo.NotificationRepo</node>
+    <node x="1923.0" y="3422.5">com.example.SecuritywithLeaners.Repo.TrainerPermitRepo</node>
+    <node x="1501.5" y="2115.5">com.example.SecuritywithLeaners.Repo.MedicalRepo</node>
+    <node x="2898.0" y="1827.5">com.example.SecuritywithLeaners.Repo.PaymentsRepo</node>
+    <node x="1812.0" y="3539.5">com.example.SecuritywithLeaners.Service.TrainerDrivingLicenceService</node>
+    <node x="2974.5" y="5643.5">com.example.SecuritywithLeaners.Repo.PermitAndVehicleTypeRepo</node>
+    <node x="1409.5" y="3567.5">com.example.SecuritywithLeaners.Service.FuelTypeService</node>
+    <node x="1124.0" y="4407.5">com.example.SecuritywithLeaners.Service.SchedulerService</node>
+    <node x="1852.0" y="3642.5">com.example.SecuritywithLeaners.Repo.TrainerDrivingLicenceRepo</node>
+    <node x="1408.5" y="3957.0">com.example.SecuritywithLeaners.Repo.TrainerDrivingLicenceVehiclesRepo</node>
+    <node x="4048.0" y="5199.5">com.example.SecuritywithLeaners.Service.AuthenticationService</node>
+    <node x="1962.0" y="4324.5">com.example.SecuritywithLeaners.Repo.ServiceOrRepairRepo</node>
+    <node x="3611.5" y="3063.5">com.example.SecuritywithLeaners.Repo.TrainerRepo</node>
+    <node x="1449.5" y="3694.5">com.example.SecuritywithLeaners.Repo.FuelTypeRepo</node>
+    <node x="1958.5" y="5647.5">com.example.SecuritywithLeaners.Repo.ExtraSessionRepo</node>
+    <node x="972.5" y="5491.5">com.example.SecuritywithLeaners.Repo.ExtrasNotInAgreementRepo</node>
+    <node x="974.0" y="5335.5">com.example.SecuritywithLeaners.Service.ExtraSessionNotInAgreementService</node>
+    <node x="2817.0" y="5335.5">com.example.SecuritywithLeaners.Service.VehicleTypeService</node>
+    <node x="1054.5" y="1435.5">com.example.SecuritywithLeaners.Repo.ScheduleBookingRepo</node>
+    <node x="1404.5" y="3482.5">com.example.SecuritywithLeaners.Repo.EmissionTestRepo</node>
+    <node x="527.5" y="3163.5">com.example.SecuritywithLeaners.Service.BookingService</node>
+    <node x="1922.0" y="4392.5">com.example.SecuritywithLeaners.Service.VehicleLicenceService</node>
+    <node x="1127.5" y="4203.5">com.example.SecuritywithLeaners.Service.NotificationService</node>
+    <node x="1890.5" y="2103.5">com.example.SecuritywithLeaners.Service.MedicalReportService</node>
+    <node x="4045.5" y="5435.5">com.example.SecuritywithLeaners.Controller.AuthenticationController</node>
+    <node x="-398.0" y="4603.5">com.example.SecuritywithLeaners.Controller.StudentController</node>
+    <node x="62.0" y="4907.5">com.example.SecuritywithLeaners.Controller.TrainerController</node>
+    <node x="2363.0" y="1967.5">com.example.SecuritywithLeaners.Service.AdminService</node>
+    <node x="2413.5" y="5607.5">com.example.SecuritywithLeaners.Service.TrialPermitService</node>
+    <node x="1922.0" y="4197.5">com.example.SecuritywithLeaners.Service.VehicleServiceOrRepairService</node>
+    <node x="2959.0" y="6151.5">com.example.SecuritywithLeaners.Repo.PackageRepo</node>
+    <node x="2662.0" y="4207.5">com.example.SecuritywithLeaners.Service.CommonItemsOrServiesOfferedByServiceService</node>
+    <node x="1471.5" y="6075.5">com.example.SecuritywithLeaners.Repo.PackageAndVehicleTypeRepo</node>
+    <node x="580.5" y="4867.5">com.example.SecuritywithLeaners.Repo.VehicleLocationRepo</node>
+    <node x="1922.0" y="3950.5">com.example.SecuritywithLeaners.Service.VehicleService</node>
+    <node x="2938.0" y="5859.5">com.example.SecuritywithLeaners.Service.PackageService</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.example.SecuritywithLeaners.Service.AgreementService" target="com.example.SecuritywithLeaners.Repo.UsersRepo" relationship="TO_ONE">
+      <point x="-0.0" y="-103.5" />
+      <point x="2070.0" y="989.5" />
+      <point x="4210.0" y="989.5" />
+      <point x="-0.0" y="-31.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.AgreementService" target="com.example.SecuritywithLeaners.Repo.PackageRepo" relationship="TO_ONE">
+      <point x="249.5" y="0.0" />
+      <point x="3402.0" y="1551.0" />
+      <point x="3402.0" y="6231.0" />
+      <point x="191.0" y="0.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.AdminServicesController" target="com.example.SecuritywithLeaners.Service.TrainerPermitService" relationship="TO_ONE">
+      <point x="-280.0" y="120.0" />
+      <point x="187.0" y="0.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.AdminService" target="com.example.SecuritywithLeaners.Repo.AgreementRepo" relationship="TO_ONE">
+      <point x="5.0" y="-103.5" />
+      <point x="5.0" y="211.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.BookingService" target="com.example.SecuritywithLeaners.Repo.AgreementRepo" relationship="TO_ONE">
+      <point x="-10.0" y="-67.5" />
+      <point x="760.0" y="1216.0" />
+      <point x="-235.0" y="5.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.AdminServicesController" target="com.example.SecuritywithLeaners.Service.FuelTypeService" relationship="TO_ONE">
+      <point x="-280.0" y="380.0" />
+      <point x="160.5" y="0.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.InsuranceTypeService" target="com.example.SecuritywithLeaners.Repo.InsuranceTypeRepo" relationship="TO_ONE">
+      <point x="-52.5" y="43.5" />
+      <point x="0.0" y="-14.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.VehicleLocationService" target="com.example.SecuritywithLeaners.Repo.SchedulerRepo" relationship="TO_ONE">
+      <point x="0.0" y="-55.5" />
+      <point x="0.0" y="91.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.AdminServicesController" target="com.example.SecuritywithLeaners.Service.EmissionTestSevice" relationship="TO_ONE">
+      <point x="-280.0" y="180.0" />
+      <point x="185.5" y="0.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.TrainerService" target="com.example.SecuritywithLeaners.Repo.UsersRepo" relationship="TO_ONE">
+      <point x="180.5" y="0.0" />
+      <point x="4200.5" y="5011.0" />
+      <point x="-9.5" y="31.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.BookingService" target="com.example.SecuritywithLeaners.Repo.SchedulerRepo" relationship="TO_ONE">
+      <point x="-5.0" y="67.5" />
+      <point x="-5.0" y="-91.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.PaymentService" target="com.example.SecuritywithLeaners.Repo.PaymentsRepo" relationship="TO_ONE">
+      <point x="-164.5" y="0.0" />
+      <point x="232.0" y="0.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.AdminServicesController" target="com.example.SecuritywithLeaners.Service.AgreementService" relationship="TO_ONE">
+      <point x="-280.0" y="-1.25" />
+      <point x="1483.0" y="3229.75" />
+      <point x="1483.0" y="1556.0" />
+      <point x="-249.5" y="5.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.ExtraSessionService" target="com.example.SecuritywithLeaners.Repo.TrialPermitRepo" relationship="TO_ONE">
+      <point x="6.25" y="43.5" />
+      <point x="1676.25" y="5951.0" />
+      <point x="-171.0" y="0.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.AdminServicesController" target="com.example.SecuritywithLeaners.Service.VehicleLocationService" relationship="TO_ONE">
+      <point x="-22.125" y="919.5" />
+      <point x="2587.875" y="4751.0" />
+      <point x="208.5" y="0.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.EmissionTestSevice" target="com.example.SecuritywithLeaners.Repo.EmissionTestRepo" relationship="TO_ONE">
+      <point x="-49.5" y="31.5" />
+      <point x="0.0" y="-14.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.TrainerController" target="com.example.SecuritywithLeaners.Service.SchedulerService" relationship="TO_ONE">
+      <point x="228.0" y="12.5" />
+      <point x="1320.0" y="5023.5" />
+      <point x="10.0" y="103.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.AdminServicesController" target="com.example.SecuritywithLeaners.Service.BookingService" relationship="TO_ONE">
+      <point x="-280.0" y="8.75" />
+      <point x="242.5" y="8.75" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.NotificationService" target="com.example.SecuritywithLeaners.Repo.NotificationRepo" relationship="TO_ONE">
+      <point x="182.5" y="0.0" />
+      <point x="-89.5" y="0.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.ExtraSessionService" target="com.example.SecuritywithLeaners.Repo.ExtraSessionRepo" relationship="TO_ONE">
+      <point x="16.25" y="43.5" />
+      <point x="1686.25" y="5691.0" />
+      <point x="-211.5" y="0.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.TrainerDrivingLicenceService" target="com.example.SecuritywithLeaners.Repo.TrainerDrivingLicenceRepo" relationship="TO_ONE">
+      <point x="9.5" y="31.5" />
+      <point x="0.0" y="-31.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.AdminServicesController" target="com.example.SecuritywithLeaners.Service.TrialPermitService" relationship="TO_ONE">
+      <point x="-86.25" y="919.5" />
+      <point x="-146.25" y="-103.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.TrainerController" target="com.example.SecuritywithLeaners.Service.AuthenticationService" relationship="TO_ONE">
+      <point x="-0.0" y="103.5" />
+      <point x="290.0" y="5272.5" />
+      <point x="-162.0" y="-18.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.PackageService" target="com.example.SecuritywithLeaners.Repo.PackageRepo" relationship="TO_ONE">
+      <point x="0.0" y="91.5" />
+      <point x="0.0" y="-79.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.VehicleService" target="com.example.SecuritywithLeaners.Repo.VehicleRepo" relationship="TO_ONE">
+      <point x="-51.0" y="-103.5" />
+      <point x="15.0" y="79.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.ExtraSessionNotInAgreementService" target="com.example.SecuritywithLeaners.Repo.ExtrasNotInAgreementRepo" relationship="TO_ONE">
+      <point x="0.0" y="55.5" />
+      <point x="0.0" y="-79.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.AgreementService" target="com.example.SecuritywithLeaners.Repo.AgreementRepo" relationship="TO_ONE">
+      <point x="249.5" y="-10.0" />
+      <point x="2605.0" y="1541.0" />
+      <point x="-5.0" y="211.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.AdminServicesController" target="com.example.SecuritywithLeaners.Service.TrainerService" relationship="TO_ONE">
+      <point x="280.0" y="438.5" />
+      <point x="3784.0" y="3669.5" />
+      <point x="-6.0" y="-91.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.VehicleTypeService" target="com.example.SecuritywithLeaners.Repo.VehicleTypeRepo" relationship="TO_ONE">
+      <point x="-173.0" y="0.0" />
+      <point x="92.5" y="0.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.CommonItemsOrServiesOfferedByServiceService" target="com.example.SecuritywithLeaners.Repo.CommonItemsOrServicesOfferedByServiceRepo" relationship="TO_ONE">
+      <point x="-16.0" y="43.5" />
+      <point x="0.0" y="-31.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.AdminService" target="com.example.SecuritywithLeaners.Repo.UsersRepo" relationship="TO_ONE">
+      <point x="247.0" y="0.0" />
+      <point x="-171.0" y="0.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.VehicleLicenceService" target="com.example.SecuritywithLeaners.Repo.VehicleLicenceRepo" relationship="TO_ONE">
+      <point x="-53.0" y="31.5" />
+      <point x="0.0" y="-14.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.MedicalReportService" target="com.example.SecuritywithLeaners.Repo.StudentRepo" relationship="TO_ONE">
+      <point x="-5.0" y="-67.5" />
+      <point x="-5.0" y="67.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.PackageService" target="com.example.SecuritywithLeaners.Repo.PackageAndVehicleTypeRepo" relationship="TO_ONE">
+      <point x="-15.5" y="91.5" />
+      <point x="3134.5" y="6108.5" />
+      <point x="198.5" y="-22.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.PackageService" target="com.example.SecuritywithLeaners.Repo.VehicleTypeRepo" relationship="TO_ONE">
+      <point x="212.0" y="0.0" />
+      <point x="3427.5" y="5951.0" />
+      <point x="3427.5" y="5100.5" />
+      <point x="2670.0" y="5100.5" />
+      <point x="0.0" y="-14.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.AdminServicesController" target="com.example.SecuritywithLeaners.Service.InsuranceService" relationship="TO_ONE">
+      <point x="-280.0" y="493.5" />
+      <point x="1570.0" y="3724.5" />
+      <point x="0.0" y="-31.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.ExtraSessionService" target="com.example.SecuritywithLeaners.Repo.VehicleRepo" relationship="TO_ONE">
+      <point x="145.25" y="-43.5" />
+      <point x="1815.25" y="3831.0" />
+      <point x="-148.0" y="0.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.MedicalReportService" target="com.example.SecuritywithLeaners.Repo.MedicalRepo" relationship="TO_ONE">
+      <point x="-179.5" y="0.0" />
+      <point x="168.5" y="0.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.ExtraSessionService" target="com.example.SecuritywithLeaners.Repo.VehicleTypeRepo" relationship="TO_ONE">
+      <point x="-0.0" y="-43.5" />
+      <point x="1670.0" y="5395.666748046875" />
+      <point x="-92.5" y="4.666748046875" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.ExtraSessionNotInAgreementService" target="com.example.SecuritywithLeaners.Repo.ScheduleBookingRepo" relationship="TO_ONE">
+      <point x="-68.0" y="-55.5" />
+      <point x="-128.0" y="115.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.AuthenticationController" target="com.example.SecuritywithLeaners.Service.AuthenticationService" relationship="TO_ONE">
+      <point x="0.0" y="-55.5" />
+      <point x="0.0" y="91.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.VehicleLicenceService" target="com.example.SecuritywithLeaners.Repo.VehicleRepo" relationship="TO_ONE">
+      <point x="0.0" y="-31.5" />
+      <point x="2118.0" y="4354.5" />
+      <point x="1920.0" y="4354.5" />
+      <point x="-110.0" y="79.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.VehicleLocationService" target="com.example.SecuritywithLeaners.Repo.VehicleLocationRepo" relationship="TO_ONE">
+      <point x="0.0" y="55.5" />
+      <point x="0.0" y="-43.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.UserService" target="com.example.SecuritywithLeaners.Repo.UsersRepo" relationship="TO_ONE">
+      <point x="-152.0" y="0.0" />
+      <point x="171.0" y="0.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.TrialPermitService" target="com.example.SecuritywithLeaners.Repo.VehicleTypeRepo" relationship="TO_ONE">
+      <point x="0.0" y="-103.5" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.AdminServicesController" target="com.example.SecuritywithLeaners.Service.SchedulerService" relationship="TO_ONE">
+      <point x="-280.0" y="40.0" />
+      <point x="1810.0" y="3271.0" />
+      <point x="1810.0" y="4511.0" />
+      <point x="186.0" y="0.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.AdminServicesController" target="com.example.SecuritywithLeaners.Service.PackageService" relationship="TO_ONE">
+      <point x="280.0" y="448.5" />
+      <point x="3338.75" y="3679.5" />
+      <point x="188.75" y="-91.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.ExtraSessionService" target="com.example.SecuritywithLeaners.Repo.PermitAndVehicleTypeRepo" relationship="TO_ONE">
+      <point x="211.0" y="1.5" />
+      <point x="3150.0" y="5572.5" />
+      <point x="-0.0" y="-67.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.PaymentService" target="com.example.SecuritywithLeaners.Repo.AgreementRepo" relationship="TO_ONE">
+      <point x="5.0" y="-43.5" />
+      <point x="3595.0" y="1206.0" />
+      <point x="235.0" y="-5.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.AdminServicesController" target="com.example.SecuritywithLeaners.Service.InsuranceTypeService" relationship="TO_ONE">
+      <point x="-280.0" y="-160.0" />
+      <point x="194.5" y="0.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.VehicleServiceOrRepairService" target="com.example.SecuritywithLeaners.Repo.VehicleRepo" relationship="TO_ONE">
+      <point x="81.0" y="-43.5" />
+      <point x="2272.0" y="3948.5" />
+      <point x="2055.0" y="3948.5" />
+      <point x="25.0" y="79.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.PackageService" target="com.example.SecuritywithLeaners.Service.AuthenticationService" relationship="TO_ONE">
+      <point x="198.75" y="-91.5" />
+      <point x="3348.75" y="5311.0" />
+      <point x="-162.0" y="20.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.TrialPermitService" target="com.example.SecuritywithLeaners.Repo.StudentRepo" relationship="TO_ONE">
+      <point x="256.5" y="69.5" />
+      <point x="3382.0" y="5780.5" />
+      <point x="3382.0" y="1780.5" />
+      <point x="169.5" y="-10.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.InsuranceService" target="com.example.SecuritywithLeaners.Repo.InsuranceRepo" relationship="TO_ONE">
+      <point x="-41.0" y="31.5" />
+      <point x="0.0" y="-14.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.TrainerController" target="com.example.SecuritywithLeaners.Service.BookingService" relationship="TO_ONE">
+      <point x="-228.0" y="0.0" />
+      <point x="-408.0" y="5011.0" />
+      <point x="-408.0" y="3226.0" />
+      <point x="-242.5" y="-5.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.BookingService" target="com.example.SecuritywithLeaners.Repo.ScheduleBookingRepo" relationship="TO_ONE">
+      <point x="0.0" y="-67.5" />
+      <point x="770.0" y="1551.0" />
+      <point x="-195.5" y="0.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.AdminServicesController" target="com.example.SecuritywithLeaners.Service.TrainerDrivingLicenceService" relationship="TO_ONE">
+      <point x="-280.0" y="340.0" />
+      <point x="238.0" y="0.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.SchedulerService" target="com.example.SecuritywithLeaners.Repo.AgreementRepo" relationship="TO_ONE">
+      <point x="-10.0" y="103.5" />
+      <point x="1300.0" y="4616.5" />
+      <point x="484.0" y="4616.5" />
+      <point x="484.0" y="979.5" />
+      <point x="2610.0" y="979.5" />
+      <point x="-0.0" y="-211.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.AdminServicesController" target="com.example.SecuritywithLeaners.Service.VehicleServiceOrRepairService" relationship="TO_ONE">
+      <point x="-278.0" y="919.5" />
+      <point x="141.0" y="-43.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.StudentController" target="com.example.SecuritywithLeaners.Service.AuthenticationService" relationship="TO_ONE">
+      <point x="-0.0" y="67.5" />
+      <point x="-210.0" y="5282.5" />
+      <point x="-162.0" y="-8.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.ExtraSessionNotInAgreementService" target="com.example.SecuritywithLeaners.Repo.VehicleTypeRepo" relationship="TO_ONE">
+      <point x="216.0" y="-4.666748046875" />
+      <point x="-92.5" y="-4.666748046875" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.StudentController" target="com.example.SecuritywithLeaners.Service.SchedulerService" relationship="TO_ONE">
+      <point x="188.0" y="0.0" />
+      <point x="1310.0" y="4671.0" />
+      <point x="0.0" y="103.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.AdminServicesController" target="com.example.SecuritywithLeaners.Service.MedicalReportService" relationship="TO_ONE">
+      <point x="-280.0" y="-62.0" />
+      <point x="2070.0" y="3169.0" />
+      <point x="-0.0" y="67.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.VehicleServiceOrRepairService" target="com.example.SecuritywithLeaners.Repo.ServiceOrRepairRepo" relationship="TO_ONE">
+      <point x="-121.5" y="43.5" />
+      <point x="0.0" y="-14.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.PackageService" target="com.example.SecuritywithLeaners.Repo.TrialPermitRepo" relationship="TO_ONE">
+      <point x="-212.0" y="0.0" />
+      <point x="171.0" y="0.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.TrialPermitService" target="com.example.SecuritywithLeaners.Repo.TrialPermitRepo" relationship="TO_ONE">
+      <point x="0.0" y="103.5" />
+      <point x="0.0" y="-67.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.AgreementService" target="com.example.SecuritywithLeaners.Repo.PackageAndVehicleTypeRepo" relationship="TO_ONE">
+      <point x="249.5" y="10.0" />
+      <point x="3392.0" y="1561.0" />
+      <point x="3392.0" y="6118.5" />
+      <point x="198.5" y="-12.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.AgreementService" target="com.example.SecuritywithLeaners.Repo.ScheduleBookingRepo" relationship="TO_ONE">
+      <point x="-249.5" y="-5.0" />
+      <point x="195.5" y="-5.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.TrialPermitService" target="com.example.SecuritywithLeaners.Repo.PermitAndVehicleTypeRepo" relationship="TO_ONE">
+      <point x="256.5" y="0.0" />
+      <point x="-175.5" y="0.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.TrainerService" target="com.example.SecuritywithLeaners.Service.AuthenticationService" relationship="TO_ONE">
+      <point x="-0.0" y="91.5" />
+      <point x="3790.0" y="5252.5" />
+      <point x="-162.0" y="-38.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.AdminServicesController" target="com.example.SecuritywithLeaners.Service.VehicleService" relationship="TO_ONE">
+      <point x="-280.0" y="823.0" />
+      <point x="174.0" y="0.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.ExtraSessionNotInAgreementService" target="com.example.SecuritywithLeaners.Repo.AgreementRepo" relationship="TO_ONE">
+      <point x="-216.0" y="0.0" />
+      <point x="-418.0" y="5391.0" />
+      <point x="-418.0" y="1206.0" />
+      <point x="-235.0" y="-5.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.BookingService" target="com.example.SecuritywithLeaners.Service.NotificationService" relationship="TO_ONE">
+      <point x="5.0" y="67.5" />
+      <point x="775.0" y="4271.0" />
+      <point x="-182.5" y="0.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.AdminService" target="com.example.SecuritywithLeaners.Repo.StudentRepo" relationship="TO_ONE">
+      <point x="-247.0" y="0.0" />
+      <point x="2075.0" y="2071.0" />
+      <point x="5.0" y="67.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.TrainerController" target="com.example.SecuritywithLeaners.Service.TrainerService" relationship="TO_ONE">
+      <point x="228.0" y="22.5" />
+      <point x="-180.5" y="22.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.BookingService" target="com.example.SecuritywithLeaners.Repo.StudentRepo" relationship="TO_ONE">
+      <point x="10.0" y="-67.5" />
+      <point x="780.0" y="1791.0" />
+      <point x="-169.5" y="0.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.PackageService" target="com.example.SecuritywithLeaners.Repo.PermitAndVehicleTypeRepo" relationship="TO_ONE">
+      <point x="0.0" y="-91.5" />
+      <point x="0.0" y="67.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.AdminServicesController" target="com.example.SecuritywithLeaners.Service.ExtraSessionService" relationship="TO_ONE">
+      <point x="-280.0" y="30.0" />
+      <point x="1775.75" y="3261.0" />
+      <point x="105.75" y="-43.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.TrainerPermitService" target="com.example.SecuritywithLeaners.Repo.TrainerPermitRepo" relationship="TO_ONE">
+      <point x="31.0" y="31.5" />
+      <point x="0.0" y="-31.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.SchedulerService" target="com.example.SecuritywithLeaners.Repo.SchedulerRepo" relationship="TO_ONE">
+      <point x="-186.0" y="0.0" />
+      <point x="284.0" y="0.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.AgreementService" target="com.example.SecuritywithLeaners.Repo.StudentRepo" relationship="TO_ONE">
+      <point x="0.0" y="103.5" />
+      <point x="0.0" y="-67.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.AdminServicesController" target="com.example.SecuritywithLeaners.Service.AuthenticationService" relationship="TO_ONE">
+      <point x="14.75" y="919.5" />
+      <point x="2624.75" y="5262.5" />
+      <point x="-162.0" y="-28.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.AdminServicesController" target="com.example.SecuritywithLeaners.Service.ExtraSessionNotInAgreementService" relationship="TO_ONE">
+      <point x="-96.25" y="919.5" />
+      <point x="2513.75" y="5360.91650390625" />
+      <point x="216.0" y="-30.08349609375" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.AdminService" target="com.example.SecuritywithLeaners.Repo.PaymentsRepo" relationship="TO_ONE">
+      <point x="247.0" y="-41.0" />
+      <point x="3130.0" y="2030.0" />
+      <point x="-0.0" y="43.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.ExtraSessionService" target="com.example.SecuritywithLeaners.Repo.PackageAndVehicleTypeRepo" relationship="TO_ONE">
+      <point x="-3.75" y="43.5" />
+      <point x="-3.75" y="-55.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.AdminServicesController" target="com.example.SecuritywithLeaners.Service.NotificationService" relationship="TO_ONE">
+      <point x="-280.0" y="18.75" />
+      <point x="1310.0" y="3249.75" />
+      <point x="-0.0" y="-67.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.AuthenticationService" target="com.example.SecuritywithLeaners.Repo.UsersRepo" relationship="TO_ONE">
+      <point x="0.5" y="-91.5" />
+      <point x="0.5" y="31.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.FuelTypeService" target="com.example.SecuritywithLeaners.Repo.FuelTypeRepo" relationship="TO_ONE">
+      <point x="-40.0" y="43.5" />
+      <point x="0.0" y="-14.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.ExtraSessionService" target="com.example.SecuritywithLeaners.Repo.AgreementRepo" relationship="TO_ONE">
+      <point x="211.0" y="-8.5" />
+      <point x="3372.0" y="5562.5" />
+      <point x="3372.0" y="1216.0" />
+      <point x="235.0" y="5.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.SchedulerService" target="com.example.SecuritywithLeaners.Service.NotificationService" relationship="TO_ONE">
+      <point x="0.0" y="-103.5" />
+      <point x="0.0" y="67.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.TrainerService" target="com.example.SecuritywithLeaners.Repo.TrainerRepo" relationship="TO_ONE">
+      <point x="4.0" y="-91.5" />
+      <point x="4.0" y="67.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.AdminServicesController" target="com.example.SecuritywithLeaners.Service.CommonItemsOrServiesOfferedByServiceService" relationship="TO_ONE">
+      <point x="278.0" y="919.5" />
+      <point x="-42.0" y="-43.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.ExtraSessionService" target="com.example.SecuritywithLeaners.Repo.ExtrasNotInAgreementRepo" relationship="TO_ONE">
+      <point x="-211.0" y="0.0" />
+      <point x="217.5" y="0.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.AdminServicesController" target="com.example.SecuritywithLeaners.Service.VehicleTypeService" relationship="TO_ONE">
+      <point x="4.75" y="919.5" />
+      <point x="2614.75" y="5375.0" />
+      <point x="-173.0" y="-16.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.PaymentService" target="com.example.SecuritywithLeaners.Repo.StudentRepo" relationship="TO_ONE">
+      <point x="-5.0" y="-43.5" />
+      <point x="3585.0" y="1770.5" />
+      <point x="169.5" y="-20.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.AdminServicesController" target="com.example.SecuritywithLeaners.Service.VehicleLicenceService" relationship="TO_ONE">
+      <point x="-32.125" y="919.5" />
+      <point x="2577.875" y="4424.0" />
+      <point x="196.0" y="0.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.AdminServicesController" target="com.example.SecuritywithLeaners.Service.AdminService" relationship="TO_ONE">
+      <point x="0.0" y="-919.5" />
+      <point x="0.0" y="103.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Service.PaymentService" target="com.example.SecuritywithLeaners.Service.AuthenticationService" relationship="TO_ONE">
+      <point x="164.5" y="0.0" />
+      <point x="4744.0" y="1871.0" />
+      <point x="4744.0" y="5291.0" />
+      <point x="162.0" y="0.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.AdminServicesController" target="com.example.SecuritywithLeaners.Service.PaymentService" relationship="TO_ONE">
+      <point x="280.0" y="-10.0" />
+      <point x="3590.0" y="3221.0" />
+      <point x="-0.0" y="43.5" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.StudentController" target="com.example.SecuritywithLeaners.Service.BookingService" relationship="TO_ONE">
+      <point x="-0.0" y="-67.5" />
+      <point x="-210.0" y="3236.0" />
+      <point x="-242.5" y="5.0" />
+    </edge>
+    <edge source="com.example.SecuritywithLeaners.Controller.TrainerController" target="com.example.SecuritywithLeaners.Service.VehicleLocationService" relationship="TO_ONE">
+      <point x="0.0" y="-103.5" />
+      <point x="290.0" y="4751.0" />
+      <point x="-208.5" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Compact" zoom="0.17227271887963913" showDependencies="true" x="2422.994948917206" y="4011.1188477628925" />
+  <SelectedNodes>
+    <node>com.example.SecuritywithLeaners.Repo.VehicleLicenceRepo</node>
+    <node>com.example.SecuritywithLeaners.Controller.StudentController</node>
+    <node>com.example.SecuritywithLeaners.Service.InsuranceTypeService</node>
+    <node>com.example.SecuritywithLeaners.Repo.TrialPermitRepo</node>
+    <node>com.example.SecuritywithLeaners.Service.MedicalReportService</node>
+    <node>com.example.SecuritywithLeaners.Service.TrialPermitService</node>
+    <node>com.example.SecuritywithLeaners.Service.ExtraSessionNotInAgreementService</node>
+    <node>com.example.SecuritywithLeaners.Controller.AuthenticationController</node>
+    <node>com.example.SecuritywithLeaners.Repo.FuelTypeRepo</node>
+    <node>com.example.SecuritywithLeaners.Repo.VehicleLocationRepo</node>
+    <node>com.example.SecuritywithLeaners.Repo.NotificationViewsForRepo</node>
+    <node>com.example.SecuritywithLeaners.Service.VehicleTypeService</node>
+    <node>com.example.SecuritywithLeaners.Service.TrainerDrivingLicenceService</node>
+    <node>com.example.SecuritywithLeaners.Service.VehicleService</node>
+    <node>com.example.SecuritywithLeaners.Service.InsuranceService</node>
+    <node>com.example.SecuritywithLeaners.Repo.InsuranceRepo</node>
+    <node>com.example.SecuritywithLeaners.Service.VehicleServiceOrRepairService</node>
+    <node>com.example.SecuritywithLeaners.Repo.NotificationRepo</node>
+    <node>com.example.SecuritywithLeaners.Repo.ExtrasNotInAgreementRepo</node>
+    <node>com.example.SecuritywithLeaners.Service.BookingService</node>
+    <node>com.example.SecuritywithLeaners.Service.AgreementService</node>
+    <node>com.example.SecuritywithLeaners.Repo.ExtraSessionRepo</node>
+    <node>com.example.SecuritywithLeaners.Service.ExtraSessionService</node>
+    <node>com.example.SecuritywithLeaners.Repo.CommonItemsOrServicesOfferedByServiceRepo</node>
+    <node>com.example.SecuritywithLeaners.Repo.VehicleRepo</node>
+    <node>com.example.SecuritywithLeaners.Service.TrainerService</node>
+    <node>com.example.SecuritywithLeaners.Repo.PaymentsRepo</node>
+    <node>com.example.SecuritywithLeaners.Service.UserService</node>
+    <node>com.example.SecuritywithLeaners.Service.FuelTypeService</node>
+    <node>com.example.SecuritywithLeaners.Repo.TrainerDrivingLicenceVehiclesRepo</node>
+    <node>com.example.SecuritywithLeaners.Repo.PermitAndVehicleTypeRepo</node>
+    <node>com.example.SecuritywithLeaners.Repo.SchedulerRepo</node>
+    <node>com.example.SecuritywithLeaners.Repo.VehicleTypeRepo</node>
+    <node>com.example.SecuritywithLeaners.Service.CommonItemsOrServiesOfferedByServiceService</node>
+    <node>com.example.SecuritywithLeaners.Controller.AdminServicesController</node>
+    <node>com.example.SecuritywithLeaners.Repo.InsuranceTypeRepo</node>
+    <node>com.example.SecuritywithLeaners.Service.AuthenticationService</node>
+    <node>com.example.SecuritywithLeaners.Service.SchedulerService</node>
+    <node>com.example.SecuritywithLeaners.Repo.PackageAndVehicleTypeRepo</node>
+    <node>com.example.SecuritywithLeaners.Repo.TrainerPermitRepo</node>
+    <node>com.example.SecuritywithLeaners.Controller.TrainerController</node>
+    <node>com.example.SecuritywithLeaners.Repo.MedicalRepo</node>
+    <node>com.example.SecuritywithLeaners.Service.AdminService</node>
+    <node>com.example.SecuritywithLeaners.Repo.EmissionTestRepo</node>
+    <node>com.example.SecuritywithLeaners.Repo.AgreementRepo</node>
+    <node>com.example.SecuritywithLeaners.Service.PaymentService</node>
+    <node>com.example.SecuritywithLeaners.Service.VehicleLocationService</node>
+    <node>com.example.SecuritywithLeaners.Service.EmissionTestSevice</node>
+    <node>com.example.SecuritywithLeaners.Repo.ServiceOrRepairRepo</node>
+    <node>com.example.SecuritywithLeaners.Service.PackageService</node>
+    <node>com.example.SecuritywithLeaners.Repo.TrainerRepo</node>
+    <node>com.example.SecuritywithLeaners.Repo.StudentRepo</node>
+    <node>com.example.SecuritywithLeaners.Service.TrainerPermitService</node>
+    <node>com.example.SecuritywithLeaners.Repo.ScheduleBookingRepo</node>
+    <node>com.example.SecuritywithLeaners.Repo.TrainerDrivingLicenceRepo</node>
+    <node>com.example.SecuritywithLeaners.Service.VehicleLicenceService</node>
+    <node>com.example.SecuritywithLeaners.Repo.PackageRepo</node>
+    <node>com.example.SecuritywithLeaners.Repo.UsersRepo</node>
+    <node>com.example.SecuritywithLeaners.Service.NotificationService</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

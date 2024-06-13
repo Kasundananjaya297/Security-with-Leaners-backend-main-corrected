@@ -53,6 +53,7 @@ public class TrainerService {
                 UsersDTO usersDTO = new UsersDTO();
                 usersDTO.setUsername(trainers.getTrainerID());
                 usersDTO.setRole("TRAINER");
+                usersDTO.setIsActive(true);
                 usersDTO.setGeneratedPassword(SaveUer.generateRandomPassword(trainers.getTrainerID()));
                 authenticationService.SaveUserInternally(usersDTO);
                 responseDTO.setMessage("Trainer saved successfully");

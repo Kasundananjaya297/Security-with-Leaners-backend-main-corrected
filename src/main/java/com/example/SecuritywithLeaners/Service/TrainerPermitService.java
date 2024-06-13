@@ -47,11 +47,6 @@ public class TrainerPermitService {
             responseDTO.setStatus(HttpStatus.BAD_REQUEST);
             responseDTO.setCode(varList.RSP_ERROR);
         }
-
-
-
-
-
        return responseDTO;
     }
 }
