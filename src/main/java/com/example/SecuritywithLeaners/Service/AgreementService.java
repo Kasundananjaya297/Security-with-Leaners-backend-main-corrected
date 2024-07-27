@@ -32,7 +32,7 @@ public class AgreementService {
     PackageAndVehicleTypeRepo packageAndVehicleTypeRepo;
     @Autowired
     private ScheduleBookingRepo scheduleBookingRepo;
-
+    // Save Agreement
     public ResponseDTO saveAgreement(AgreementDTO agreementDTO) {
         ResponseDTO responseDTO = new ResponseDTO();
         try {
@@ -46,7 +46,9 @@ public class AgreementService {
             packageAndVehicleTypeID.setPackageID(apackage);
             agreementID.setStdID(student);
             agreementID.setPackageID(apackage);
+            // Check if agreement exists
             if(!agreementRepo.existsById(agreementID)){
+                // Check if current agreement is finished
                 if(agreementRepo.agreementIsFinished(agreementDTO.getStdID())==null || agreementRepo.agreementIsFinished(agreementDTO.getStdID()) == true){
                     agreement.setAgreementID(agreementID);
                     agreement.setPackagePrice(agreementDTO.getPackagePrice());
@@ -66,8 +68,6 @@ public class AgreementService {
                 extraSessionArrayList.add(extraSession);
             }
                     agreement.setExtraSessions(extraSessionArrayList);
-
-
                     agreementRepo.save(agreement);
                     //PackageAndVehicleType packageAndVehicleType = packageAndVehicleTypeRepo.findById(agreementDTO.getPackageID()).get();
 
@@ -96,6 +96,7 @@ public class AgreementService {
         }
         return responseDTO;
     }
+    // Check if current agreement is finished
     public ResponseDTO checkCurrentAgreement(String stdID){
         ResponseDTO responseDTO = new ResponseDTO();
         try {
@@ -119,6 +120,7 @@ public class AgreementService {
         }
         return responseDTO;
     }
+    // Get Agreement
     public ResponseDTO getAgreement(String stdID){
         ResponseDTO responseDTO = new ResponseDTO();
         try {
@@ -146,6 +148,7 @@ public class AgreementService {
                 agreementDTO.setTotalAmountForExtrasNotInAgreement(a.getTotalAmountForExtrasNotInAgreement());
                 List<PackageAndVehicleTypeDTO> packageAndVehicleTypeDTOS = new ArrayList<>();
                 int i =0;
+                //get extra sessions
                 for(PackageAndVehicleType p : a.getPackageID().getPackageAndVehicleType()){
                     PackageAndVehicleTypeDTO packageAndVehicleTypeDTO = new PackageAndVehicleTypeDTO();
                     packageAndVehicleTypeDTO.setPackageID(p.getPackageID().getPackageID());
@@ -213,6 +216,7 @@ public class AgreementService {
         }
         return responseDTO;
     }
+    // Update Agreement
     public ResponseDTO updateAgreementDiscount(AgreementDTO agreementDTO) {
         ResponseDTO responseDTO = new ResponseDTO();
         try {
@@ -249,6 +253,7 @@ public class AgreementService {
         responseDTO.setStatus(HttpStatus.ACCEPTED);
         return responseDTO;
     }
+    // Update Agreement and Vehicle
     public ResponseDTO updateAgreementAndVehicle(PermitAndVehicleTypeDTO permitAndVehicleTypeDTO){
         ResponseDTO responseDTO = new ResponseDTO();
         try {
@@ -264,6 +269,7 @@ public class AgreementService {
         }
         return responseDTO;
     }
+    // Delete Agreement
     public ResponseDTO deleteAgreement(String stdID,String packageID){
         ResponseDTO responseDTO = new ResponseDTO();
         try{
@@ -301,6 +307,7 @@ public class AgreementService {
         }
         return responseDTO;
     }
+    // Update Total Amount to Pay
     public ResponseDTO upDateTotalAmountToPay(AgreementDTO agreementDTO){
         ResponseDTO responseDTO = new ResponseDTO();
         try {

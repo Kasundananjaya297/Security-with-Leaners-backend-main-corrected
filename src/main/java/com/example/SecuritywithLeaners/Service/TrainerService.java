@@ -40,7 +40,7 @@ public class TrainerService {
     @Autowired
     private UsersRepo usersRepo;
 
-
+// saveTrainer method
     public ResponseDTO saveTrainer(TrainerDTO trainerDTO){
         ResponseDTO responseDTO = new ResponseDTO();
         try{

@@ -188,7 +188,7 @@ public class SchedulerService {
         }
         return responseDTO;
     }
-//filter schedules based on student trial permit vehicles
+//filter schedules based on student trial agreement vehicles
     public ResponseDTO getStudentSchedules(String stdID){
         ResponseDTO responseDTO = new ResponseDTO();
         try{
@@ -245,9 +245,19 @@ public class SchedulerService {
                 }
                 return true;
             });
-            //filter schdules basd on current date and completed sessions
+            //filter schedule based on current date and completed sessions and student number
            //schedulerDTOList.removeIf(schedulerDTO -> schedulerDTO.getStart().before(new java.util.Date()));
             schedulerDTOList.removeIf(schedulerDTO -> schedulerDTO.getStart().before(new java.util.Date()) && ! schedulerDTO.getIsCompleted());
+            //filter student Booking based on completed session based on student ID
+//            for(SchedulerDTO schedulerDTO : schedulerDTOList){
+//                schedulerDTO.getBookingScheduleDTO().removeIf(bookingScheduleDTO -> bookingScheduleDTO.getStdID().equals(stdID));
+//                schedulerDTO.getStart().before(new java.util.Date());
+//            }
+            //remove schedule before current date and not eql to studentID
+            schedulerDTOList.removeIf(schedulerDTO -> schedulerDTO.getStart().before(new java.util.Date())
+                    && schedulerDTO.getBookingScheduleDTO().stream().noneMatch(bookingScheduleDTO ->
+                    bookingScheduleDTO.getStdID().equals(stdID)));
+
             responseDTO.setContent(schedulerDTOList);
             responseDTO.setStatus(HttpStatus.ACCEPTED);
             responseDTO.setCode(varList.RSP_SUCCES);

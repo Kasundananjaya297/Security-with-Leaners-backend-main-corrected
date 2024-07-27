@@ -325,6 +325,7 @@ public class AdminServicesController  {
     @GetMapping("/getVehicles/{field}/{order}/{pageSize}/{offset}")
     public ResponseEntity getVehicles(@PathVariable String field,@PathVariable String order,@PathVariable int pageSize,@PathVariable int offset){
         ResponseDTO responseDTO = vechicleService.getVehicles(field,order,pageSize,offset);
+        System.out.println("vehicle request");
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
     @PutMapping("/updateVehicleBook")
@@ -437,41 +438,49 @@ public class AdminServicesController  {
         ResponseDTO responseDTO = authenticationService.resetPassword(usersDTO);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
+    //get all booking request
     @PutMapping("/updatePassOrFailStudentInTrialPermit/{serialNo}/{vehicleClass}/{isPassed}")
     public ResponseEntity updatePassOrFailStudentInTrialPermit(@PathVariable String serialNo,@PathVariable String vehicleClass,@PathVariable Boolean isPassed){
         ResponseDTO responseDTO = trialPermitService.updatePassOrFailStudentInTrialPermit(serialNo,vehicleClass,isPassed);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
+    //get all booking request
     @PutMapping("/acceptOrRegectBookingRequest")
     public ResponseEntity acceptOrRegectBookingRequest(@RequestBody BookingScheduleDTO bookingDTO){
         ResponseDTO responseDTO = bookingService.acceptOrRegectBookingRequest(bookingDTO);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
+    //get all notification
     @GetMapping("/getAllNotifications/{viewedFor}")
     public ResponseEntity getAllNotifications(@PathVariable String viewedFor){
         ResponseDTO responseDTO = notificationService.getAllNotification(viewedFor);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
+    //get all notification by {id uer ID }
     @GetMapping("/getAllnotificationByID/{id}/{viewedFor}")
     public ResponseEntity getAllNotificationByID(@PathVariable String id,@PathVariable String viewedFor){
         ResponseDTO responseDTO = notificationService.getAllNotificationByID(id,viewedFor);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
+    //get vehicle location by vehicle id
     @GetMapping("/getVehicleLocationByVehicleID/{vehicleID}")
     public ResponseEntity getVehicleLocationByVehicleID(@PathVariable String vehicleID){
         ResponseDTO responseDTO = vehicleLocationService.getVehicleLocationByVehicleID(vehicleID);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
+    //get vehicle by id
     @GetMapping("/getVehicleById/{vehicleID}")
     public ResponseEntity getVehicleById(@PathVariable String vehicleID){
         ResponseDTO responseDTO = vechicleService.getVehicleById(vehicleID);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
+    //get vehicle by letter for searching
     @GetMapping("/getVehhicleByLetter/{letter}")
     public ResponseEntity getVehicleByLetter(@PathVariable String letter){
         ResponseDTO responseDTO = vechicleService.getVehicleByLetter(letter);
         return new ResponseEntity(responseDTO,responseDTO.getStatus());
     }
+    //delete notification
     @DeleteMapping("/deleteNotification/{notificationID}")
     public ResponseEntity deleteNotification(@PathVariable String notificationID){
         System.out.println("deleteNotification");

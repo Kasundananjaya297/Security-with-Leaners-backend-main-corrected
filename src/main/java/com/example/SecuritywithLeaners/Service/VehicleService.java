@@ -144,6 +144,7 @@ public class VehicleService {
                     emissionTestDTO.setValidDays(Math.max(days,0));
                     emissionTestDTO.setValidMonths(Math.max(months,0));
                     emissionTestDTOS.add(emissionTestDTO);
+                    System.out.println("+++++++++++++++++++++");
                 }
                 vehicleDTO.setEmissionTests(emissionTestDTOS);
                 List<VehicleServiceORRepairDTO> vehicleServiceORRepairDTOS = new ArrayList<>();
