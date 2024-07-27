@@ -36,6 +36,7 @@ public class ExtraSessionNotInAgreementService {
         ResponseDTO responseDTO = new ResponseDTO();
         int count =0;
         double totalPrice = 0.0;
+        System.out.println("+++++++++++++++++++++++++++++++++++");
         //System.out.println(extraSessionNotInAgreementRepo.countExtraSession(extraSessionDTO.get(0).getStdID(),extraSessionDTO.get(0).getPackageID()));
         try {
             for(int i = 0; i<extraSessionDTO.size(); i++){
@@ -53,7 +54,6 @@ public class ExtraSessionNotInAgreementService {
                 extrasNotINAgreement.setPriceForExtraLesson(e.getPriceForExtraLesson());
                 extrasNotINAgreement.setExtraLessonVehicleType(e.getExtraLessonVehicleType());
                 extrasNotINAgreement.setTypeID(e.getTypeID());
-
                 Agreement agreement = new Agreement();
                 AgreementID agreementID = new AgreementID();
                 Student student = new Student();

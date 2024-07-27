@@ -43,6 +43,7 @@ public class ExtraSessionService {
         ResponseDTO responseDTO = new ResponseDTO();
         ExtraSession extraSessions = new ExtraSession();
         try{
+            // Check if the Extra Session exists
             for (ExtraSessionDTO e : extraSessionDTO) {
                 if(extraSessionRepo.checkExtraSession(e.getStdID(), e.getPackageID(), e.getTypeID()) > 0){
                     extraSessionRepo.updateExtraSession(e.getTypeID(), e.getExtraLessons(), e.getPriceForExtraLesson(), e.getTotalLessons(), e.getStdID(), e.getPackageID(), e.getPrice());
@@ -69,7 +70,7 @@ public class ExtraSessionService {
         }
         return responseDTO;
     }
-
+// get vehicle types for extra session considering the trial permit and the agreement
     public ResponseDTO getVehicleTypesForExtraSession(String stdID) {
         ResponseDTO responseDTO = new ResponseDTO();
         try {

@@ -27,7 +27,8 @@ public class JWTAuthFilter extends OncePerRequestFilter {
     @Autowired
     private UserService authenticationService;
 
-
+//security filter to check if the token is valid
+//if the token is valid then it will set the security context
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String authHeader = request.getHeader("Authorization");

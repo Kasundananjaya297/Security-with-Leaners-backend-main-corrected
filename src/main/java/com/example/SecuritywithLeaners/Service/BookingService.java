@@ -30,9 +30,11 @@ public class BookingService {
     private NotificationService notificationService;
     @Autowired
     private StudentRepo studentRepo;
+    //get student schedules
     public ResponseDTO makeBooking(BookingScheduleDTO bookingScheduleDTO){
         ResponseDTO responseDTO = new ResponseDTO();
         try {
+            // check booking full
             int count = scheduleBookingRepo.findBySchedulerID(bookingScheduleDTO.getSchedulerID()).size();
             int maxstdCount = schedulerRepo.getStudentCountBySchedulerID(bookingScheduleDTO.getSchedulerID());
             if(count >= maxstdCount){
@@ -51,6 +53,7 @@ public class BookingService {
                 List<BookingSchedule> bookingSchedules = scheduleBookingRepo.findByStdID(bookingScheduleDTO.getStdID());
                 Scheduler scheduler1 = schedulerRepo.findById(bookingScheduleDTO.getSchedulerID()).get();
                 for(BookingSchedule bookingSchedule1 : bookingSchedules) {
+                    //check student booking time overlap
                     if(bookingSchedule1.getScheduler().getStart().before(scheduler1.getEnd()) && bookingSchedule1.getScheduler().getEnd().after(scheduler1.getStart())){
                         responseDTO.setCode(varList.RSP_FAIL);
                         responseDTO.setStatus(HttpStatus.ALREADY_REPORTED);

@@ -51,11 +51,13 @@ public class AdminService {
     @Autowired
     UsersRepo usersRepo;
     private StudentDTO studentDTO;
+    //save student basic details
     public ResponseDTO saveStudent(Student studentDTO) {
         ResponseDTO responseDTO = new ResponseDTO();
         StudentBasicDTO studentBasicDTO = new StudentBasicDTO();
 
         try {
+            //check if student already exists in the database using email, telephone and nic
             Student existingStudent = studentRepo.Available(studentDTO.getEmail(), studentDTO.getTelephone(), studentDTO.getNic());
             if (existingStudent != null) {
                 this.studentDTO = modelMapper.map(existingStudent, StudentDTO.class);
@@ -92,6 +94,7 @@ public class AdminService {
         }
         return responseDTO;
     }
+    //used for pagination
     public ResponseDTO getAllStudentSize() {
         ResponseDTO responseDTO = new ResponseDTO();
         StudentBasicDTO studentBasicDTO = new StudentBasicDTO();
@@ -110,6 +113,7 @@ public class AdminService {
         }
         return responseDTO;
     }
+    //get all student details with sorting (testing purpose)
     public ResponseDTO getStudentBySorting(String field, String order) {
         ResponseDTO responseDTO = new ResponseDTO();
 
@@ -142,7 +146,7 @@ public class AdminService {
         }
         return responseDTO;
     }
-
+//get all students by pagination and sorting
     public ResponseDTO getStudentBySortingAndPagination(String field, String order, int pageSize, int offset) {
         ResponseDTO responseDTO = new ResponseDTO();
         try {
@@ -182,6 +186,7 @@ public class AdminService {
 
         return responseDTO;
     }
+    //get all students details
     public ResponseDTO getStudentByDetail(String detail) {
         ResponseDTO responseDTO = new ResponseDTO();
         try {
@@ -200,10 +205,11 @@ public class AdminService {
         }
         return responseDTO;
     }
-
+    //get student by id
     public ResponseDTO getStudentByID(String stdID) {
         ResponseDTO responseDTO = new ResponseDTO();
         try {
+            //not null and not empty
             Optional<Student> student = studentRepo.findById(stdID);
             if (student.isPresent()) {
                 StudentDTO studentDTO = modelMapper.map(student.get(), StudentDTO.class);
@@ -238,6 +244,7 @@ public class AdminService {
         }
         return responseDTO;
     }
+    //update student details
     public ResponseDTO updateStudent(Student studentDTO) {
         ResponseDTO responseDTO = new ResponseDTO();
         try {

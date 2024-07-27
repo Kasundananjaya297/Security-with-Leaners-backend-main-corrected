@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"  # Map external port 8080 to internal port 8080
+      - "3306:3306"  # Map external port 3306 to internal port 3306
+    env_file:
+      - src/main/resources/app.env
+    environment:
+      MYSQL_ROOT_PASSWORD: ABCD789k!@

@@ -26,7 +26,7 @@ public class SecurityConfig {
     private UserService ourUserDetailsService;
     @Autowired
     private JWTAuthFilter jwtAuthFIlter;
-
+//security filter chain to check the request and authorize the request using chane of responsibility
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
